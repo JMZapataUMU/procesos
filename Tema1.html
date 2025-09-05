@@ -846,8 +846,12 @@ C_X(s,t)=K(|t-s|)
 <p>Dado un número <span class="math inline">\(H \in (0,1)\)</span>, decimos que un proceso estocástico <span class="math inline">\((X_t)_{t\in [0,\infty)}\)</span> es un <strong>movimiento Browniano fraccional con índice de Hurst</strong> <span class="math inline">\(H\)</span> si su función de medias es constantemente cero, <span class="math inline">\(\mu_X(t)=0\)</span>, y su función de covarianzas está dada por<br>
 <span class="math display">\[
 C_X(s,t) = \frac{1}{2}\left( t^{2H} + s^{2H} - |t-s|^{2H} \right).
-\]</span> El índice de Hurst <span class="math inline">\(H\)</span> describe la irregularidad del movimiento resultante: valores más altos producen trayectorias más suaves. Este proceso fue introducido por para modelizar fenómenos como los mercados financieros.<br>
-</p>
+\]</span> El índice de Hurst <span class="math inline">\(H\)</span> describe la irregularidad del movimiento resultante: valores más altos producen trayectorias más suaves. Este proceso fue introducido por para modelizar fenómenos como los mercados financieros.</p>
+<ul>
+<li>Cuando <span class="math inline">\(H = \tfrac{1}{2}\)</span>, el proceso coincide con el movimiento Browniano usual.</li>
+<li>Cuando <span class="math inline">\(H &gt; \tfrac{1}{2}\)</span>, los incrementos están positivamente correlados.</li>
+<li>Cuando <span class="math inline">\(H &lt; \tfrac{1}{2}\)</span>, los incrementos están negativamente correlados.</li>
+</ul>
 <p>Vamos a simular en <em>R</em> una trayectoria de dicho proceso para H=0.2:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">23</span>)</span>
