@@ -530,7 +530,7 @@ Dado un número $H \in (0,1)$, decimos que un proceso estocástico $(X_t)_{t\in 
 $$
 C_X(s,t) = \frac{1}{2}\left( t^{2H} + s^{2H} - |t-s|^{2H} \right).
 $$ 
-El índice de Hurst $H$ describe la irregularidad del movimiento resultante: valores más altos producen trayectorias más suaves. Este proceso fue introducido por \textit{Mandelbrot y Van Ness (1968)} para modelizar fenómenos como los mercados financieros.
+El índice de Hurst $H$ describe la irregularidad del movimiento resultante: valores más altos producen trayectorias más suaves. Este proceso fue introducido por  Mandelbrot y Van Ness (1968) para modelizar fenómenos como los mercados financieros.
 
 
 - Cuando $H = \tfrac{1}{2}$, el proceso coincide con el movimiento Browniano usual.
@@ -561,3 +561,4 @@ plot(tiempo, x, type = "l", lty = 1)
 ```
 
 Vemos que la trayectoria obtenida menos suave que en el caso del movimiento Browniano usual. Al igual que el movimiento Browniano usual, no es un proceso estacionario.
+
