@@ -210,21 +210,18 @@ Definición
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Un proceso estocástico <span class="math inline">\((X_n)_{n=0,1,2,\ldots}\)</span> de tiempo discreto se dice que es una <strong>cadena de Markov</strong> si se verifica:</p>
-<ol type="1">
-<li><p>Cada <span class="math inline">\(X_n\)</span> toma valores en un conjunto numerable <span class="math inline">\(\mathcal{S}\)</span>.</p></li>
-<li><p>Se cumple que</p></li>
-</ol>
+<p>Un proceso estocástico <span class="math inline">\((X_n)_{n=0,1,2,\ldots}\)</span> de tiempo discreto se dice que es una <strong>cadena de Markov</strong> si se verifica que</p>
 <p><span id="eq-markov"><span class="math display">\[
 \begin{aligned}
 \mathbb{P}\bigl(X_{n+1}=a_{n+1}\mid X_n=a_n,X_{n-1}=a_{n-1},\ldots, X_0=a_0\bigr)
 &amp;= \mathbb{P}\bigl(X_{n+1}=a_{n+1}\mid X_n=a_n\bigr)
 \end{aligned}
 \tag{3.1}\]</span></span></p>
-<p>donde <span class="math inline">\(a_0,a_1,\ldots,a_{n+1}\in\mathcal{S}\)</span>.</p>
+<p>para todo <span class="math inline">\(n\)</span> y toda sucesión <span class="math inline">\(a_0,a_1,\ldots,a_{n+1}\)</span> de posibles valores del proceso.</p>
 </div>
 </div>
 <p>La condición (<a href="#eq-markov">Equation&nbsp;<span>3.1</span></a>) arriba se llama <strong>propiedad de Markov</strong>. La interpretación es que la probabilidad de cualquier valor futuro del proceso, dado el valor actual, no está influenciada por ningún valor pasado. Se dice que las cadenas de Markov son procesos estocásticos sin memoria.</p>
+<p>Al conjunto <span class="math inline">\(\mathcal{S}\)</span> de todos los valores posibles de la cadena de Markov se le llama <strong>espacio de estados</strong>. Como las cadenas de Markov son de tiempo y estado discretos, el espacio de estados <span class="math inline">\(\mathcal{S}\)</span> es un conjunto finito o infinito numerable.</p>
 <div class="callout callout-style-simple callout-none no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
