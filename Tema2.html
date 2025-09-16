@@ -1,0 +1,1407 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.353">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Procesos estocásticos y series temporales - 3&nbsp; Tema 2. Cadenas de Markov</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./Tema1.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Tema2.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Tema 2. Cadenas de Markov</span></a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Procesos estocásticos y series temporales</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Presentación</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tema1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Tema 1. Introducción a los procesos estocásticos</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tema2.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Tema 2. Cadenas de Markov</span></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#cadenas-de-markov-de-tiempo-discreto" id="toc-cadenas-de-markov-de-tiempo-discreto" class="nav-link active" data-scroll-target="#cadenas-de-markov-de-tiempo-discreto"><span class="header-section-number">3.1</span> Cadenas de Markov de tiempo discreto</a></li>
+  <li><a href="#matriz-de-transición-de-n-pasos" id="toc-matriz-de-transición-de-n-pasos" class="nav-link" data-scroll-target="#matriz-de-transición-de-n-pasos"><span class="header-section-number">3.2</span> Matriz de transición de n pasos</a></li>
+  <li><a href="#clasificación-de-los-estados" id="toc-clasificación-de-los-estados" class="nav-link" data-scroll-target="#clasificación-de-los-estados"><span class="header-section-number">3.3</span> Clasificación de los estados</a></li>
+  <li><a href="#número-de-visitas" id="toc-número-de-visitas" class="nav-link" data-scroll-target="#número-de-visitas"><span class="header-section-number">3.4</span> Número de visitas</a></li>
+  <li><a href="#probabilidades-de-absorción-y-tiempos-medios-de-llegada" id="toc-probabilidades-de-absorción-y-tiempos-medios-de-llegada" class="nav-link" data-scroll-target="#probabilidades-de-absorción-y-tiempos-medios-de-llegada"><span class="header-section-number">3.5</span> Probabilidades de absorción y tiempos medios de llegada</a>
+  <ul class="collapse">
+  <li><a href="#probabilidades-de-absorción" id="toc-probabilidades-de-absorción" class="nav-link" data-scroll-target="#probabilidades-de-absorción"><span class="header-section-number">3.5.1</span> Probabilidades de absorción</a></li>
+  <li><a href="#tiempos-medios-de-llegada" id="toc-tiempos-medios-de-llegada" class="nav-link" data-scroll-target="#tiempos-medios-de-llegada"><span class="header-section-number">3.5.2</span> Tiempos medios de llegada</a></li>
+  </ul></li>
+  <li><a href="#comportamiento-asintótico" id="toc-comportamiento-asintótico" class="nav-link" data-scroll-target="#comportamiento-asintótico"><span class="header-section-number">3.6</span> Comportamiento asintótico</a></li>
+  <li><a href="#algoritmo-pagerank" id="toc-algoritmo-pagerank" class="nav-link" data-scroll-target="#algoritmo-pagerank"><span class="header-section-number">3.7</span> Algoritmo PageRank</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Tema 2. Cadenas de Markov</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<p>En este tema vamos a estudiar un tipo particular de procesos estocásticos: las cadenas de Markov. Este tipo de procesos describen cambios de estado en un sistema, con la peculiaridad de que dichos cambios dependen únicamente del estado actual del sistema y no están influenciados por ningún estado que haya tomado previamente.</p>
+<p>Por ejemplo, imaginemos un aparcamiento y consideremos la variable <span class="math inline">\(X_n\)</span> representando el número de plazas de aparcamiento ocupadas en cada instante de tiempo <span class="math inline">\(n\in\{0,1,2,\ldots\}\)</span>. Claramente el valor de <span class="math inline">\(X_{n+1}\)</span> dependerá de <span class="math inline">\(X_n\)</span> ya que <span class="math inline">\(X_{n+1}\)</span> se obtiene de <span class="math inline">\(X_n\)</span> sumándole los coches que han aparcado y restándole los que se han ido entre los instantes <span class="math inline">\(n\)</span> y <span class="math inline">\(n+1\)</span>. Por tanto, conocido <span class="math inline">\(X_n\)</span>, parece razonable que la cantidad <span class="math inline">\(X_{n+1}\)</span> no dependa de los valores previos <span class="math inline">\(X_0,X_1,X_2,\ldots,X_{n-1}\)</span>.</p>
+<p>Este tipo de procesos, en los que el valor <span class="math inline">\(X_{n+1}\)</span> depende exclusivamente de <span class="math inline">\(X_n\)</span> y no se ve influenciado por los estados previos <span class="math inline">\(X_0,X_1,X_2,\ldots,X_{n-1}\)</span> es formalizado matemáticamente mediante el concepto de cadena de Markov.</p>
+<section id="cadenas-de-markov-de-tiempo-discreto" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="cadenas-de-markov-de-tiempo-discreto"><span class="header-section-number">3.1</span> Cadenas de Markov de tiempo discreto</h2>
+<div class="callout callout-style-simple callout-none no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Definición
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Un proceso estocástico <span class="math inline">\((X_n)_{n=0,1,2,\ldots}\)</span> de tiempo discreto se dice que es una <strong>cadena de Markov</strong> si se verifica:</p>
+<ol type="1">
+<li><p>Cada <span class="math inline">\(X_n\)</span> toma valores en un conjunto numerable <span class="math inline">\(\mathcal{S}\)</span>.</p></li>
+<li><p>Se cumple que</p></li>
+</ol>
+<p><span id="eq-markov"><span class="math display">\[
+\begin{aligned}
+\mathbb{P}\bigl(X_{n+1}=a_{n+1}\mid X_n=a_n,X_{n-1}=a_{n-1},\ldots, X_0=a_0\bigr)
+&amp;= \mathbb{P}\bigl(X_{n+1}=a_{n+1}\mid X_n=a_n\bigr)
+\end{aligned}
+\tag{3.1}\]</span></span></p>
+<p>donde <span class="math inline">\(a_0,a_1,\ldots,a_{n+1}\in\mathcal{S}\)</span>.</p>
+</div>
+</div>
+<p>La condición (<a href="#eq-markov">Equation&nbsp;<span>3.1</span></a>) arriba se llama <strong>propiedad de Markov</strong>. La interpretación es que la probabilidad de cualquier valor futuro del proceso, dado el valor actual, no está influenciada por ningún valor pasado. Se dice que las cadenas de Markov son procesos estocásticos sin memoria.</p>
+<div class="callout callout-style-simple callout-none no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Ejemplo (PageRank)
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><em>PageRank</em> es un algoritmo creado y desarrollado por la compañía tecnológica estadounidense Google para ordenar las apariciones de las páginas en cada búsqueda, dando preferencia a aquellas páginas que sean más “importantes” o “populares”. Para medir esto, se analiza la cadena de Markov resultante de un individuo o “surfeador de la web” que va pulsando links al azar en un conjunto de páginas de internet. Por ejemplo, supongamos que el surfeador de la web navega haciendo clics al azar en las páginas A,B,C,D donde:</p>
+<ul>
+<li><p>A tiene enlace a B,</p></li>
+<li><p>B tiene enlaces a A y C,</p></li>
+<li><p>C tiene enlace a A,</p></li>
+<li><p>D tienes enlaces a las otras tres páginas.</p></li>
+</ul>
+<p>Este proceso da lugar a una cadena de Markov con espacio de estados <span class="math inline">\(\{A,B,C,D\}\)</span>, el cuál puede ser descrito mediante el siguiente grafo.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./pagerank2.png" class="img-fluid figure-img" style="width:50.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Además, tenemos las siguientes probabilidades de transición entre estados.</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>A</strong></th>
+<th><strong>B</strong></th>
+<th><strong>C</strong></th>
+<th><strong>D</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>A</strong></td>
+<td>0%</td>
+<td>100%</td>
+<td>0%</td>
+<td>0%</td>
+</tr>
+<tr class="even">
+<td><strong>B</strong></td>
+<td>50%</td>
+<td>0%</td>
+<td>50%</td>
+<td>0%</td>
+</tr>
+<tr class="odd">
+<td><strong>C</strong></td>
+<td>100%</td>
+<td>0%</td>
+<td>0%</td>
+<td>0%</td>
+</tr>
+<tr class="even">
+<td><strong>D</strong></td>
+<td>33.3333%</td>
+<td>33.3333%</td>
+<td>33.3333%</td>
+<td>0%</td>
+</tr>
+</tbody>
+</table>
+<p>Claramente este proceso da lugar a una cadena de Markov, ya que, en cada paso, las probabilidades de visitar una página u otra, sólo depende de en qué página se encuentre el surfeador, sin importar qué páginas haya visitado anteriormente.</p>
+<p>El algoritmo PageRank trata de determinar la probabilidad con la que una página es visitada a medida que el surfeador hace más y más clics, considerando como más importantes aquellas páginas para las que esta probabilidad sea mayor. Éste es el criterio usado para ordenar las páginas en cada búsqueda en Google. Analizaremos este problema en detalle al final del tema.</p>
+</div>
+</div>
+<div class="callout callout-style-simple callout-none no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Ejemplo (Paseo aleatorio)
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>El paseo aleatorio simétrico <span class="math inline">\((X_n)_{n=0,1,2,\ldots}\)</span> es una cadena de Markov con espacio de estados infinito</p>
+<p><span class="math display">\[
+\mathcal{S}=\mathbb{Z}={\ldots,-3,-2,-1,0,1,2,3,\ldots}.
+\]</span></p>
+<p>En este caso, para todo <span class="math inline">\(i\in\mathcal{S}\)</span></p>
+<p><span class="math display">\[
+\mathbb{P}(X_{n+1}=i+1\mid X_n=i)=\mathbb{P}(X_{n+1}=i-1\mid X_n=i)=\frac{1}{2},
+\]</span></p>
+<p><span class="math display">\[
+\mathbb{P}(X_{n+1}=j\mid X_n=i)=0\quad\mbox{ si }j\neq i\pm 1.
+\]</span></p>
+</div>
+</div>
+<div class="callout callout-style-simple callout-none no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Definición
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Supongamos que <span class="math inline">\((X_n)_{n=0,1,2,\ldots}\)</span> es una cadena de Markov con espacio de estados <span class="math inline">\(\mathcal{S}\)</span>.<br>
+Las son la probabilidades <span class="math display">\[
+p_{x,y}(n)=\mathbb{P}(X_n=y\mid X_{n-1}=x),
+\]</span> donde <span class="math inline">\(x,y\in\mathcal{S}\)</span> y <span class="math inline">\(n=1,2,3,\ldots\)</span>.</p>
+</div>
+</div>
+<div class="callout callout-style-simple callout-none no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Definición
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Decimos que la cadena de Markov <span class="math inline">\((X_n)_{n=0,1,2,\ldots}\)</span> es <strong>homogénea</strong> si las probabilidades de transición no dependen del tiempo. En tal caso, definimos <span class="math display">\[\begin{align*}
+p_{x,y}=&amp;\mathbb{P}(X_n=y|X_{n-1}=x)\\
+=&amp;\mathbb{P}(X_1=y|X_{0}=x)
+\end{align*}\]</span> donde hemos eliminado <span class="math inline">\(n\)</span> de la notación.</p>
+</div>
+</div>
+<p>En el resto de este tema vamos a trabajar con cadenas de Markov homogéneas con un número de estados <strong>finito</strong>. Por lo que a partir de ahora, cada vez que nos refiramos a una <strong>cadena</strong> estaremos hablando de una cadena de Markov con esas características.</p>
+<p>En general, usaremos que <span class="math inline">\((X_n)_{n=0,1,2,\ldots}\)</span> es una cadena con espacio de estados finito que denotaremos por <span class="math inline">\(\mathcal{S}=\{1,2,3,\ldots,N\}\)</span>.</p>
+<div class="callout callout-style-simple callout-none no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Definición
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Definimos la <strong>matriz de transición</strong> de <span class="math inline">\((X_n)_{n=0,1,2,\ldots}\)</span> como</p>
+<p><span class="math display">\[
+P=(p_{i,j})_{i,j=1,2,\ldots,N}= \left[
+\begin{array}{cccc}
+p_{1,1} &amp; p_{1,2} &amp; \ldots &amp; p_{1,N}\\
+p_{2,1} &amp; p_{2,2} &amp; \ldots &amp; p_{2,N}\\
+\ldots &amp; \ldots  &amp; \ldots &amp; \ldots\\
+p_{N,1} &amp; p_{N,2} &amp; \ldots &amp; p_{N,N}\\
+\end{array}
+\right]
+\]</span></p>
+</div>
+</div>
+<p>Obsérvese que las entradas de la fila 1 describen todas las probabilidades posibles condicionadas a empezar en el estado <span class="math inline">\(i=1\)</span>. Por tanto, la suma de todas ellas debe ser igual a <span class="math inline">\(1\)</span>. Obviamente, lo mismo es cierto para el resto de filas, es decir, <span class="math inline">\(p_{i,1}+p_{i,2}+\ldots+p_{i,N}=1\)</span> para cada <span class="math inline">\(i\)</span>. Por tanto, en una matriz de transición, la suma de todos los elementos de cualquier fila debe de ser 1. Sin embargo, esta condición no tiene por qué verificarse para las columna de una matriz de transición.</p>
+<div class="callout callout-style-simple callout-none no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Ejemplo (Urnas de Ehrenfest)
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Supongamos que tenemos dos urnas, <span class="math inline">\(U_1\)</span> y <span class="math inline">\(U_2\)</span>. En ellas están distribuidas <span class="math inline">\(N\)</span> bolas numeradas. En cada paso, se elige un número al azar entre <span class="math inline">\(\{1,2,\ldots,N\}\)</span>. A continuación se observa en qué urna está la bola con el número elegido y se cambia de urna. Denotemos por <span class="math inline">\(X_n\)</span> el número de bolas contenidas en la urna <span class="math inline">\(U_1\)</span> en tiempo <span class="math inline">\(n\)</span>. De esta manera, definimos una cadena <span class="math inline">\((X_n)_{n=0,1,2,\ldots}\)</span> con espacio de estados <span class="math inline">\(\mathcal{S}=\{0,1,2,\ldots,N\}\)</span> y probabilidades de transición <span class="math display">\[\begin{align*}
+\mathbb{P}&amp;(X_n=i+1|X_{n-1}=i)=\frac{N-i}{N},\\
+\mathbb{P}&amp;(X_n=i-1|X_{n-1}=i)=\frac{i}{N},\\
+\mathbb{P}&amp;(X_n=j|X_{n-1}=i)=0\quad\mbox{ si }j\neq i\pm 1.
+\end{align*}\]</span> Por ejemplo, si <span class="math inline">\(N=3\)</span> tenemos espacio de estados <span class="math inline">\(\{0,1,2,3\}\)</span> y matriz de transición <span class="math display">\[
+P =\left[
+  \begin{array}{cccc}
+0 &amp; 1 &amp; 0 &amp; 0\\
+1/3 &amp; 0 &amp; 2/3 &amp; 0\\
+0 &amp; 2/3  &amp; 0 &amp; 1/3\\
+0 &amp; 0 &amp; 1 &amp; 0\\
+  \end{array}
+  \right].
+\]</span></p>
+</div>
+</div>
+<div class="callout callout-style-simple callout-none no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Ejemplo (Ruina del jugador)
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Consideremos un individuo que juega a la ruleta, que posee una riqueza inicial de <span class="math inline">\(X_0\)</span> euros, y que apuesta 1 euro a rojo en cada jugada con probabilidad de ganar <span class="math inline">\(p\)</span>. El jugador seguirá apostando hasta que, o bien alcance una riqueza objetivo <span class="math inline">\(M\)</span>, o bien hasta que se arruine. El proceso <span class="math inline">\((X_n)_{n=0,1,2,\ldots}\)</span> de la riqueza acumulada hasta la jugada <span class="math inline">\(n\)</span> es una cadena de Markov con espacio de estados finito <span class="math inline">\(\mathcal{S}=\{0,1,\ldots,M\}\)</span>.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Tema2_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" style="width:70.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>En este caso, el proceso de la fortuna acumulada <span class="math inline">\((X_n)_{n=0,1,2,\ldots}\)</span> es una cadena con espacio de estados <span class="math inline">\(\{0,1,2,\ldots,M\}\)</span> y matriz de transición</p>
+<p><span class="math display">\[
+P = \left[
+  \begin{array}{ *{8}{c} }
+      1 &amp;  0  &amp;  0  &amp; 0  &amp; \ldots &amp; 0 &amp; 0 &amp; 0\\
+    1-p &amp;  0  &amp;  p  &amp; 0  &amp; \ldots &amp; 0 &amp; 0 &amp; 0 \\
+     0  &amp; 1-p &amp;  0  &amp; p  &amp; \ldots &amp; 0 &amp; 0 &amp; 0 \\
+     \vdots  &amp;  \vdots  &amp; \vdots &amp; \vdots  &amp; \vdots &amp; \vdots &amp; \vdots &amp; \vdots \\
+     0  &amp;  0  &amp; 0 &amp; 0  &amp; \ldots &amp; 0 &amp; p &amp; 0 \\
+     0  &amp;  0  &amp; 0 &amp; 0  &amp; \ldots &amp; 1-p &amp; 0 &amp; p \\
+     0  &amp;  0  &amp;  0  &amp; 0 &amp;  \ldots &amp; 0 &amp; 0 &amp; 1 \\
+  \end{array}
+  \right].
+\]</span></p>
+</div>
+</div>
+</section>
+<section id="matriz-de-transición-de-n-pasos" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="matriz-de-transición-de-n-pasos"><span class="header-section-number">3.2</span> Matriz de transición de n pasos</h2>
+<p>En esta sección, sea <span class="math inline">\((X_n)_{n=0,1,2,\ldots}\)</span> una cadena con espacio de estados <span class="math inline">\(\mathcal{S}=\{1,2,\ldots,N\}\)</span>. En general, definimos lo siguiente.</p>
+<div class="callout callout-style-simple callout-none no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Definición
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Dados dos estados <span class="math inline">\(i,j\in\mathcal{S}\)</span>, definimos la <strong>probabilidad de transición de</strong> <span class="math inline">\(n\)</span> pasos</p>
+<p><span class="math display">\[
+p_{i,j}^{(n)}=\mathbb{P}(X_n=j\mid X_{0}=i).
+\]</span></p>
+<p>Definimos la <strong>matriz de transición</strong> de <span class="math inline">\(n\)</span> pasos de <span class="math inline">\((X_n)_{n=0,1,2,\ldots}\)</span> como</p>
+<p><span class="math display">\[
+P^{(n)}=\Big(p_{i,j}{(n)}\Big)_{i,j=1,2,\ldots,N}= \left[
+\begin{array}{cccc}
+p_{1,1}^{(n)} &amp; p_{1,2}^{(n)} &amp; \ldots &amp; p_{1,N}^{(n)}\\
+p_{2,1}^{(n)} &amp; p_{2,2}^{(n)} &amp; \ldots &amp; p_{2,N}^{(n)}\\
+\ldots &amp; \ldots  &amp; \ldots &amp; \ldots\\
+p_{N,1}^{(n)} &amp; p_{N,2}^{(n)} &amp; \ldots &amp; p_{N,N}^{(n)}\\
+\end{array}
+\right].
+\]</span></p>
+</div>
+</div>
+<p>Para entender cómo calcular la matriz de transición de n pasos analicemos el siguiente ejemplo. Consideremos la cadena <span class="math inline">\((X_n)_{n=0,1,2,\ldots}\)</span> dada por el grafo:</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./diagrama.png" class="img-fluid figure-img" style="width:70.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Esta cadena tiene matriz de transición</p>
+<p><span class="math display">\[
+P= \left[
+\begin{array}{cccc}
+1/2 &amp; 1/2 &amp; 0 &amp; 0\\
+1/3 &amp; 0 &amp; 2/3 &amp; 0\\
+1/2 &amp; 0 &amp; 0 &amp; 1/2\\
+0 &amp; 0 &amp; 0 &amp; 1
+\end{array}
+\right]
+\]</span></p>
+<p>Queremos ver lo que ocurre tras dos pasos del proceso.</p>
+<p>Por ejemplo, veamos la probabilidad de llegar al estado 1 desde el estado 1 en dos pasos</p>
+<p><span class="math display">\[
+p_{1,1}^{(2)}=\mathbb{P}(111) + \mathbb{P}(121)=p_{1,1}\cdot p_{1,1} + p_{1,2}\cdot p_{2,1}=\tfrac{1}{2}\cdot\tfrac{1}{2} + \tfrac{1}{2}\cdot\tfrac{1}{3}=\tfrac{5}{12}
+\]</span></p>
+<p>Incluyendo todos los posibles caminos, incluso aquellos que no existen en el grafo, podemos poner</p>
+<p><span class="math display">\[
+\begin{aligned}
+p_{1,1}^{(2)}&amp;=\mathbb{P}(111) + \mathbb{P}(121)+\mathbb{P}(131)+\mathbb{P}(141)\\
+&amp;=p_{1,1}\cdot p_{1,1} + p_{1,2}\cdot p_{2,1} + p_{1,3}\cdot p_{3,1} + p_{1,4}\cdot p_{4,1}\\
+&amp;=\tfrac{1}{2}\cdot \tfrac{1}{2} + \tfrac{1}{2}\cdot \tfrac{1}{3} + 0 + 0=\tfrac{5}{12}.
+\end{aligned}
+\]</span></p>
+<p>Escrito de esta manera, vemos que <span class="math inline">\(p_{1,1}^{(2)}\)</span> es la primera entrada de la matriz <span class="math inline">\(P^2=P\cdot P\)</span>. Es más, tenemos que <span class="math inline">\(P^2=(p^{(2)}_{i,j})_{i,j\in\{1,2,3,4\}}\)</span>.</p>
+<p>En general, tenemos lo siguiente.</p>
+<div class="callout callout-style-simple callout-none no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Teorema
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>La matriz de transición de <span class="math inline">\(n\)</span> pasos vendrá dada por <span class="math inline">\(n\)</span>-ésima potencia de <span class="math inline">\(P\)</span>. Es decir,</p>
+<p><span class="math display">\[
+P^n=(p_{i,j}^{(n)})_{i,j=1,2,\ldots,N}.
+\]</span></p>
+</div>
+</div>
+<p>Como consecuencia del teorema anterior, se tiene la relación:</p>
+<p><span class="math display">\[
+\pi^{(n)}=\pi{(0)} \cdot P^n
+\]</span></p>
+<p>donde:</p>
+<p><span class="math display">\[
+\pi^{(0)}=(\pi{(0)}_1, ...,\pi^{(0)}_N)
+\]</span></p>
+<p>denota el vector de probabilidades iniciales de cada estado, es decir, <span class="math inline">\(\pi^{(0)}_j=\mathbb{P}(X_0=j)\)</span> y</p>
+<p><span class="math display">\[
+\pi^{(n)}=(\pi{(n)}_1, ...,\pi^{(n)}_N)
+\]</span> denota el vector de probabilidades de cada estado en el instante <span class="math inline">\(n\)</span>, es decir, <span class="math inline">\(\pi^{(n)}_j=\mathbb{P}(X_n=j)\)</span>, para todo <span class="math inline">\(j=1,2,...,N\)</span>.</p>
+<p>Teniendo en cuenta el teorema anterior junto al hecho de que <span class="math inline">\(P^{m+n}=P^m P^n\)</span>, tenemos lo siguiente.</p>
+<div class="callout callout-style-simple callout-none no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Corolario (Ecuaciones de Chapman-Kolmogorov)
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><span class="math display">\[
+p_{i,j}^{(n+m)}=\sum_{k=1}^N p_{i,k}^{(n)} p_{k,j}^{(m)}.
+\]</span></p>
+</div>
+</div>
+</section>
+<section id="clasificación-de-los-estados" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="clasificación-de-los-estados"><span class="header-section-number">3.3</span> Clasificación de los estados</h2>
+<p>Sea <span class="math inline">\((X_n)_{n=0,1,2,\ldots}\)</span> una cadena con espacio de estados <span class="math inline">\(\mathcal{S}\)</span>. Dados dos estados <span class="math inline">\(x,y\in\mathcal{S}\)</span>, definimos <span class="math display">\[ r_{x,y}=\mathbb{P}(X_n=y\mbox{ para algún }n\ge 1\mid X_0=x). \]</span> Esto es, <span class="math inline">\(r_{x,y}\)</span> es la probabilidad de que la cadena alcance el estado <span class="math inline">\(y\)</span> (en algún tiempo futuro) si la cadena se inicia en el estado <span class="math inline">\(x\)</span>.</p>
+<div class="callout callout-style-simple callout-none no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Definición
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Sean <span class="math inline">\(x,y\in\mathcal{S}\)</span> con <span class="math inline">\(x\neq y\)</span>.</p>
+<ol type="1">
+<li><p>Decimos que <span class="math inline">\(y\)</span> es <strong>accesible</strong> desde <span class="math inline">\(x\)</span> si <span class="math inline">\(r_{x,y}&gt;0\)</span>. En tal caso escribimos <span class="math inline">\(x\to y\)</span>.</p></li>
+<li><p>Decimos que <span class="math inline">\(x\)</span> se <strong>comunica</strong> con <span class="math inline">\(y\)</span> si son accesibles entre sí (es decir, <span class="math inline">\(x\to y\)</span>, <span class="math inline">\(y\to x\)</span>). En tal caso escribimos <span class="math inline">\(x\leftrightarrow y\)</span>.</p></li>
+</ol>
+<p>Por convenio, se considera que cualquier estado <span class="math inline">\(x\)</span> es accesible desde sí mismo (<span class="math inline">\(x\to x\)</span>), y que se comunica consigo mismo (<span class="math inline">\(x\leftrightarrow x\)</span>), incluyendo el caso de que <span class="math inline">\(r_{x,x}=0\)</span>.</p>
+</div>
+</div>
+<p>Cada cadena puede ser representada con un grafo. Podemos ver la accesibilidad simplemente observando si en el grafo existe un camino desde <span class="math inline">\(x\)</span> hasta <span class="math inline">\(y\)</span> respetando la dirección de las flechas. Cuando haya caminos en ambas direcciones, significará que ambos estados se comunican.</p>
+<p>Por ejemplo, consideremos la cadena dada por el grafo en la Figura <a href="#fig-diagrama2">Figure&nbsp;<span>3.1</span></a>. Vemos por ejemplo que <span class="math inline">\(1\to 3\)</span> ya que podemos ir desde 1 hasta 3, siguiendo la dirección de las flechas, pasando por 4 y 2. Sin embargo, <span class="math inline">\(3 \nrightarrow 1\)</span>, ya que de 3 sólo se puede volver a saltar a sí mismo. Por otro lado, <span class="math inline">\(1\leftrightarrow 2\)</span> ya que podemos conectar ambos estados por caminos tanto empezando en 1 como empezando en 2.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-diagrama2" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="./diagrama2.png" class="img-fluid figure-img" style="width:70.0%"></p>
+<figcaption class="figure-caption">Figure&nbsp;3.1: Observando las flechas podemos analizar la accesibilidad y la conexión entre estados</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>En general, si un estado <span class="math inline">\(y\)</span> es accesible desde un estado <span class="math inline">\(x\)</span>, siempre será posible encontrar un camino desde <span class="math inline">\(x\)</span> hasta <span class="math inline">\(y\)</span> de modo que dicho camino no pase por un mismo estado dos veces. Para ello, basta considerar cualquier camino desde <span class="math inline">\(x\)</span> hasta <span class="math inline">\(y\)</span>, y si algún estado <span class="math inline">\(z\)</span> aparece dos veces en el camino, eliminamos el tramo del camino desde la primera aparición de dicho estado hasta la última aparición del mismo, de modo que aparezca una sola vez. Dicho camino, al no pasar dos veces por un mismo estado, tendrá como mucho tantos pasos como estados tenga la cadena. En definitiva, tenemos lo siguiente.</p>
+<div class="callout callout-style-simple callout-none no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Proposición
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Supongamos que el espacio de estados <span class="math inline">\(\mathcal{S}\)</span> tiene <span class="math inline">\(N\)</span> elementos. Entonces, <span class="math display">\[
+x\to y\quad\mbox{ si, y sólo si, }\quad p_{x,y}^{(n)}&gt;0\mbox{ para algún }n\le N.
+\]</span></p>
+</div>
+</div>
+<p>La relación entre estados definida por la propiedad de estar comunicados es una relación de equivalencia. Es decir, tenemos lo siguiente.</p>
+<div class="callout callout-style-simple callout-none no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Proposición
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Sean <span class="math inline">\(x,y\in\mathcal{S}\)</span> dos estados. Se verifican las siguiente propiedades:</p>
+<ol type="1">
+<li><p><span class="math inline">\(x\leftrightarrow x\)</span>.</p></li>
+<li><p>Si <span class="math inline">\(x\leftrightarrow y\)</span> entonces <span class="math inline">\(y\leftrightarrow x\)</span>.</p></li>
+<li><p>Si <span class="math inline">\(x\leftrightarrow y\)</span> e <span class="math inline">\(y \leftrightarrow z\)</span>, entonces <span class="math inline">\(x \leftrightarrow z\)</span>.</p></li>
+</ol>
+</div>
+</div>
+<p>En una cadena, siempre podemos agrupar los estados en clases de modo que dos estados en una misma clase estén comunicados y elementos de clases distintas no estén comunicados. Más específicamente, tenemos lo siguiente.</p>
+<div class="callout callout-style-simple callout-none no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Proposición
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Dado el espacio de estados <span class="math inline">\(\mathcal{S}\)</span>, siempre es posible dividirlo en clases disjuntas <span id="eq-clases"><span class="math display">\[
+\mathcal{S}=C_1\cup C_2\cup\ldots\cup C_n
+\tag{3.2}\]</span></span></p>
+<p>donde para todo <span class="math inline">\(x,y\in\mathcal{S}\)</span> se verifica <span class="math display">\[x\leftrightarrow y\quad\mbox{ si }x,y\in C_i,\]</span> <span class="math display">\[x\nleftrightarrow y\quad\mbox{ si }x\in C_i\mbox{, }y\in C_j,\: i\neq j.\]</span></p>
+</div>
+</div>
+<p>Las clases en (<a href="#eq-clases">Equation&nbsp;<span>3.2</span></a>) se llaman <strong>clases irreducibles</strong>. La proposición anterior nos dice que cada cadena admite siempre una descomposición en clases irreducibles. Una cadena se dice que es <em>irreducible</em> si sólo posee una clase irreducible, es decir, todos sus estados se comunican entre sí.</p>
+<p>Las clases irreducibles pueden ser fácilmente identificadas mirando el grafo de la cadena. Observando de nuevo el grafo de la cadena en la Figura <a href="#fig-diagrama2">Figure&nbsp;<span>3.1</span></a>, vemos que <span class="math inline">\(1\to 5\)</span> pero <span class="math inline">\(5 \nrightarrow 1\)</span>, por lo que están en clases diferentes. Por otro lado, <span class="math inline">\(1\to 4\)</span>, <span class="math inline">\(4\to 2\)</span>, <span class="math inline">\(2\to 1\)</span>, por lo que están en la misma clase. Finalmente, <span class="math inline">\(3\)</span> no está comunicado con nadie, luego forma él solo una clase. En la Figura <a href="#fig-diagrama2_colores">Figure&nbsp;<span>3.2</span></a>, podemos ver las tres clases irreducibles de la cadena que hemos identificado.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-diagrama2_colores" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="./diagrama2_colores.png" class="img-fluid figure-img" style="width:70.0%"></p>
+<figcaption class="figure-caption">Figure&nbsp;3.2: Tenemos en distinto color las tres clases irreducibles</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>A continuación vamos a introducir un criterio para clasificar los distintos estados de una cadena.</p>
+<div class="callout callout-style-simple callout-none no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Definición
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Sea <span class="math inline">\(x\in\mathcal{S}\)</span>.</p>
+<ul>
+<li><p>Decimos que <span class="math inline">\(x\)</span> es <strong>recurrente</strong> si <span class="math inline">\(r_{x,x}=1\)</span>.</p></li>
+<li><p>Decimos que <span class="math inline">\(x\)</span> es <strong>transitorio</strong> si <span class="math inline">\(r_{x,x}&lt;1\)</span>.</p></li>
+<li><p>Decimos que <span class="math inline">\(x\)</span> es <strong>absorbente</strong> si <span class="math inline">\(p_{x,x}=1\)</span>.</p></li>
+</ul>
+</div>
+</div>
+<p>Si <span class="math inline">\(x\)</span> es recurrente, tendremos que una vez que la cadena alcanza el estado <span class="math inline">\(x\)</span> entonces tendremos total certeza de que volverá a alcanzar el estado <span class="math inline">\(x\)</span> en el futuro.<br>
+Si <span class="math inline">\(x\)</span> es transitorio, tendremos que una vez que la cadena alcanza el estado <span class="math inline">\(x\)</span> entonces no tendremos certeza de que la cadena vuelva a alcanzar el estado <span class="math inline">\(x\)</span> de nuevo.<br>
+Si <span class="math inline">\(x\)</span> es absorbente, tendremos que una vez que la cadena alcanza el estado <span class="math inline">\(x\)</span> con toda certeza permanezca en el estado <span class="math inline">\(x\)</span> en el futuro. En particular, todo estado absorbente es también recurrente.</p>
+<p>Mirando de nuevo al grafo de la Figura <a href="#fig-diagrama2_colores">Figure&nbsp;<span>3.2</span></a> arriba, vemos que el estado 3 es absorbente (y por tanto recurrente), ya que si comenzamos en él sólo llegaremos a él mismo. Los estados 5 y 6 son recurrentes. Por ejemplo, vemos que si empezamos en 5 no podremos llegar a ningún otro estado excepto 6 y él mismo. Además, la única manera para que, empezando en 5, no se vuelva a visitar 5 es que la cadena se cambie al estado 6 y permanezca en ese estado en lo sucesivo. Pero la probabilidad de que eso ocurra es <span class="math inline">\(\frac{1}{2}\cdot \frac{1}{2}\cdot \frac{1}{2}\cdot \ldots=0\)</span>. Así que, con probabilidad 1 se volverá en algún momento a 5, y por lo tanto es recurrente. El mismo argumento es aplicable a 6. Finalmente, los estados 1, 2 y 4 son transitorios ya que desde esos estados se accede a zonas de las que no se puede volver.</p>
+<p>A continuación, enunciamos, sin demostración, algunos resultados sobre el comportamiento de los estados recurrentes.</p>
+<div class="callout callout-style-simple callout-none no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Teorema
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Si <span class="math inline">\(x\to y\)</span> y <span class="math inline">\(x\)</span> es recurrente, entonces <span class="math inline">\(y\)</span> también es recurrente y, además, <span class="math inline">\(r_{x,y}=1=r_{y,x}\)</span>.</p>
+</div>
+</div>
+<p>El teorema de arriba nos dice que si <span class="math inline">\(y\)</span> es accesible desde un estado recurrente, entonces se realizarán viajes de ida y vuelta entre <span class="math inline">\(x\)</span> e <span class="math inline">\(y\)</span>, una y otra vez.</p>
+<div class="callout callout-style-simple callout-none no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Teorema
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Toda cadena de Markov homogénea posee al menos un estado recurrente.</p>
+</div>
+</div>
+<p>Como consecuencia de los dos teoremas anteriores tenemos.</p>
+<div class="callout callout-style-simple callout-none no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Corolario
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Todos los estados de una cadena de Markov irreducible son recurrentes. Además, <span class="math inline">\(r_{x,y}=1\)</span> para cualesquiera dos estados <span class="math inline">\(x,y\)</span> de la cadena.</p>
+</div>
+</div>
+<p>En el caso de cadenas no irreducibles tendremos los siguiente.</p>
+<div class="callout callout-style-simple callout-none no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Corolario
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Supongamos que una cadena de Markov tiene descomposición en clases irreducibles <span class="math display">\[ C_1\cup C_2\cup \ldots \cup C_n. \]</span> Entonces si existe <span class="math inline">\(x\in C_i\)</span> el cual es recurrente (resp. transitorio), entonces todos los <span class="math inline">\(y\in C_i\)</span> son también recurrentes (resp. transitorios).</p>
+</div>
+</div>
+<p>Obsérvese que, en la Figura <a href="#fig-diagrama2_colores">Figure&nbsp;<span>3.2</span></a> arriba, los estados 1, 2 y 4 están todos en una misma clase y son transitorios; los estados 5 y 6 están los dos en una misma clase y son recurrentes; finalmente, el estado 3 es absorbente y formará él solo una clase irreducible.</p>
+<p>En las cadenas de Markov frecuentemente se observan patrones cíclicos, donde una sucesión de estados se recorre en un camino en forma de bucle empezando y acabando en un mismo estado. Esto da lugar al siguiente concepto.</p>
+<div class="callout callout-style-simple callout-none no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Definición
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Un estado <span class="math inline">\(x\in\mathcal{S}\)</span> se dice que tiene <strong>periodo</strong> <span class="math inline">\(d\)</span> si <span class="math inline">\(p^{(n)}_{x,x}=0\)</span> para todo <span class="math inline">\(n\)</span> que no sea divisible por <span class="math inline">\(d\)</span>, y además <span class="math inline">\(d\)</span> es el mayor número con esta propiedad. En el caso de que <span class="math inline">\(p^{(n)}_{x,x}=0\)</span> para todo <span class="math inline">\(n\)</span> (es decir, si <span class="math inline">\(r_{x,x}=0\)</span>), entonces diremos que el periodo de <span class="math inline">\(x\)</span> es infinito. Un estado <span class="math inline">\(x\)</span> con periodo 1 se dice que es <strong>aperiódico</strong>.</p>
+</div>
+</div>
+<p>En otras palabras, un estado <span class="math inline">\(x\)</span> tiene periodo <span class="math inline">\(d\)</span> si la cadena puede volver al estado <span class="math inline">\(x\)</span> sólo en un número de pasos que sea múltiplo de <span class="math inline">\(d\)</span>. En el caso de que la cadena no vuelva nunca más a <span class="math inline">\(x\)</span>, el periodo es infinito.</p>
+<p>Una importante propiedad es la siguiente.</p>
+<div class="callout callout-style-simple callout-none no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Proposición
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Si <span class="math inline">\(x\leftrightarrow y\)</span>, entonces <span class="math inline">\(x\)</span> e <span class="math inline">\(y\)</span> tienen el mismo periodo.</p>
+</div>
+</div>
+<p>Por definición en una cadena irreducible todos los estados se comunican, por lo que tenemos lo siguiente.</p>
+<div class="callout callout-style-simple callout-none no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Corolario
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>En una cadena irreducible todos los estados tienen el mismo periodo.</p>
+</div>
+</div>
+<p>Dado que todos los estados de una cadena irreducible tienen el mismo periodo, tiene sentido introducir lo siguiente.</p>
+<div class="callout callout-style-simple callout-none no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Definición
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Se dice que una cadena irreducible tiene periodo <span class="math inline">\(d\)</span> si uno de sus estados (y por tanto todos) tienen periodo <span class="math inline">\(d\)</span>. Se dice que una cadena es aperiódica si uno de sus estados (y por tanto todos) es aperiódico.</p>
+</div>
+</div>
+<p>En el caso de cadenas no irreducibles tendremos los siguiente.</p>
+<div class="callout callout-style-simple callout-none no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Corolario
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Supongamos que una cadena de Markov tiene descomposición en clases irreducibles <span class="math display">\[ C_1\cup C_2\cup \ldots \cup C_n. \]</span> Todos los estados pertenecientes a una misma clase <span class="math inline">\(C_i\)</span> tienen el mismo periodo.</p>
+</div>
+</div>
+<p>Veremos más adelante que conocer si una cadena irreducible es aperíodica es importante en el estudio límite de las cadenas de Markov. Para determinar si un estado es aperiódico aplicaremos un simple método que explicaremos a continuación.</p>
+<p>Recuerda que dos números n y m son coprimos si su máximo común divisor es 1. Supongamos que podemos encontrar dos números coprimos <span class="math inline">\(n\)</span> y <span class="math inline">\(m\)</span> tal que <span class="math inline">\(p_{x,x}^{(n)}&gt;0\)</span> y <span class="math inline">\(p_{x,x}^{(m)}&gt;0\)</span>. En este caso, por definición de periodo, <span class="math inline">\(d\)</span> debe dividir a <span class="math inline">\(n\)</span> y <span class="math inline">\(m\)</span>. Como <span class="math inline">\(n\)</span> y <span class="math inline">\(m\)</span> son coprimos, necesariamente tendremos que <span class="math inline">\(d=1\)</span>. Por tanto, para determinar si un estado <span class="math inline">\(x\)</span> es aperiódico, trataremos de buscar en el grafo dos caminos de <span class="math inline">\(x\)</span> en sí mismo de modo que los números de pasos dados en sendos caminos sean coprimos.</p>
+<p>Para ilustrar este método, volvamos al ejemplo en la Figura <a href="#fig-diagrama2_colores">Figure&nbsp;<span>3.2</span></a> arriba. Claramente el estado 3 es aperiódico por ser absorbente. Por otro lado, partiendo del estado 1, podremos volver a dicho estado en tres pasos siguiendo el camino <span class="math inline">\(1\to 4 \to 2 \to 1\)</span>. Pero, partiendo de 1, también podemos volver a <span class="math inline">\(1\)</span> en cuatro pasos a través del camino <span class="math inline">\(1\to 4 \to 4 \to 2 \to 1\)</span> en el que pasamos dos veces por 4. Como 3 y 4 son coprimos, necesariamente tendremos que el estado 1 es aperiódico. Además, los estados 2 y 4 también serán aperiódicos por estar en la misma clase irreducible que 1. Un argumento similar muestra que los estados 5 y 6, los cuales están en la misma clase irreducible, son aperiódicos también.</p>
+</section>
+<section id="número-de-visitas" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="número-de-visitas"><span class="header-section-number">3.4</span> Número de visitas</h2>
+<p>En esta sección vamos a estudiar el número medio de veces que una cadena de Markov alcanza un estado determinado a lo largo del tiempo. En lo que sigue consideramos una cadena <span class="math inline">\((X_n)_{n=0,1,2,\ldots}\)</span> con espacio de estados <span class="math inline">\(\mathcal{S}\)</span>. Dado <span class="math inline">\(x\in\mathcal{S}\)</span>, la probabilidad de que la cadena vuelva a <span class="math inline">\(x\)</span> habiendo empezando en <span class="math inline">\(x\)</span> es <span class="math inline">\(r_{x,x}\)</span>. Por tanto, si empezamos en <span class="math inline">\(x\)</span>, la probabilidad de no volver nunca más a <span class="math inline">\(x\)</span> es <span class="math inline">\(1-r_{x,x}\)</span>. Teniendo en cuenta ambas cosas, tenemos que <span id="eq-nvisitas"><span class="math display">\[
+\mathbb{P}(\mbox{``visitar $x$ exactamente $k$ veces''}|X_0=x)=r_{x,x}^k(1-r_{x,x}),
+\tag{3.3}\]</span></span> donde no estamos contando la visita a <span class="math inline">\(x\)</span> en tiempo <span class="math inline">\(0\)</span>.</p>
+<div class="callout callout-style-simple callout-none no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Comentario
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Recordemos que una variable aleatoria discreta <span class="math inline">\(Y\)</span> sigue una distribución geométrica de parámetro <span class="math inline">\(p\in [0,1]\)</span> si <span class="math display">\[ \mathbb{P}(Y=k)=(1-p)^{k}p\quad\mbox{ para }k=0,1,2,3\ldots \]</span><br>
+En ese caso, <span class="math display">\[ \mathbb{E}(Y)=\frac{1-p}{p}. \]</span> Obsérvese que la anterior esperanza es infinita si <span class="math inline">\(p=0\)</span>. Para los demás valores de <span class="math inline">\(p\)</span> tendremos valores finitos.</p>
+</div>
+</div>
+<p>A partir de (<a href="#eq-nvisitas">Equation&nbsp;<span>3.3</span></a>), vemos que el número de visitas a <span class="math inline">\(x\)</span> partiendo de <span class="math inline">\(x\)</span> sigue una distribución Geométrica de parámetro <span class="math inline">\(p=1-r_{x,x}\)</span>. En particular, el <em>número esperado de visitas</em> a <span class="math inline">\(x\)</span> si salimos de <span class="math inline">\(x\)</span> es <span class="math display">\[ \mathbb{E}(\mbox{``número de visitas a $x$''}\mid X_0=x)=\frac{r_{x,x}}{1-r_{x,x}}. \]</span> Además, la expresión arriba es finita si, y sólo si, <span class="math inline">\(r_{x,x}&lt;1\)</span>, en cuyo caso <span class="math inline">\(x\)</span> es transitorio. En caso contrario, tendremos un estado recurrente y el número esperado de visitas será infinito.</p>
+<p>Consideremos ahora un estado <span class="math inline">\(y\)</span> distinto de <span class="math inline">\(x\)</span>, de modo que <span class="math inline">\(y\)</span> es accesible desde <span class="math inline">\(x\)</span>. Queremos calcular ahora el número medio de visitas a <span class="math inline">\(y\)</span> empezando en <span class="math inline">\(x\)</span>. Si partimos de <span class="math inline">\(x\)</span>, tenemos dos posibilidades, o bien la cadena alcanza el estado <span class="math inline">\(y\)</span> produciendose al menos una visita, lo cual ocurre con probabilidad <span class="math inline">\(r_{x,y}\)</span>; o bien no lo visita nunca, lo cual ocurre con probabilidad <span class="math inline">\(1-r_{x,y}\)</span>. De esta manera, el número esperado de visitas a <span class="math inline">\(y\)</span> si salimos de <span class="math inline">\(x\)</span> es <span class="math display">\[\begin{align*}
+\mathbb{E}(\mbox{``número de visitas a $y$''}|X_0=x)&amp;=r_{x,y}\cdot\Big(1+ \mathbb{E}(\mbox{``número de visitas a $y$ con $n&gt;1$''}|X_1=y)\Big) + (1-r_{x,y})\cdot 0\\
+&amp;=r_{x,y}\left(1+ \frac{r_{y,y}}{1-r_{y,y}}\right)\\
+&amp;=\frac{r_{x,y}}{1-r_{y,y}}.
+\end{align*}\]</span> De nuevo podemos observar que la esperanza anterior es finita si, y sólo si, <span class="math inline">\(r_{y,y}&lt;1\)</span>, en cuyo caso <span class="math inline">\(y\)</span> es transitorio.</p>
+<p>Resumimos los resultados obtenidos en el siguiente enunciado.</p>
+<div class="callout callout-style-simple callout-none no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Proposición
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Supongamos que <span class="math inline">\(x,y\)</span> son dos estados (posiblemente iguales) de modo que <span class="math inline">\(x\to y\)</span>. Entonces, <span class="math display">\[ \mathbb{E}(\mbox{``número de visitas a $y$''}\mid X_0=x)=\frac{r_{x,y}}{1-r_{y,y}}. \]</span> Además, la esperanza anterior es finita si y solo si <span class="math inline">\(y\)</span> es transitorio.</p>
+</div>
+</div>
+</section>
+<section id="probabilidades-de-absorción-y-tiempos-medios-de-llegada" class="level2" data-number="3.5">
+<h2 data-number="3.5" class="anchored" data-anchor-id="probabilidades-de-absorción-y-tiempos-medios-de-llegada"><span class="header-section-number">3.5</span> Probabilidades de absorción y tiempos medios de llegada</h2>
+<p>Cuando se estudian las cadenas de Markov, es habitual preguntarse por la probabilidad de que la cadena alcance cierto estado absorbente y también por el tiempo medio en el que se alcanza dicho estado. Por ejemplo, en el caso de la ruina del jugador, podríamos plantearnos cómo de probable es alcanzar las ganancias que el jugador ha fijado antes de retirarse, cuál es la probabilidad de arruinarse, o cuánto tiempo tardarán en producirse dichos sucesos. A continuación, introduciremos los conceptos de probabilidad de absorción y tiempo medio de llegada, y veremos cómo se calculan.</p>
+<section id="probabilidades-de-absorción" class="level3" data-number="3.5.1">
+<h3 data-number="3.5.1" class="anchored" data-anchor-id="probabilidades-de-absorción"><span class="header-section-number">3.5.1</span> Probabilidades de absorción</h3>
+<p>Supongamos que tenemos una cadena con todos sus estados transitorios o absorbentes. Por ejemplo, supongamos que tenemos la cadena dada el siguiente grafo:</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./diagrama3.png" class="img-fluid figure-img" style="width:70.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Esta cadena tiene matriz de transición <span class="math display">\[ P= \left[
+\begin{array}{cccc}
+1 &amp; 0 &amp; 0 &amp; 0\\
+1/3 &amp; 0 &amp; 2/3 &amp; 0\\
+0 &amp; 1/2 &amp; 0 &amp; 1/2\\
+0 &amp; 0 &amp; 0 &amp; 1
+\end{array}
+\right]. \]</span></p>
+<p>Por otro lado, en dicha cadena encontramos tres clases irreducibles: En primer lugar una clase <span class="math inline">\(C_1\)</span> formada por sólo el estado absorbente 1, una clase <span class="math inline">\(C_2\)</span> con los estados transitorios 2 y 3, y una clase <span class="math inline">\(C_3\)</span> con sólo el estado absorbente 4.</p>
+<p>Nos planteamos calcular las probabilidades de que cualquier estado sea absorbido por el estado absorbente 1. En concreto, dependiendo de que la cadena de Markov se encuentre en 1, 2, 3, o 4, las probabilidades de absorción en 1 vendrán dadas por <span class="math inline">\(r_{1,1}\)</span>, <span class="math inline">\(r_{2,1}\)</span>, <span class="math inline">\(r_{3,1}\)</span>, o <span class="math inline">\(r_{4,1}\)</span>, respectivamente.</p>
+<p>Claramente, <span class="math inline">\(r_{1,1}=1\)</span> y <span class="math inline">\(r_{4,1}=0\)</span>. Para encontrar <span class="math inline">\(r_{2,1}\)</span> procedemos como sigue. Puesto que desde el estado 2 se accede, en un solo paso, al estado 1 o al estado 3, tendremos<br>
+<span class="math display">\[ r_{2,1}=p_{2,1}r_{1,1} + p_{2,3}r_{3,1}=\frac{1}{3}r_{1,1}+\frac{2}{3}r_{3,1}. \]</span> Por otro lado, para hallar <span class="math inline">\(r_{3,1}\)</span>, usamos que desde el estado 3 se accede, en un solo paso, al estado 4 o al estado 2. De este modo <span class="math display">\[ r_{3,1}=p_{3,4}r_{4,1} + p_{3,2}r_{2,1}=\frac{1}{2}r_{4,1}+\frac{1}{2}r_{2,1}. \]</span> Poniendo todo junto, tenemos el siguente sistema de ecuaciones <span class="math display">\[
+\begin{cases}
+r_{1,1}&amp;=1,\\
+r_{2,1}&amp;=\frac{1}{3}r_{1,1}+\frac{2}{3}r_{3,1},\\
+r_{3,1}&amp;=\frac{1}{2}r_{4,1}+\frac{1}{2}r_{2,1},\\
+r_{4,1}&amp;=0.
+\end{cases}
+\]</span> Resolviendo el sistema anterior obtenemos <span class="math display">\[ r_{1,1}=1,\quad r_{2,1}=\frac{1}{2},\quad r_{3,1}=\frac{1}{4},\quad r_{4,1}=0. \]</span></p>
+<p>Con una argumentación similar, es posible encontrar las probabilidades <span class="math inline">\(r_{1,4}\)</span>, <span class="math inline">\(r_{2,4}\)</span>, <span class="math inline">\(r_{3,4}\)</span>, o <span class="math inline">\(r_{4,4}\)</span> de ser absorbido en el estado 4 si la cadena se encuentra en 1, 2, 3, o 4, respectivamente. ¿Puedes hallar dichas probabilidades?</p>
+<p>Con una argumentación similar, es posible encontrar las probabilidades <span class="math inline">\(r_{1,4}\)</span>, <span class="math inline">\(r_{2,4}\)</span>, <span class="math inline">\(r_{3,4}\)</span>, o <span class="math inline">\(r_{4,4}\)</span> de ser absorbido en el estado 4 si la cadena se encuentra en 1, 2, 3, o 4, respectivamente. ¿Puedes hallar dichas probabilidades?</p>
+<p>En general, si <span class="math inline">\((X_n)_{n=0,1,2,\ldots}\)</span> es una cadena con todos sus estados absorbentes o transitorios, entonces las probabilidades de absorción de un estado absorbente <span class="math inline">\(a\in\mathcal{S}\)</span> se pueden calcular usando que:</p>
+<ol type="1">
+<li><p><span class="math inline">\(r_{a,a}=1\)</span>,</p></li>
+<li><p><span class="math inline">\(r_{x,a}=0\)</span> para cualquier otro estado absorbente <span class="math inline">\(x\in\mathcal{S}\)</span>,</p></li>
+<li><p>para cualquier estado transitorio <span class="math inline">\(x\in\mathcal{S}\)</span>,</p></li>
+</ol>
+<p><span class="math display">\[
+    r_{x,a}=\sum_{y\in \mathcal{S}} p_{x,y} r_{y,a}.
+\]</span></p>
+</section>
+<section id="tiempos-medios-de-llegada" class="level3" data-number="3.5.2">
+<h3 data-number="3.5.2" class="anchored" data-anchor-id="tiempos-medios-de-llegada"><span class="header-section-number">3.5.2</span> Tiempos medios de llegada</h3>
+<p>Supongamos que tenemos ahora una cadena con un solo estado absorbente y todos los demás transitorios. Por ejemplo, consideremos la cadena dada por el grafo</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./diagrama5.png" class="img-fluid figure-img" style="width:70.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Definimos <span class="math inline">\(\tau_{1,3}\)</span> como el número de pasos promedio necesarios para alcanzar estado absorbente 3 partiendo de 1, es decir, <span class="math display">\[
+\tau_{1,3}=\mathbb{E}[\mbox{``Número de pasos hasta la primera visita a $3$''}|X_0=1].
+\]</span> Del mismo modo, podemos definir <span class="math inline">\(\tau_{2,3}\)</span> y <span class="math inline">\(\tau_{3,3}\)</span>.</p>
+<p>Obviamente <span class="math inline">\(\tau_{3,3}=0\)</span>. Para calcular <span class="math inline">\(\tau_{1,3}\)</span>, tenemos que tener en cuenta que, si la cadena se encuentra en el estado <span class="math inline">\(1\)</span>, en el primer paso dado o bien vuelve al estado 1, o bien va al estado 2. De esa manera, <span class="math display">\[
+\tau_{1,3}=1+p_{1,1}\tau_{1,3} +p_{1,2}\tau_{2,3}=1+\frac{1}{2}\tau_{1,3} +\frac{1}{2}\tau_{2,3}.
+\]</span> Si estamos en el estado 2, daremos el primer paso o bien a 1, o bien a 3. Luego, <span class="math display">\[
+\tau_{2,3}=1+p_{2,1}\tau_{1,3} +p_{2,3}\tau_{3,3}=1+\frac{1}{3}\tau_{1,3} +\frac{2}{3}\tau_{3,3}.
+\]</span> Poniendo todo junto, obtenemos el siguiente sistema de ecuaciones <span class="math display">\[
+\begin{cases}
+\tau_{1,3}&amp;=1+\frac{1}{2}\tau_{1,3} +\frac{1}{2}\tau_{2,3},\\
+\tau_{2,3}&amp;=1+\frac{1}{3}\tau_{1,3} +\frac{2}{3}\tau_{3,3},\\
+\tau_{3,3}&amp;=0.
+\end{cases}
+\]</span> Resolviendo el sistema anterior, obtenemos <span class="math display">\[
+\tau_{1,3}=\frac{9}{2},\quad
+\tau_{2,3}=\frac{5}{2},\quad
+\tau_{3,3}=0.
+\]</span></p>
+<p>En general, si <span class="math inline">\((X_n)_{n=0,1,2,\ldots}\)</span> una cadena con un solo estado absorbente <span class="math inline">\(a\in\mathcal{S}\)</span> y todos los demás estados transitorios, entonces los tiempos medios de llegada a <span class="math inline">\(a\in\mathcal{S}\)</span> se pueden calcular usando que:</p>
+<ol type="1">
+<li><p><span class="math inline">\(\tau_{a,a}=0\)</span>,</p></li>
+<li><p>para cualquier estado <span class="math inline">\(x\in\mathcal{S}\)</span> distinto de <span class="math inline">\(a\)</span>, <span class="math display">\[
+\tau_{x,a}=1+\sum_{y\in \mathcal{S}} p_{x,y} \tau_{y,a}.
+\]</span></p></li>
+</ol>
+</section>
+</section>
+<section id="comportamiento-asintótico" class="level2" data-number="3.6">
+<h2 data-number="3.6" class="anchored" data-anchor-id="comportamiento-asintótico"><span class="header-section-number">3.6</span> Comportamiento asintótico</h2>
+<p>Como hemos visto, en una cadena irreducible, todos los estados son recurrentes. Tenemos que es posible pasar de cualquier estado a cualquier otro. De hecho la cadena pasará infinitas veces por todos los estado con probabilidad 1. Nos preguntamos sobre cuál es la probabilidad de que a largo plazo la cadena se encuentre en un estado particular. En otras palabras, queremos saber con qué frecuencia la cadena visitará dicho estado a medida que avanzamos en el tiempo.</p>
+<p>En lo que sigue, consideramos una cadena <span class="math inline">\((X_n)_{n=0,1,2,\ldots}\)</span> irreducible con espacio de estados <span class="math inline">\(\mathcal{S}=\{1,2,\ldots,N\}\)</span>.<br>
+Para cada <span class="math inline">\(n=0,1,2,\ldots\)</span> y <span class="math inline">\(j\in \mathcal{S}\)</span> consideramos la probabilidad de que la cadena se encuentre en el estado <span class="math inline">\(j\)</span> en <span class="math inline">\(n\)</span> pasos, es decir, <span class="math display">\[ \pi^{(n)}_j=\mathbb{P}(X_n=j). \]</span> De hecho podemos considerar el vector <span class="math display">\[ \pi^{(n)}=(\pi{(n)}_1, \pi^{(n)}_2,\ldots, \pi^{(n)}_N). \]</span> Al considerar la probabilidad de <span class="math inline">\(n\)</span> pasos para todos los posibles estados, el vector <span class="math inline">\(\pi^{(n)}\)</span> verificará además que sus componentes suman <span class="math inline">\(1\)</span>, es decir, <span class="math inline">\(\sum_{j=1}^N \pi^{(n)}_j=1\)</span>.</p>
+<p>Dado un estado <span class="math inline">\(j\in\mathcal{S}\)</span>, teniendo en cuenta la probabilidad de empezar en cada uno de los estados, tendremos que <span class="math display">\[\begin{align*}
+\pi^{(n)}_j&amp;=\sum_{i=1}^N \mathbb{P}(X_0=i)\cdot \mathbb{P}(X_n=j|X_0=i)\\
+&amp;=\sum_{i=1}^N \pi^{(0)}_i\cdot p^{(n)}_{i,j}.
+\end{align*}\]</span> Lo cual conduce a la siguiente ecuación matricial <span id="eq-distrLim"><span class="math display">\[
+\begin{aligned}
+\pi^{(n)}=\pi^{(0)} \cdot P^n.
+\end{aligned}
+\tag{3.4}\]</span></span></p>
+<p>Supongamos que existe el límite <span class="math inline">\(\lim_{n\to\infty}\pi^{(n)}=\pi\)</span>. El vector <span class="math inline">\(\pi=(\pi_1,\pi_2,\ldots,\pi_N)\)</span> se llama <strong>distribución límite</strong> de la cadena de Markov. Puesto que <span class="math inline">\(\sum_{j=1}^N \pi^{(n)}_j=1\)</span>, la distribución límite necesariamente verificará <span class="math display">\[
+\sum_{j=1}^N \pi_j=1.
+\]</span> Por otro lado, usando (<a href="#eq-distrLim">Equation&nbsp;<span>3.4</span></a>), tenemos <span id="eq-distrLim2"><span class="math display">\[
+\begin{aligned}
+\pi&amp;=\lim_{n\to\infty}\pi^{(n+1)}\\
+&amp;=\lim_{n\to\infty}( \pi^{(0)} \cdot P^{n+1})\\
+&amp;=(\lim_{n\to\infty} \pi^{(0)} \cdot P^{n})\cdot P \\
+&amp;=(\lim_{n\to\infty}\pi^{(n)}) \cdot P\\
+&amp;=\pi\cdot P.
+\end{aligned}
+\tag{3.5}\]</span></span></p>
+<p>La distribución límite <span class="math inline">\(\pi\)</span> cumple la ecuación matricial <span id="eq-estacionario"><span class="math display">\[
+\begin{aligned}
+\pi=\pi\cdot P.
+\end{aligned}
+\tag{3.6}\]</span></span></p>
+<p>Podemos interpretar esta ecuación de manera intuitiva de la siguiente forma. Supongamos que en un instante de tiempo <span class="math inline">\(n\)</span> la variable aleatoria <span class="math inline">\(X_n\)</span> está distribuida según <span class="math inline">\(\pi\)</span>. Al dar un paso en la cadena, la distribución de <span class="math inline">\(X_{n+1}\)</span> será <span class="math inline">\(\pi P\)</span>. Ahora bien, si se cumple que <span class="math inline">\(\pi=\pi P\)</span>, entonces <span class="math inline">\(X_{n+1}\)</span> sigue teniendo la distribución <span class="math inline">\(\pi\)</span>. Es decir, tras la transición la distribución no cambia. Esto significa que la cadena de Markov ha alcanzado una distribución estable en el tiempo. A una distribución <span class="math inline">\(\pi\)</span> verificando (<a href="#eq-estacionario">Equation&nbsp;<span>3.6</span></a>) se llama <strong>distribución estacionaria</strong> de la cadena de Markov.</p>
+<p>Hemos argumentado arriba que la distribución límite, si existe, debe cumplir las ecuaciones (<a href="#eq-distrLim2">Equation&nbsp;<span>3.5</span></a>) y (<a href="#eq-estacionario">Equation&nbsp;<span>3.6</span></a>). Por otra parte, es posible demostrar que si una cadena irreducible es aperiódica entonces la distribución límite existe. Por tanto, tenemos lo siguiente.</p>
+<div class="callout callout-style-simple callout-none no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Teorema
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Supongamos que <span class="math inline">\((X_n)_{n=0,1,2,\ldots}\)</span> es una cadena irreducible aperiódica. Entonces, la distribución límite existe y está determinada por las ecuaciones <span class="math display">\[
+\begin{cases}
+\pi=\pi P,\\
+\sum_{j=1}^N \pi_j=1.
+\end{cases}
+\]</span></p>
+</div>
+</div>
+<p>De esta manera, para encontrar la distribución límite de una cadena, bastará con comprobar que la cadena es irreducible y aperiódica, lo cual garantiza la existencia de una distribución límite, y luego resolver las ecuaciones anteriores para determinarla.</p>
+<div class="callout callout-style-simple callout-none no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Ejemplo
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Consideremos una cadena de Markov con sólo dos estados <span class="math inline">\(\mathcal{S}=\{1,2\}\)</span>, y con matriz de transición <span class="math display">\[ P=\left[
+\begin{array}{cc}
+\frac{2}{3} &amp; \frac{1}{3}\\
+\frac{1}{2} &amp; \frac{1}{2}
+\end{array}
+\right]. \]</span> Esta cadena es irreducible y aperiódica ya que todos los estados están comunicados en un solo paso. Por tanto, existirá la distribución límite <span class="math inline">\(\pi=(\pi_1,\pi_2)\)</span>, la cual será también una distribución estacionaria. Para hallar dicha distribución, hemos de resolver la ecuación matricial <span class="math display">\[ \left[\begin{array}{cc}\pi_1 &amp; \pi_2 \end{array}\right]\left[
+\begin{array}{cc}
+\frac{2}{3} &amp; \frac{1}{3}\\
+\frac{1}{2} &amp; \frac{1}{2}
+\end{array}
+\right]=\left[\begin{array}{cc}\pi_1 &amp; \pi_2 \end{array}\right], \]</span> junto con la condición <span class="math inline">\(\pi_1+\pi_2=1\)</span>. Esto nos conduce al sistema de ecuaciones:</p>
+<p><span class="math display">\[
+\begin{cases}
+\frac{1}{3}\pi_1 - \frac{1}{2}\pi_2&amp;=0,\\
+-\frac{1}{3}\pi_1 + \frac{1}{2}\pi_2&amp;=0,\\
+\pi_1+\pi_2&amp;=1.
+\end{cases}
+\]</span> Resolviendo obtenemos la distribución límite <span class="math display">\[ \pi_1=\frac{3}{5}=0.6,\quad \pi_2=\frac{2}{5}=0.4. \]</span></p>
+<p>Dicha distribución límite es posible aproximarla por “fuerza bruta” tomando potencias sucesivas de la matriz de transición. Lo haremos con ayuda de <em>R</em>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>P <span class="ot">&lt;-</span> <span class="fu">rbind</span>(<span class="fu">c</span>(<span class="dv">2</span><span class="sc">/</span><span class="dv">3</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">3</span>),</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>           <span class="fu">c</span>(<span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>))</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>P2 <span class="ot">&lt;-</span> P<span class="sc">%*%</span>P</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>P3 <span class="ot">&lt;-</span> P2<span class="sc">%*%</span>P</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>P4 <span class="ot">&lt;-</span> P3<span class="sc">%*%</span>P</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>P5 <span class="ot">&lt;-</span> P4<span class="sc">%*%</span>P</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>P6 <span class="ot">&lt;-</span> P5<span class="sc">%*%</span>P</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>P7 <span class="ot">&lt;-</span> P6<span class="sc">%*%</span>P</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>P8 <span class="ot">&lt;-</span> P7<span class="sc">%*%</span>P</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>P9 <span class="ot">&lt;-</span> P8<span class="sc">%*%</span>P</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>P10 <span class="ot">&lt;-</span> P9<span class="sc">%*%</span>P</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>P</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          [,1]      [,2]
+[1,] 0.6666667 0.3333333
+[2,] 0.5000000 0.5000000</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>P2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          [,1]      [,2]
+[1,] 0.6111111 0.3888889
+[2,] 0.5833333 0.4166667</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>P3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          [,1]      [,2]
+[1,] 0.6018519 0.3981481
+[2,] 0.5972222 0.4027778</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>P4</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          [,1]      [,2]
+[1,] 0.6003086 0.3996914
+[2,] 0.5995370 0.4004630</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>P5</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          [,1]      [,2]
+[1,] 0.6000514 0.3999486
+[2,] 0.5999228 0.4000772</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>P6</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          [,1]      [,2]
+[1,] 0.6000086 0.3999914
+[2,] 0.5999871 0.4000129</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>P7</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          [,1]      [,2]
+[1,] 0.6000014 0.3999986
+[2,] 0.5999979 0.4000021</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>P8</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          [,1]      [,2]
+[1,] 0.6000002 0.3999998
+[2,] 0.5999996 0.4000004</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>P9</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          [,1]      [,2]
+[1,] 0.6000000 0.4000000
+[2,] 0.5999999 0.4000001</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>P10</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2]
+[1,]  0.6  0.4
+[2,]  0.6  0.4</code></pre>
+</div>
+</div>
+<p>Vemos que al tomar sucesivas potencias de la matriz de transición, el valor de la matriz se va estabilizando y sus filas se van aproximando a la distribución estacionaria <span class="math inline">\(\pi\)</span> que hemos obtenido anteriormente. Recordemos que la potencia n-ésima de la matriz de transición corresponde a la matriz de transición de n pasos. Luego es lógico que al ir tomando potencias de la matriz de transición, obtengamos valores cada vez más cercanos a la distribución límite. Vemos también que la probabilidad límite no depende del valor inicial de la cadena, ya que todas las filas convergen a los mismos valores.</p>
+</div>
+</div>
+</section>
+<section id="algoritmo-pagerank" class="level2" data-number="3.7">
+<h2 data-number="3.7" class="anchored" data-anchor-id="algoritmo-pagerank"><span class="header-section-number">3.7</span> Algoritmo PageRank</h2>
+<p>Volvamos al ejemplo que vimos al principio del tema donde analizamos la cadena de Markov del algoritmo PageRank de Google. Recordemos que dicha cadena describía a un “surfeador de internet” que pulsaba al azar los links de un conjunto de páginas. El algoritmo PageRank se usa para ordenar la aparición de las páginas en cada búsqueda en Google, dando preferencia a aquellas páginas cuya probabilidad sea mayor en la distribución límite. Es decir, aquellas con mayor probabilidad serán las que sean más visitadas a largo plazo.</p>
+<p>En nuestro ejemplo, el “surfeador de la web” navega al azar entre las páginas A, B, C y D, donde:</p>
+<ul>
+<li><p>A tiene enlace a B,</p></li>
+<li><p>B tiene enlaces a A y C,</p></li>
+<li><p>C tiene enlace a A,</p></li>
+<li><p>D tienes enlaces a las otras tres páginas.</p></li>
+</ul>
+<p>De esta manera, el espacio de estados es <span class="math inline">\(\{A,B,C,D\}\)</span>, y la matriz de transición será <span class="math display">\[ P= \left[
+\begin{array}{cccc}
+0 &amp; 1 &amp; 0 &amp; 0\\
+1/2 &amp; 0 &amp; 1/2 &amp; 0\\
+1 &amp; 0 &amp; 0 &amp; 0\\
+1/3 &amp; 1/3 &amp; 1/3 &amp; 0
+\end{array}
+\right]. \]</span> Como hemos dicho, estamos interesados en determinar la distribución límite de la cadena de Markov definida por el surfeador. El problema es que dicha cadena podría no ser irreducible, por lo que la distribución límite podría no existir. De hecho, en nuestro ejemplo en particular, la cadena no es irreducible ya que, si bien todas las páginas son accesibles desde D, dicha página no es accesible desde el resto de las páginas.</p>
+<p>Para solucionar este problema, el algoritmo de PageRank supone que, en cualquier paso, el surfeador de la web se puede “aburrir”, y empezar a navegar de nuevo en cualquiera de las páginas del conjunto al azar. La probabilidad con la que, tras cada paso, el surfeador se aburre es un número fijo <span class="math inline">\(p\)</span>. A la probabilidad complementaria <span class="math inline">\(d=1-p\)</span> se le llama factor de amortiguamiento (damping factor). Por regla general se suele tomar factor de amortiguamiento <span class="math inline">\(d=0.85\)</span>.</p>
+<p>En nuestro caso particular, si el surfeador se encuentra, por ejemplo, en la página <span class="math inline">\(B\)</span> podría seguir navegando y ir a cualquiera de las páginas a las que tiene enlace, es decir, A o C, o podría aburrirse y saltar a cualquiera de las páginas del conjunto A,B,C, o D.</p>
+<p>La cadena de Markov así obtenida es irreducible ya que desde cada página se puede pasar a cualquier otra página ya que existe la posibilidad de aburrirse. Además, será aperiódica ya que dichos saltos pueden darse en un solo paso. Al ser una cadena irreducible y aperiódica tendrá una distribución límite.</p>
+<p>Desde un punto de vista más práctico, añadir la posibilidad de que el surfeador se pueda aburrir, hace que éste no pueda quedarse “atrapado” en un grupo de páginas particular conectadas entre sí, pero no a las demás, haciendo que el algoritmo desestime otras páginas que también podrían ser importantes.</p>
+<p>En general, supongamos que el surfeador navega al azar entre <span class="math inline">\(n\)</span> páginas con matriz de transición <span class="math inline">\(P\)</span>. Entonces, al considerar un factor de amortiguación <span class="math inline">\(d\)</span> obtenemos una nueva matriz de transición la cual viene dada por: <span id="eq-pagekankMatrix"><span class="math display">\[
+M=d\cdot P + (1-d)\cdot \frac{1}{n} J_n,
+\tag{3.7}\]</span></span> donde <span class="math inline">\(J_n\)</span> es la matriz cuadrada de tamaño <span class="math inline">\(n\)</span> con todas sus entradas igual a 1. La nueva matriz de transición <span class="math inline">\(M\)</span> representa que, en cada paso, con probabilidad <span class="math inline">\(d\)</span> el surfeador actuará de acuerdo a la cadena con matriz de transición <span class="math inline">\(P\)</span>, y con probabilidad <span class="math inline">\(1-d\)</span> el surfeador actuará de acuerdo a la cadena consisten en elegir cualquiera de las n páginas al azar, cuya matriz de transición es <span class="math inline">\(\dfrac{1}{n}J_n\)</span>.</p>
+<p>En nuestro ejemplo, tomando <span class="math inline">\(d=0.85\)</span>, calculamos con ayuda de <em>R</em> la matriz de transición:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>P <span class="ot">&lt;-</span> <span class="fu">rbind</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>),</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>           <span class="fu">c</span>(<span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>, <span class="dv">0</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>, <span class="dv">0</span>),</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>           <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>),</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>           <span class="fu">c</span>(<span class="dv">1</span><span class="sc">/</span><span class="dv">3</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">3</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">3</span>, <span class="dv">0</span>))</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fl">0.85</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">4</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>M <span class="ot">&lt;-</span> d<span class="sc">*</span>P <span class="sc">+</span> (<span class="dv">1</span><span class="sc">-</span>d)<span class="sc">*</span>(<span class="dv">1</span><span class="sc">/</span>n)<span class="sc">*</span><span class="fu">matrix</span>(<span class="dv">1</span>, n, n)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Obtenemos <span class="math display">\[ M= \left[
+\begin{array}{cccc}
+0.0375  &amp; 0.8875 &amp; 0.0375 &amp; 0.0375\\
+0.4625 &amp; 0.0375 &amp; 0.4625 &amp; 0.0375\\
+0.8875 &amp; 0.0375 &amp; 0.0375 &amp; 0.0375\\
+0.3208333 &amp; 0.3208333 &amp; 0.3208333 &amp; 0.0375
+\end{array}
+\right]. \]</span> Sabemos que la cadena dada por la anterior matriz de transición posee distribución límite. Podemos calcular su valor exacto resolviendo las ecuaciones correspondientes (veremos en las prácticas cómo hacerlo fácilmente en <em>R</em>). Sin embargo, por comodidad aproximaremos la distribución límite mediante el cálculo de potencias de la matriz de transición. Para ello podemos implementar el siguiente método iterativo en <em>R</em>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>M_nueva <span class="ot">&lt;-</span> M</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Fijamos un error maximo </span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>error_max <span class="ot">&lt;-</span> <span class="dv">10</span><span class="sc">^-</span><span class="dv">15</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Inicializamos la variable de error</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>error <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> (error<span class="sc">&gt;</span> error_max) {</span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>  M_nueva <span class="ot">&lt;-</span> M_nueva<span class="sc">%*%</span>M</span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>  error <span class="ot">&lt;-</span> <span class="fu">max</span>(<span class="fu">abs</span>(M_nueva <span class="sc">-</span> M_nueva<span class="sc">%*%</span>M))</span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a><span class="co"># La solución es </span></span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>M_nueva[<span class="dv">1</span>,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.3824972 0.3732476 0.2067552 0.0375000</code></pre>
+</div>
+</div>
+<p>Obtenemos: <span class="math display">\[ \pi_A=0.3824972,\quad \pi_B=0.3732476,\quad \pi_C=0.2067552,\quad \pi_D=0.0375. \]</span> Esto quiere decir que, a largo plazo, el surfeador gastará el 38.25% del tiempo en la página A; 37.32% del tiempo en la página B; 20.68% del tiempo en la página C; y el 3.75% del tiempo en la página D.<br>
+Por tanto, el algoritmo PageRank ordenará las páginas en función de estas probabilidades, mostrando las páginas en el orden: A, B, C, D.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./Tema1.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Tema 1. Introducción a los procesos estocásticos</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>
