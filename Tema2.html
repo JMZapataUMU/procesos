@@ -523,15 +523,15 @@ P^n=(p_{i,j}^{(n)})_{i,j=1,2,\ldots,N}.
 </div>
 <p>Como consecuencia del teorema anterior, se tiene la relación:</p>
 <p><span class="math display">\[
-\pi^{(n)}=\pi{(0)} \cdot P^n
+\pi^{(n)}=\pi^{(0)} \cdot P^n
 \]</span></p>
 <p>donde:</p>
 <p><span class="math display">\[
-\pi^{(0)}=(\pi{(0)}_1, ...,\pi^{(0)}_N)
+\pi^{(0)}=(\pi^{(0)}_1, ...,\pi^{(0)}_N)
 \]</span></p>
 <p>denota el vector de probabilidades iniciales de cada estado, es decir, <span class="math inline">\(\pi^{(0)}_j=\mathbb{P}(X_0=j)\)</span> y</p>
 <p><span class="math display">\[
-\pi^{(n)}=(\pi{(n)}_1, ...,\pi^{(n)}_N)
+\pi^{(n)}=(\pi^{(n)}_1, ...,\pi^{(n)}_N)
 \]</span> denota el vector de probabilidades de cada estado en el instante <span class="math inline">\(n\)</span>, es decir, <span class="math inline">\(\pi^{(n)}_j=\mathbb{P}(X_n=j)\)</span>, para todo <span class="math inline">\(j=1,2,...,N\)</span>.</p>
 <p>Teniendo en cuenta el teorema anterior junto al hecho de que <span class="math inline">\(P^{m+n}=P^m P^n\)</span>, tenemos lo siguiente.</p>
 <div class="callout callout-style-simple callout-none no-icon callout-titled">
@@ -931,7 +931,7 @@ r_{4,1}&amp;=0.
 <h2 data-number="3.6" class="anchored" data-anchor-id="comportamiento-asintótico"><span class="header-section-number">3.6</span> Comportamiento asintótico</h2>
 <p>Como hemos visto, en una cadena irreducible, todos los estados son recurrentes. Tenemos que es posible pasar de cualquier estado a cualquier otro. De hecho la cadena pasará infinitas veces por todos los estado con probabilidad 1. Nos preguntamos sobre cuál es la probabilidad de que a largo plazo la cadena se encuentre en un estado particular. En otras palabras, queremos saber con qué frecuencia la cadena visitará dicho estado a medida que avanzamos en el tiempo.</p>
 <p>En lo que sigue, consideramos una cadena <span class="math inline">\((X_n)_{n=0,1,2,\ldots}\)</span> irreducible con espacio de estados <span class="math inline">\(\mathcal{S}=\{1,2,\ldots,N\}\)</span>.<br>
-Para cada <span class="math inline">\(n=0,1,2,\ldots\)</span> y <span class="math inline">\(j\in \mathcal{S}\)</span> consideramos la probabilidad de que la cadena se encuentre en el estado <span class="math inline">\(j\)</span> en <span class="math inline">\(n\)</span> pasos, es decir, <span class="math display">\[ \pi^{(n)}_j=\mathbb{P}(X_n=j). \]</span> De hecho podemos considerar el vector <span class="math display">\[ \pi^{(n)}=(\pi{(n)}_1, \pi^{(n)}_2,\ldots, \pi^{(n)}_N). \]</span> Al considerar la probabilidad de <span class="math inline">\(n\)</span> pasos para todos los posibles estados, el vector <span class="math inline">\(\pi^{(n)}\)</span> verificará además que sus componentes suman <span class="math inline">\(1\)</span>, es decir, <span class="math inline">\(\sum_{j=1}^N \pi^{(n)}_j=1\)</span>.</p>
+Para cada <span class="math inline">\(n=0,1,2,\ldots\)</span> y <span class="math inline">\(j\in \mathcal{S}\)</span> consideramos la probabilidad de que la cadena se encuentre en el estado <span class="math inline">\(j\)</span> en <span class="math inline">\(n\)</span> pasos, es decir, <span class="math display">\[ \pi^{(n)}_j=\mathbb{P}(X_n=j). \]</span> De hecho podemos considerar el vector <span class="math display">\[ \pi^{(n)}=(\pi^{(n)}_1, \pi^{(n)}_2,\ldots, \pi^{(n)}_N). \]</span> Al considerar la probabilidad de <span class="math inline">\(n\)</span> pasos para todos los posibles estados, el vector <span class="math inline">\(\pi^{(n)}\)</span> verificará además que sus componentes suman <span class="math inline">\(1\)</span>, es decir, <span class="math inline">\(\sum_{j=1}^N \pi^{(n)}_j=1\)</span>.</p>
 <p>Dado un estado <span class="math inline">\(j\in\mathcal{S}\)</span>, teniendo en cuenta la probabilidad de empezar en cada uno de los estados, tendremos que <span class="math display">\[\begin{align*}
 \pi^{(n)}_j&amp;=\sum_{i=1}^N \mathbb{P}(X_0=i)\cdot \mathbb{P}(X_n=j|X_0=i)\\
 &amp;=\sum_{i=1}^N \pi^{(0)}_i\cdot p^{(n)}_{i,j}.
