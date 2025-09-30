@@ -1,0 +1,1491 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.32">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>4&nbsp; Tema 3. Procesos de Poisson – Procesos estocásticos y series temporales</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./Tema2.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-364982630eef5352dd1537128a8ed5cb.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Sin resultados",
+    "search-matching-documents-text": "documentos encontrados",
+    "search-copy-link-title": "Copiar el enlace en la búsqueda",
+    "search-hide-matches-text": "Ocultar resultados adicionales",
+    "search-more-match-text": "resultado adicional en este documento",
+    "search-more-matches-text": "resultados adicionales en este documento",
+    "search-clear-button-title": "Borrar",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancelar",
+    "search-submit-button-title": "Enviar",
+    "search-label": "Buscar"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Tema3.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Tema 3. Procesos de Poisson</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Buscar" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Procesos estocásticos y series temporales</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Buscar"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Presentación</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tema1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Tema 1. Introducción a los procesos estocásticos</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tema2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Tema 2. Cadenas de Markov</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tema3.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Tema 3. Procesos de Poisson</span></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Tabla de contenidos</h2>
+   
+  <ul>
+  <li><a href="#procesos-de-conteo" id="toc-procesos-de-conteo" class="nav-link active" data-scroll-target="#procesos-de-conteo"><span class="header-section-number">4.1</span> Procesos de conteo</a></li>
+  <li><a href="#proceso-de-poisson" id="toc-proceso-de-poisson" class="nav-link" data-scroll-target="#proceso-de-poisson"><span class="header-section-number">4.2</span> Proceso de Poisson</a>
+  <ul class="collapse">
+  <li><a href="#distribución-de-poisson" id="toc-distribución-de-poisson" class="nav-link" data-scroll-target="#distribución-de-poisson"><span class="header-section-number">4.2.1</span> Distribución de Poisson</a></li>
+  <li><a href="#definición-de-proceso-de-poisson" id="toc-definición-de-proceso-de-poisson" class="nav-link" data-scroll-target="#definición-de-proceso-de-poisson"><span class="header-section-number">4.2.2</span> Definición de proceso de Poisson</a></li>
+  </ul></li>
+  <li><a href="#tiempos-de-ocurrencia-llegada-en-un-proceso-de-poisson" id="toc-tiempos-de-ocurrencia-llegada-en-un-proceso-de-poisson" class="nav-link" data-scroll-target="#tiempos-de-ocurrencia-llegada-en-un-proceso-de-poisson"><span class="header-section-number">4.3</span> Tiempos de ocurrencia (llegada) en un Proceso de Poisson</a>
+  <ul class="collapse">
+  <li><a href="#distribución-exponencial" id="toc-distribución-exponencial" class="nav-link" data-scroll-target="#distribución-exponencial"><span class="header-section-number">4.3.1</span> Distribución exponencial</a></li>
+  <li><a href="#modelización-de-tiempos-de-llegada-y-entre-llegadas-consecutivas" id="toc-modelización-de-tiempos-de-llegada-y-entre-llegadas-consecutivas" class="nav-link" data-scroll-target="#modelización-de-tiempos-de-llegada-y-entre-llegadas-consecutivas"><span class="header-section-number">4.3.2</span> Modelización de tiempos de llegada y entre llegadas consecutivas</a></li>
+  <li><a href="#simulación-de-procesos-de-poisson" id="toc-simulación-de-procesos-de-poisson" class="nav-link" data-scroll-target="#simulación-de-procesos-de-poisson"><span class="header-section-number">4.3.3</span> Simulación de procesos de Poisson</a></li>
+  </ul></li>
+  <li><a href="#transformaciones-de-procesos-de-poisson" id="toc-transformaciones-de-procesos-de-poisson" class="nav-link" data-scroll-target="#transformaciones-de-procesos-de-poisson"><span class="header-section-number">4.4</span> Transformaciones de procesos de Poisson</a>
+  <ul class="collapse">
+  <li><a href="#superposición-de-procesos-de-poisson-independientes" id="toc-superposición-de-procesos-de-poisson-independientes" class="nav-link" data-scroll-target="#superposición-de-procesos-de-poisson-independientes"><span class="header-section-number">4.4.1</span> Superposición de procesos de Poisson independientes</a></li>
+  <li><a href="#separación-de-procesos-de-poisson" id="toc-separación-de-procesos-de-poisson" class="nav-link" data-scroll-target="#separación-de-procesos-de-poisson"><span class="header-section-number">4.4.2</span> Separación de procesos de Poisson</a></li>
+  </ul></li>
+  <li><a href="#procesos-de-renovación" id="toc-procesos-de-renovación" class="nav-link" data-scroll-target="#procesos-de-renovación"><span class="header-section-number">4.5</span> Procesos de renovación</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Tema 3. Procesos de Poisson</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<!-- El siguiento código permite renderizar un solo capitulo: -->
+<!-- quarto render capitulo1.qmd --to pdf -->
+<section id="procesos-de-conteo" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="procesos-de-conteo"><span class="header-section-number">4.1</span> Procesos de conteo</h2>
+<p>En este capítulo vamos a ver un tipo de procesos estocásticos que son utilizados para contar la ocurrencia en el tiempo o el espacio de cierto evento aleatorio. Se trata de los procesos de Poisson y, más en general, los procesos de conteo. Este tipo de procesos pueden usarse para contar las llegadas de clientes a una tienda, apariciones de defectos en una línea de producción, las solicitudes individuales a un servidor de internet, el paso de coches por un tramo de carretera, las llegadas de emails a la bandeja de entrada, las ocurrencias de cierto tipo de delito en una gran ciudad, etc.</p>
+<div id="def-conteo" class="theorem definition">
+<p><span class="theorem-title"><strong>Definición 4.1 (Proceso de conteo)</strong></span> Un proceso estocástico en tiempo continuo <span class="math inline">\((N_t)_{t\in [0,\infty)}\)</span> se dice que es un <strong>proceso de conteo</strong> si se verifica:</p>
+<ol type="1">
+<li><p><span class="math inline">\(N_t\ge 0\)</span>.</p></li>
+<li><p><span class="math inline">\(N_t\)</span> toma valores enteros.</p></li>
+<li><p>Si <span class="math inline">\(s&lt;t\)</span> entonces <span class="math inline">\(N_s\le N_t\)</span>.</p></li>
+</ol>
+</div>
+<p>En particular, son procesos estocásticos de tiempo continuo y estado discreto. El valor <span class="math inline">\(N_t\)</span> se interpreta como el número de veces que ocurre el evento aleatorio en estudio durante el intervalo de tiempo <span class="math inline">\([0,t]\)</span>. En particular, si <span class="math inline">\(s&lt;t\)</span>, entonces <span class="math inline">\(N_t-N_s\)</span> representa el número de veces que ocurre el evento aleatorio durante el intervalo de tiempo <span class="math inline">\((s,t]\)</span>. Para fijar ideas, vamos a considerar que estamos contando las llegadas de clientes a un establecimiento. Por ejemplo, si <span class="math inline">\(N_1=4\)</span> tendremos que han llegado 4 clientes durante el intervalo de tiempo <span class="math inline">\([0,1]\)</span>. Si <span class="math inline">\(N_2-N_1=3\)</span>, tendremos que han llegado 3 clientes durante el intervalo de tiempo <span class="math inline">\((1,2]\)</span>. El tiempo podría medirse por ejemplo en horas.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Tema3_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" style="width:70.0%"></p>
+<figcaption>Trayectoria de un proceso de conteo. En cada tiempo <span class="math inline">\(t\)</span>, <span class="math inline">\(N_t\)</span> representa el número de llegadas ocurridas en el intervalo [0,t]</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div id="def-incIndependientes" class="theorem definition">
+<p><span class="theorem-title"><strong>Definición 4.2</strong></span> Un proceso estocástico <span class="math inline">\((X_t)_{t\in[0,\infty)}\)</span> se dice que tiene <strong>incrementos independientes</strong> si para toda sucesión de tiempos <span class="math inline">\(0\le t_1&lt;t_2&lt;\ldots&lt; t_n\)</span> las variables aleatorias</p>
+<p><span class="math display">\[
+X_{t_2}-X_{t_1},\quad
+X_{t_3}-X_{t_2},\quad
+\ldots,\quad
+X_{t_n}-X_{t_{n-1}},\quad
+\]</span></p>
+<p>son independientes.</p>
+</div>
+<p>Un ejemplo de proceso con incrementos independientes es el movimiento Browniano. Para un proceso de conteo <span class="math inline">\((N_t)_{t\in [0,\infty)}\)</span> con incrementos independientes contando las llegadas de clientes (o cualquier otro evento aleatorio), se tendrá que los números de llegadas en intervalos disjuntos</p>
+<p><span class="math display">\[
+(t_1,t_2],\quad (t_2,t_3],\quad \ldots,\quad (t_{n-1},t_n]
+\]</span></p>
+<p>son independientes.</p>
+<p>Supongamos que queremos calcular la probabilidad de que haya 2 llegadas en el intervalo <span class="math inline">\((1,2]\)</span> y 3 llegadas en el intervalo <span class="math inline">\((2,3]\)</span>. Como los intervalos <span class="math inline">\((1,2]\)</span> y <span class="math inline">\((2,3]\)</span> son disjuntos, tendremos</p>
+<p><span class="math display">\[
+\mathbb{P}\Big(\mbox{ 2 llegadas en }(1,2]\mbox{ y 3 llegadas en }(2,3]\Big)=
+\mathbb{P}\Big(\mbox{ 2 llegadas en }(1,2]\Big)\cdot\mathbb{P}\Big(\mbox{ 2 llegadas en }(2,3]\Big).
+\]</span></p>
+</section>
+<section id="proceso-de-poisson" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="proceso-de-poisson"><span class="header-section-number">4.2</span> Proceso de Poisson</h2>
+<p>El proceso de conteo más usado es el proceso de Poisson. En esta sección veremos su definición y principales propiedades. Antes de introducir este concepto, necesitamos recordar la distribución de Poisson.</p>
+<section id="distribución-de-poisson" class="level3" data-number="4.2.1">
+<h3 data-number="4.2.1" class="anchored" data-anchor-id="distribución-de-poisson"><span class="header-section-number">4.2.1</span> Distribución de Poisson</h3>
+<div id="def-distPoisson" class="theorem definition">
+<p><span class="theorem-title"><strong>Definición 4.3</strong></span> Una variable aleatoria discreta <span class="math inline">\(X\)</span> se dice que tiene distribución de <strong>Poisson</strong> de parámetro <span class="math inline">\(\lambda&gt;0\)</span> si toma valores en <span class="math inline">\(\{0,1,2,3,\ldots\}\)</span> y tiene función puntual de probabilidad</p>
+<p><span class="math display">\[
+\mathbb{P}(X=k)=\frac{\lambda^k e^{-\lambda}}{k!}\quad\mbox{ para todo }k\in\{0,1,2,\ldots\}.
+\]</span></p>
+<p>En ese caso escribimos <span class="math inline">\(X\sim{\rm Poisson}(\lambda)\)</span>.</p>
+</div>
+<p>Algunas propiedades de la distribución de Poisson que conviene recordar son las siguientes.</p>
+<div id="prp-distPoisson" class="theorem proposition">
+<p><span class="theorem-title"><strong>Proposición 4.1</strong></span> Supongamos que <span class="math inline">\(X\sim{\rm Poisson}(\lambda)\)</span>. Entonces <span class="math inline">\(\mathbb{E}(X)=\lambda\)</span> y <span class="math inline">\({\rm Var}(X)=\lambda\)</span>.</p>
+</div>
+<p>La suma de variables Poisson independientes es Poisson. Más concretamente, tenemos lo siguiente.</p>
+<div id="prp-sumPoisson" class="theorem proposition">
+<p><span class="theorem-title"><strong>Proposición 4.2</strong></span> Supongamos que <span class="math inline">\(X_1,X_2,\ldots,..,X_n\)</span> son variables aleatorias independientes con <span class="math inline">\(X_i\sim{\rm Poisson}(\lambda_i)\)</span>. Entonces <span class="math display">\[
+X_1+X_2+\ldots+X_n\sim{\rm Poisson}(\lambda_1+\lambda_2+\ldots+\lambda_n).
+\]</span></p>
+</div>
+<p>Las variables Poisson pueden ser interpretadas como el límite en distribución de variables aleatorias binomiales. Más específicamente tenemos lo siguiente.</p>
+<div id="prp-limitBin" class="theorem proposition">
+<p><span class="theorem-title"><strong>Proposición 4.3</strong></span> Consideremos una sucesión de variables aleatorias <span class="math inline">\(Y_1,Y_2,\ldots\)</span>, donde <span class="math inline">\(Y_n\sim{\rm Binomial}(n,p_n)\)</span> con <span class="math inline">\(p_n=\lambda/n\)</span> para cierto <span class="math inline">\(\lambda&gt;0\)</span>. Entonces la función puntual de probabilidad de <span class="math inline">\(Y_n\)</span> converge a la función puntual de probabilidad de una variable <span class="math inline">\({\rm Poisson}(\lambda)\)</span>, es decir,</p>
+<p><span class="math display">\[
+\lim_{n\to\infty}\mathbb{P}(Y_n=k)=\frac{\lambda^k e^{-\lambda}}{k!}\quad\mbox{ para todo }k\in\{0,1,2,\ldots\}.
+\]</span></p>
+</div>
+<p><strong>Demostración.</strong></p>
+<p>Fijado <span class="math inline">\(k\in\{0,1,2,\ldots\}\)</span>, como <span class="math inline">\(Y_n\sim{\rm Binomial}(n,p_n)\)</span>, tenemos</p>
+<p><span id="eq-Poisson"><span class="math display">\[
+\begin{aligned}
+\mathbb{P}(Y_n=k)&amp;=\binom{n}{k} p_n^k (1-p_n)^{n-k}\\
+&amp;=\frac{n!}{(n-k)!k!} \left(\frac{\lambda}{n}\right)^k \left(1-\frac{\lambda}{n}\right)^{n-k}\\
+&amp;=\frac{n!}{(n-k)!k!} \left(\frac{\lambda}{n}\right)^k \left(1-\frac{\lambda}{n}\right)^{n}\left(1-\frac{\lambda}{n}\right)^{-k}\\
+&amp;=\frac{n!}{(n-k)! n^k}\frac{\lambda^k}{k!} \left(1-\frac{\lambda}{n}\right)^{n}\left(1-\frac{\lambda}{n}\right)^{-k}.
+\end{aligned}
+\tag{4.1}\]</span></span></p>
+<p>Por otro lado, observamos que</p>
+<p><span class="math display">\[
+\lim_{n\to\infty}\left(1-\frac{\lambda}{n}\right)^{n}=e^{-\lambda},
+\]</span></p>
+<p><span class="math display">\[
+\lim_{n\to\infty}\left(1-\frac{\lambda}{n}\right)^{-k}=1,
+\]</span></p>
+<p><span class="math display">\[
+\begin{aligned}
+\lim_{n\to\infty}\frac{n!}{(n-k)! n^k}&amp;=\lim_{n\to\infty}\left(\frac{n}{n}\cdot\frac{n-1}{n}\cdot\frac{n-2}{n}\cdot\ldots \cdot\frac{n-(k-1)}{n}\right)\\
+&amp;=\lim_{n\to\infty}\left(1\cdot\left(1-\frac{1}{n}\right)\cdot\left(1-\frac{2}{n}\right)\cdot\ldots \cdot\left(1-\frac{k-1}{n}\right)\right)=1,
+\end{aligned}
+\]</span></p>
+<p>donde para calcular el último límite hemos usado que tenemos un número constante <span class="math inline">\(k\)</span> de factores que convergen a <span class="math inline">\(1\)</span>.</p>
+<p>Tomando límites cuando <span class="math inline">\(n\to\infty\)</span> en <a href="#eq-Poisson" class="quarto-xref">Ecuación&nbsp;<span>4.1</span></a> teniendo en cuenta las anteriores igualdades, obtenemos el resultado deseado.<span class="math inline">\(\square\)</span></p>
+</section>
+<section id="definición-de-proceso-de-poisson" class="level3" data-number="4.2.2">
+<h3 data-number="4.2.2" class="anchored" data-anchor-id="definición-de-proceso-de-poisson"><span class="header-section-number">4.2.2</span> Definición de proceso de Poisson</h3>
+<p>El proceso de Poisson se usa para contar la ocurrencia de un evento aleatorio cuyas observaciones se dan en el tiempo con una frecuencia promedio constante <span class="math inline">\(\lambda\)</span>. Por ejemplo, supongamos que mediante la observación se llega a la conclusión de que a un establecimiento llegan, de media, 5 clientes por hora. Puesto que las llegadas son aleatorias, cada hora llegará un número de clientes que no tiene por qué ser exactamente igual a 5; sin embargo, dicha cifra se verificará en promedio al avanzar el tiempo.</p>
+<div id="def-Poisson" class="theorem definition">
+<p><span class="theorem-title"><strong>Definición 4.4 (Proceso de Poisson)</strong></span> Un proceso de conteo <span class="math inline">\((N_t)_{t\in [0,\infty)}\)</span> se dice que es un con tasa <span class="math inline">\(\lambda&gt;0\)</span> si se verifican las siguientes condiciones:</p>
+<ol type="1">
+<li><p><span class="math inline">\(N_0=0\)</span>,</p></li>
+<li><p><span class="math inline">\(N_t\)</span> tiene incrementos independientes,</p></li>
+<li><p>Para cada <span class="math inline">\(t,s\ge 0\)</span> se verifica que <span class="math inline">\(N_{t+s}-N_s\sim {\rm Poisson}(\lambda t)\)</span>.</p></li>
+</ol>
+</div>
+<p>Para justificar la definición anterior pensemos en los clientes que llegan al establecimiento. Supongamos que llegan de media <span class="math inline">\(\lambda\)</span> clientes por hora. Sea <span class="math inline">\(N_t\)</span> el número de clientes que han llegado a la tienda tras <span class="math inline">\(t\)</span> horas. Queremos encontrar qué distribución debería seguir la variable aleatoria <span class="math inline">\(N_t\)</span>.</p>
+<p>Para simplificar el problema, vamos a suponer en primer lugar que, dado <span class="math inline">\(n\in\mathbb{N}\)</span>, los clientes van llegando en instantes de tiempo equiespaciados</p>
+<p><span class="math display">\[
+0&lt;\frac{t}{n}&lt;\frac{2t}{n}&lt;\frac{3t}{n}&lt;\ldots&lt; t,
+\]</span></p>
+<p>de forma que al final de cada intervalo <span class="math inline">\(\left(\frac{kt}{n},\frac{(k+1)t}{n}\right]\)</span> podrá llegar un solo cliente con probabilidad <span class="math inline">\(p\)</span>, o no llegará ninguno con probabilidad <span class="math inline">\(1-p\)</span>. Además, consideramos que la llegada o no de un cliente en cada intervalo ocurre de forma independiente de lo que haya pasado en los intervalos anteriores.</p>
+<p>Bajo estos supuestos, tenemos que el número total <span class="math inline">\(N_t\)</span> de clientes llegados en el intervalo de tiempo <span class="math inline">\([0,t]\)</span> sigue una distribución <span class="math inline">\({\rm Binomial}(n,p)\)</span>. En particular, como llegan de media <span class="math inline">\(\lambda\)</span> clientes por hora, tendremos que</p>
+<p><span class="math display">\[
+\lambda t=\mathbb{E}(N_t)=n p.
+\]</span></p>
+<p>Necesariamente, se tiene que verificar que <span class="math inline">\(p=\lambda t/n\)</span>. De esta manera obtenemos la probabilidad de llegada de un cliente en cada intervalo, la cual depende del número de subdivisiones <span class="math inline">\(n\)</span> en el que dividimos el intervalo de tiempo.</p>
+<p>Para pasar a tiempo continuo, tomemos límites cuando <span class="math inline">\(n\to\infty\)</span>. De este modo, como consecuencia de la Proposición <a href="#prp-limitBin" class="quarto-xref">Proposición&nbsp;<span>4.3</span></a>, obtenemos que</p>
+<p><span class="math display">\[
+\mathbb{P}(N_t=k)=\frac{(t\lambda)^k e^{-\lambda t}}{k!},\quad k\in\{0,1,2,\ldots\}.
+\]</span></p>
+<p>Concluimos que <span class="math inline">\(N_t\)</span> sigue una distribución <span class="math inline">\({\rm Poisson}(\lambda t)\)</span>, lo cual justifica el punto 3 de la definición de Proceso de Poisson.</p>
+<p>Es lógico considerar que los clientes que llegan en dos intervalos de tiempo disjuntos sean independientes, por lo que el proceso de conteo correspondiente debería tener incrementos independientes. Por lo cual, la condición 2 de la definición anterior es natural.</p>
+<p>Como hemos observado arriba tenemos que <span class="math inline">\(\mathbb{E}(N_t)=\lambda t\)</span>, lo cual es también consecuencia de la condición 3. En particular, la tasa <span class="math inline">\(\lambda\)</span> de un proceso de Poisson nos informa del número medio de llegadas por unidad de tiempo.</p>
+<div class="callout callout-style-simple callout-none no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Ejemplo
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A una gasolinera llegan de media 10 coches por hora. Supongamos que la llegada de coches a la gasolinera sigue un proceso de Poisson. Calcula:</p>
+<ol type="1">
+<li><p>Probabilidad de que lleguen 2 coches entre las 9:00 y las 9:20.</p></li>
+<li><p>Probabilidad de que lleguen 3 coches entre las 9:00 y las 9:20 y 7</p></li>
+</ol>
+<p>coches entre 10:20 y las 11:00.</p>
+<p><strong>Solución:</strong> Consideramos el proceso <span class="math inline">\((N_t)_{t\ge 0}\)</span> de conteo de coches tras <span class="math inline">\(t\)</span> horas. Como llegan una media de 10 coches por hora, tendremos que <span class="math inline">\(\lambda=10\)</span>.</p>
+<ol type="1">
+<li>Sea <span class="math inline">\(X=\mbox{``Núm. de coches entre las 9:00 y las 9:20''}\)</span>. Debido a la condición 3 de la definición de proceso de Poisson, tenemos que <span class="math inline">\(X\sim  {\rm Poisson}(10/3)\)</span> ya que entre las 9:00 y las 9:20 ha pasado 1/3 de hora. Por tanto,</li>
+</ol>
+<p><span class="math display">\[
+\mathbb{P}(X=2)=\frac{e^{-10/3}\cdot (10/3)^2}{2!}=0.1982.
+\]</span></p>
+<p>Alternativamente, podemos usar el siguiente código en <em>R</em> para calcular el resultado anterior mediante la función puntual de probabilidad de la Poisson:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>t <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">3</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Evaluamos la función puntual de probabilidad de la Poisson</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">dpois</span>(<span class="dv">2</span>, t<span class="sc">*</span>lambda)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.1981889</code></pre>
+</div>
+</div>
+<ol start="2" type="1">
+<li>Sea <span class="math inline">\(Y=\mbox{``Núm. de coches entre las 10:20 y las 11:00''}\)</span>. Tenemos que <span class="math inline">\(Y\sim {\rm Poisson}(20/3)\)</span> y, además, <span class="math inline">\(X,Y\)</span> son independientes. Entonces,</li>
+</ol>
+<p><span class="math display">\[\begin{align*}
+
+\mathbb{P}(X=3,Y=7)&amp;=\mathbb{P}(X=3)\mathbb{P}(Y=7)\\
+
+&amp;=\frac{e^{-10/3}\cdot (10/3)^3}{3!} \frac{e^{-20/3}\cdot (20/3)^7}{7!}=0.0325.
+
+\end{align*}\]</span></p>
+<p>Alternativamente, podemos usar el siguiente código de <em>R</em> para calcular el resultado anterior:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>t <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">3</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">/</span><span class="dv">3</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Evaluamos la función puntual de probabilidad de la Poisson</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="fu">dpois</span>(<span class="dv">3</span>, t<span class="sc">*</span>lambda)<span class="sc">*</span><span class="fu">dpois</span>(<span class="dv">7</span>, s<span class="sc">*</span>lambda)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.03254399</code></pre>
+</div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="tiempos-de-ocurrencia-llegada-en-un-proceso-de-poisson" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="tiempos-de-ocurrencia-llegada-en-un-proceso-de-poisson"><span class="header-section-number">4.3</span> Tiempos de ocurrencia (llegada) en un Proceso de Poisson</h2>
+<p>Hemos visto que los procesos de Poisson surgen de manera natural cuando se trata de contar las llegadas de clientes a un establecimiento. En esta sección vamos a estudiar qué distribución de probabilidad sigue el tiempo aleatorio que pasa entre la llegada de dos clientes consecutivos.</p>
+<section id="distribución-exponencial" class="level3" data-number="4.3.1">
+<h3 data-number="4.3.1" class="anchored" data-anchor-id="distribución-exponencial"><span class="header-section-number">4.3.1</span> Distribución exponencial</h3>
+<p>Recordemos que una variable aleatoria continua <span class="math inline">\(\tau\)</span> tiene distribución exponencial de parámetro <span class="math inline">\(\lambda&gt;0\)</span>, en cuyo caso escribimos <span class="math inline">\(\tau\sim {\rm Exp}(\lambda)\)</span>, si toma valores reales positivos y tiene función de densidad</p>
+<p><span class="math display">\[
+f(t)=\lambda e^{-\lambda t},\quad t&gt;0.
+\]</span></p>
+<p>Recordemos además que si <span class="math inline">\(\tau\sim{\rm Exp}(\lambda)\)</span>, entonces la función de distribución de <span class="math inline">\(\tau\)</span> es <span class="math inline">\(F(t)=1-e^{-\lambda t}\)</span>.</p>
+<p>En particular,</p>
+<p><span class="math display">\[
+\mathbb{P}(\tau&gt;t)=1-F(t)=e^{-\lambda t}.
+\]</span></p>
+<p>Las variables exponenciales suelen interpretarse como el tiempo de espera para la observación de un evento aleatorio. Por ejemplo, la llegada del primer cliente a una tienda, el tiempo de fallo de un sistema, el tiempo de quiebra de una entidad financiera, tiempo en el que una acción alcanza un determinado nivel, etc.</p>
+<div id="prp-espExp" class="theorem proposition">
+<p><span class="theorem-title"><strong>Proposición 4.4</strong></span> Si <span class="math inline">\(\tau\sim{\rm Exp}(\lambda)\)</span>, entonces</p>
+<p><span class="math display">\[
+\mathbb{E}(\tau)=\frac{1}{\lambda},\quad {\rm Var}(\tau)=\frac{1}{\lambda^2}.
+\]</span></p>
+</div>
+<p>Si pensamos en la llegada del primer cliente a un establecimiento, la proposición anterior nos dice que el tiempo medio que esperaremos en observar llegar dicho cliente será <span class="math inline">\(1/\lambda\)</span>.</p>
+<p>Por otro lado, tendremos que <span class="math inline">\(\mathbb{P}(\tau\le t)\)</span> es la probabilidad que el primer cliente llegue en algún instante del intervalo de tiempo <span class="math inline">\([0,t]\)</span>. Por tanto, <span class="math inline">\(\mathbb{P}(\tau&gt;t)\)</span> es la probabilidad de que ningún cliente llegue durante el intervalo de tiempo <span class="math inline">\([0,t]\)</span>.</p>
+<p>Una importante propiedad de las variables exponenciales es que no tienen memoria, es decir, tenemos lo siguiente.</p>
+<div id="prp-espExp" class="theorem proposition">
+<p><span class="theorem-title"><strong>Proposición 4.5 (Falta de memoria)</strong></span> Si <span class="math inline">\(\tau\sim {\rm Exp}(\lambda)\)</span>, entonces</p>
+<p><span class="math display">\[
+\mathbb{P}(\tau&gt;s)=\mathbb{P}(\tau&gt;t+s|\tau&gt;t)
+\]</span> para todo <span class="math inline">\(t,s&gt;0\)</span>.</p>
+</div>
+<p>La anterior propiedad, conocida como <strong>falta de memoria</strong> de la distribución exponencial, quiere decir que la probabilidad de que en el intervalo de tiempo <span class="math inline">\([0,s]\)</span> no haya ninguna llegada, es igual a la probabilidad de que en el intervalo de tiempo <span class="math inline">\([t,t+s]\)</span> de igual longitud no haya ninguna llegada si en el intervalo de tiempo previo <span class="math inline">\([0,t]\)</span> no ha habido llegadas, es decir,</p>
+<p><span class="math display">\[
+\mathbb{P}\left(\text{no hay llegadas en }[0,s]\right)=
+\mathbb{P}\left(\text{no hay llegadas en }[t,t+s]|\text{no hay llegadas en }[0,t] \right).
+\]</span></p>
+<p>Por ejemplo, si en 30 minutos no ha llegado ningún cliente a la tienda, la probabilidad de esperar 10 minutos más y no ver ningún cliente es la misma que si no hubiéramos esperado los 30 minutos iniciales.</p>
+</section>
+<section id="modelización-de-tiempos-de-llegada-y-entre-llegadas-consecutivas" class="level3" data-number="4.3.2">
+<h3 data-number="4.3.2" class="anchored" data-anchor-id="modelización-de-tiempos-de-llegada-y-entre-llegadas-consecutivas"><span class="header-section-number">4.3.2</span> Modelización de tiempos de llegada y entre llegadas consecutivas</h3>
+<p>El siguiente resultado, para el cual no damos la demostración, caracteriza a los procesos de Poisson en términos de tiempos de espera exponenciales.</p>
+<div id="thm-espExp" class="theorem">
+<p><span class="theorem-title"><strong>Teorema 4.1 (Caracterización proceso de Poisson)</strong></span> Un proceso estocástico <span class="math inline">\((N_{t})_{t\in[0,\infty)}\)</span> es un proceso de Poisson con tasa <span class="math inline">\(\lambda\)</span> si y sólo si existe una sucesión <span class="math inline">\(\tau_1,\tau_2,\tau_3,\ldots\)</span> de variables aleatorias independientes con distribución <span class="math inline">\({\rm Exp}(\lambda)\)</span> tal que</p>
+<p><span id="eq-tiemposEsp"><span class="math display">\[
+N_t=\max\{n\colon \tau_1+\tau_2+\ldots+\tau_n\le t\}.
+\tag{4.2}\]</span></span></p>
+</div>
+<p>Podemos pensar en <span class="math inline">\(\tau_i\)</span> como el tiempo de espera entre las llegadas, es decir, <span class="math inline">\(\tau_1\)</span> es el tiempo transcurrido hasta la primera llegada, <span class="math inline">\(\tau_2\)</span> es el tiempo trascurrido entre la primera y la segunda llegada, <span class="math inline">\(\tau_3\)</span> es el tiempo entre la segunda y la tercera llegada, etc. De esta manera, <span class="math inline">\(T_n=\tau_1+\tau_2+\ldots+\tau_n\)</span> es el tiempo transcurrido hasta la n-ésima llegada. En particular, la condición (<a href="#eq-tiemposEsp" class="quarto-xref">Ecuación&nbsp;<span>4.2</span></a>) puede ser reescrita como</p>
+<p><span class="math display">\[
+N_t=\max\{n\colon T_n\le t\}.
+\]</span></p>
+<p>Si, por ejemplo, <span class="math inline">\(N_t=4\)</span>, la condición anterior nos dice que</p>
+<p><span class="math display">\[
+T_4 \le t &lt; T_5.
+\]</span></p>
+<p>En términos de llegadas, tenemos que en el instante <span class="math inline">\(t\)</span> habrán llegado los cuatro primeros clientes, pero no el quinto.</p>
+<p>Recordemos que <span class="math inline">\(\lambda\)</span> era el promedio de llegadas por unidad de tiempo. Por otro lado, como <span class="math inline">\(\mathbb{E}(\tau)=1/\lambda\)</span>, tendremos que esperar de media <span class="math inline">\(1/\lambda\)</span> unidades de tiempo entre cada dos llegadas sucesivas.</p>
+<div class="callout callout-style-simple callout-none no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Ejemplo
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A la bandeja de entrada de mi email llegan de media 2 emails por hora (o un email cada media hora). Supongamos que abro el correo a las 8:00 am. Calcula:</p>
+<ol type="1">
+<li><p>La probabilidad de que el primer email llegue más tarde de las 8:30.</p></li>
+<li><p>La probabilidad de que el primer email llegue más tarde de las 11:00 si no ha llegado ningún correo hasta las 9:00.</p></li>
+</ol>
+<p><strong>Solución:</strong> Consideremos los tiempos <span class="math inline">\(\tau_1,\tau_2,\tau_3,\ldots\)</span> entre llegadas de emails, medidos en horas.</p>
+<ol type="1">
+<li>Tenemos que <span class="math inline">\(\tau_1\sim {\rm Exp}(2)\)</span>, luego</li>
+</ol>
+<p><span class="math display">\[
+\mathbb{P}(\tau_1&gt;0.5)=e^{-2\cdot 0.5}=0.3679.
+\]</span></p>
+<p>Alternativamente, podemos usar <em>R</em> para calcular la probabilidad anterior mediante la función de distribución de la exponencial:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Evaluamos la función de distribución de la exponencial</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span><span class="sc">-</span><span class="fu">pexp</span>(<span class="fl">0.5</span>, lambda)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.3678794</code></pre>
+</div>
+</div>
+<ol start="2" type="1">
+<li>Usando que <span class="math inline">\(\tau_1\)</span> no tiene memoria</li>
+</ol>
+<p><span class="math display">\[
+\mathbb{P}(\tau_1&gt;3|\tau_1&gt;1)=\mathbb{P}(\tau_1&gt;2)=e^{-2\cdot 2}= 0.0183.
+\]</span></p>
+<p>Alternativamente, podemos usar <em>R</em> para calcular la probabilidad anterior.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">-</span> <span class="fu">pexp</span>(<span class="dv">2</span>, lambda)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.01831564</code></pre>
+</div>
+</div>
+</div>
+</div>
+<p>Recordemos que una variable aleatoria continua <span class="math inline">\(T\)</span> tiene <strong>distribución gamma</strong>, en cuyo caso escribimos <span class="math inline">\(T\sim \Gamma(k,\lambda)\)</span>, si toma valores positivos y tiene función de densidad</p>
+<p><span class="math display">\[
+f(t)=\frac{\lambda^k}{\Gamma(k)} t^{k-1} e^{-\lambda t},\quad t&gt;0,
+\]</span></p>
+<p>donde <span class="math inline">\(\Gamma(k)\)</span> es la función Gamma, la cual viene dada por <span class="math inline">\(\Gamma(k)=(k-1)!\)</span> cuando <span class="math inline">\(k\)</span> es entero.</p>
+<p>La distribución gamma se obtiene cuando sumamos variables independientes con distribución exponencial. Concretamente, tenemos lo siguiente.</p>
+<div id="prp-sumExp" class="theorem proposition">
+<p><span class="theorem-title"><strong>Proposición 4.6</strong></span> Supongamos que <span class="math inline">\(\tau_1,\tau_2,\tau_3,\ldots\)</span> son variables independientes con distribución <span class="math inline">\({\rm Exp}(\lambda)\)</span>. Entonces se verifica que</p>
+<p><span class="math display">\[
+T_n=\tau_1+\tau_2+\ldots+\tau_n\sim \Gamma(n,\lambda).
+\]</span></p>
+</div>
+<p>La anterior propiedad es muy útil para calcular probabilidades relativas a tiempos de llegada, ya que nos da la distribución del tiempo de llegada <span class="math inline">\(T_n\)</span> del n-ésimo cliente.</p>
+<div class="callout callout-style-simple callout-none no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Ejemplo
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Volviendo al ejemplo anterior. Calcula:</p>
+<ol type="1">
+<li><p>La probabilidad de que el cuarto email llegue pasadas las 10:00 am.</p></li>
+<li><p>La probabilidad de que el cuarto email llegue más de 3 horas después del segundo email si el segundo email llega después de las 9:00 am.</p></li>
+</ol>
+<p><strong>Solución:</strong></p>
+<ol type="1">
+<li>Como <span class="math inline">\(T_4=\tau_1+\tau_2+\tau_3+\tau_4\sim\Gamma(n=4,\lambda=2)\)</span>, tenemos</li>
+</ol>
+<p><span class="math display">\[
+\mathbb{P}(T_4&gt;2)=\int_2^\infty \frac{2^4 t^3 e^{-2t}}{3!}{\rm d}t=\frac{8}{3}\int_2^\infty t^3 e^{-2t}{\rm d}t=0.4435,
+\]</span></p>
+<p>donde la anterior integral puede ser calculada a mano mediante integración por partes, o con ayuda del ordenador.</p>
+<p>Alternativamente, usando <em>R</em> tenemos.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">4</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Evaluamos la función de distribución de la distribución gamma</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">-</span> <span class="fu">pgamma</span>(<span class="dv">2</span>, n, lambda)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.4334701</code></pre>
+</div>
+</div>
+<ol start="2" type="1">
+<li>Como <span class="math inline">\(\tau_3,\tau_4\)</span> son independientes de <span class="math inline">\(\tau_2,\tau_1\)</span>, por ser las <span class="math inline">\(\tau_i\)</span> independientes entre sí, tenemos que</li>
+</ol>
+<p><span class="math display">\[
+\begin{aligned}
+\mathbb{P}(\tau_3+\tau_4&gt;3|\tau_1+\tau_2&gt;1)&amp;=\mathbb{P}(\tau_3+\tau_4&gt;3)\\
+&amp;=\int_3^\infty 4 t e^{-2t} {\rm d}t=0.0173,
+\end{aligned}
+\]</span></p>
+<p>donde hemos usado que <span class="math inline">\(\tau_3+\tau_4\sim \Gamma(n=2,\lambda=2)\)</span>. Además, la anterior integral puede ser calculada a mano mediante integración por partes, o con ayuda del ordenador.</p>
+<p>Alternativamente, usando <em>R</em> tenemos.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">-</span> <span class="fu">pgamma</span>(<span class="dv">3</span>, n, lambda)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.01735127</code></pre>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="simulación-de-procesos-de-poisson" class="level3" data-number="4.3.3">
+<h3 data-number="4.3.3" class="anchored" data-anchor-id="simulación-de-procesos-de-poisson"><span class="header-section-number">4.3.3</span> Simulación de procesos de Poisson</h3>
+<p>Simular procesos de Poisson es sencillo usando los tiempos entre llegadas. Para ello basta simular los tiempos entre llegadas como variables aleatorias exponenciales independientes y contabilizar el número de llegadas ocurridas.</p>
+<p>Veamos un ejemplo en <em>R</em>:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Valores para simulación</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> <span class="dv">2</span>  <span class="co"># tasa (llegadas por unidad de tiempo)</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>T <span class="ot">&lt;-</span> <span class="dv">10</span>      <span class="co"># Intervalo de tiempo en el que observamos el proceso</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Simulación de los tiempos entre llegadas</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>tau <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>i <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span>(<span class="fu">sum</span>(tau) <span class="sc">&lt;</span> T){</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>    tau[i] <span class="ot">&lt;-</span> <span class="fu">rexp</span>(<span class="at">n =</span> <span class="dv">1</span>, <span class="at">rate =</span> lambda)</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>    i <span class="ot">&lt;-</span> i<span class="sc">+</span><span class="dv">1</span></span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculamos los valores  del proceso de Poisson</span></span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>tiempos <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="fu">cumsum</span>(tau))</span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="dv">0</span><span class="sc">:</span><span class="fu">length</span>(tau)</span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a><span class="co"># Dibujamos la trayectoria</span></span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(tiempos, N, <span class="at">type =</span> <span class="st">"s"</span>,</span>
+<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Tiempo"</span>, <span class="at">ylab =</span> <span class="st">"Llegadas"</span>, <span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">10</span>))</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Tema3_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" style="width:70.0%"></p>
+<figcaption>Simulación de la trayectoria de un proceso de Poisson</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="transformaciones-de-procesos-de-poisson" class="level2" data-number="4.4">
+<h2 data-number="4.4" class="anchored" data-anchor-id="transformaciones-de-procesos-de-poisson"><span class="header-section-number">4.4</span> Transformaciones de procesos de Poisson</h2>
+<p>En esta sección vamos a ver dos tipos de transformaciones de procesos de Poisson, la superposición y la separación.</p>
+<section id="superposición-de-procesos-de-poisson-independientes" class="level3" data-number="4.4.1">
+<h3 data-number="4.4.1" class="anchored" data-anchor-id="superposición-de-procesos-de-poisson-independientes"><span class="header-section-number">4.4.1</span> Superposición de procesos de Poisson independientes</h3>
+<p>Consideremos dos procesos de Poisson <span class="math inline">\((N^1_t)_{t\in[0,\infty)}\)</span> y <span class="math inline">\((N^2_t)_{t\in[0,\infty)}\)</span> independientes con tasas <span class="math inline">\(\lambda_1\)</span> y <span class="math inline">\(\lambda_2\)</span>, respectivamente. Consideremos el proceso <span class="math inline">\((N_t)_{t\in[0,\infty)}\)</span> definido como</p>
+<p><span class="math display">\[
+N_t=N^1_t+N^2_t\quad\mbox{ para todo }t\in[0,\infty).
+\]</span></p>
+<p>Dados <span class="math inline">\(t,s\ge 0\)</span>, se tiene que los incrementos</p>
+<p><span class="math display">\[
+N_{t+s}^1-N_{s}^1\sim {\rm Poisson}(\lambda_1 t),\quad N_{t+s}^2-N_{s}^2\sim {\rm Poisson}(\lambda_2 t),
+\]</span></p>
+<p>y son variables aleatorias independientes. Por tanto, debido a la Proposición <a href="#prp-sumPoisson" class="quarto-xref">Proposición&nbsp;<span>4.2</span></a> tenemos que</p>
+<p><span class="math display">\[
+N_{t+s}-N_t=(N^1_{t+s}-N^1_{s})+(N^2_{t+s}-N^2_{s})
+\]</span> sigue una distribución <span class="math inline">\({\rm Poisson}((\lambda_1+\lambda_2) t)\)</span>. Es más, <span class="math inline">\(N_0=N^1_0+N^2_0=0\)</span>, y el proceso <span class="math inline">\(N_t\)</span> tiene incrementos independientes (por tenerlos <span class="math inline">\(N^1\)</span> y <span class="math inline">\(N^2\)</span>). Dado que se verifican todas las condiciones de la definición de proceso de Poisson, podemos concluir que el proceso <span class="math inline">\((N_t)_{t\in[0,\infty)}\)</span> es de Poisson con tasa <span class="math inline">\(\lambda_1+\lambda_2\)</span>.</p>
+<p>En general, tendremos lo siguiente.</p>
+<div id="thm-superposicion" class="theorem">
+<p><span class="theorem-title"><strong>Teorema 4.2 (Superposición)</strong></span> Sean <span class="math inline">\((N_t^1),(N_t^2),\ldots,(N_t^m)\)</span> procesos de Poisson independientes con tasas <span class="math inline">\(\lambda_1,\lambda_2,\ldots,\lambda_m\)</span>, respectivamente. Sea además</p>
+<p><span class="math display">\[
+N_t=N_t^1+N_t^2+\ldots+N_t^m\quad\mbox{ para todo }t\in[0,\infty).
+\]</span></p>
+<p>Entonces el proceso <span class="math inline">\((N_t)_{t\in[0,\infty)}\)</span> es un proceso de Poisson con tasa <span class="math inline">\(\lambda_1+\lambda_2+\ldots+\lambda_m\)</span>.</p>
+</div>
+<p>A continuación simulamos en <em>R</em> la superposición de dos procesos de Poisson independientes:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Valores para simulación de los procesos</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>lambda1 <span class="ot">&lt;-</span> <span class="dv">2</span>  <span class="co"># tasa del primer proceso de Poisson</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>lambda2 <span class="ot">&lt;-</span> <span class="fl">0.5</span>  <span class="co"># tasa del segundo proceso de Poisson</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>T <span class="ot">&lt;-</span> <span class="dv">10</span>      <span class="co"># Intervalo de tiempo en el que observamos el proceso</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Simulación de los tiempos entre llegadas</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>tau1 <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>tau2 <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>i <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span>(<span class="fu">sum</span>(tau1) <span class="sc">&lt;</span> T){</span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>  tau1[i] <span class="ot">&lt;-</span> <span class="fu">rexp</span>(<span class="at">n =</span> <span class="dv">1</span>, <span class="at">rate =</span> lambda1)</span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>  i <span class="ot">&lt;-</span> i<span class="sc">+</span><span class="dv">1</span></span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a>i <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span>(<span class="fu">sum</span>(tau2) <span class="sc">&lt;</span> T){</span>
+<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a>  tau2[i] <span class="ot">&lt;-</span> <span class="fu">rexp</span>(<span class="at">n =</span> <span class="dv">1</span>, <span class="at">rate =</span> lambda2)</span>
+<span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-33"><a href="#cb14-33" aria-hidden="true" tabindex="-1"></a>  i <span class="ot">&lt;-</span> i<span class="sc">+</span><span class="dv">1</span></span>
+<span id="cb14-34"><a href="#cb14-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-35"><a href="#cb14-35" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb14-36"><a href="#cb14-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-37"><a href="#cb14-37" aria-hidden="true" tabindex="-1"></a><span class="co"># Definimos los timpos y los valores correspondientes del proceso de Poisson 1</span></span>
+<span id="cb14-38"><a href="#cb14-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-39"><a href="#cb14-39" aria-hidden="true" tabindex="-1"></a>tiempos1 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="fu">cumsum</span>(tau1))</span>
+<span id="cb14-40"><a href="#cb14-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-41"><a href="#cb14-41" aria-hidden="true" tabindex="-1"></a>N1 <span class="ot">&lt;-</span> <span class="dv">0</span><span class="sc">:</span><span class="fu">length</span>(tau1)</span>
+<span id="cb14-42"><a href="#cb14-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-43"><a href="#cb14-43" aria-hidden="true" tabindex="-1"></a><span class="co"># Definimos los tiempos y los valores correspondientes del proceso de Poisson 2</span></span>
+<span id="cb14-44"><a href="#cb14-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-45"><a href="#cb14-45" aria-hidden="true" tabindex="-1"></a>tiempos2 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="fu">cumsum</span>(tau2))</span>
+<span id="cb14-46"><a href="#cb14-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-47"><a href="#cb14-47" aria-hidden="true" tabindex="-1"></a>N2 <span class="ot">&lt;-</span> <span class="dv">0</span><span class="sc">:</span><span class="fu">length</span>(tau2)</span>
+<span id="cb14-48"><a href="#cb14-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-49"><a href="#cb14-49" aria-hidden="true" tabindex="-1"></a><span class="co"># Definimos los tiempos y los valores correspondientes del proceso superposición</span></span>
+<span id="cb14-50"><a href="#cb14-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-51"><a href="#cb14-51" aria-hidden="true" tabindex="-1"></a>tiempos <span class="ot">&lt;-</span> <span class="fu">union</span>(tiempos1, tiempos2)</span>
+<span id="cb14-52"><a href="#cb14-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-53"><a href="#cb14-53" aria-hidden="true" tabindex="-1"></a>tiempos <span class="ot">&lt;-</span> <span class="fu">sort</span>(tiempos)</span>
+<span id="cb14-54"><a href="#cb14-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-55"><a href="#cb14-55" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="dv">0</span><span class="sc">:</span>(<span class="fu">length</span>(tiempos)<span class="sc">-</span><span class="dv">1</span>)</span>
+<span id="cb14-56"><a href="#cb14-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-57"><a href="#cb14-57" aria-hidden="true" tabindex="-1"></a><span class="co"># Dibujamos la trayectoria del proceso 1</span></span>
+<span id="cb14-58"><a href="#cb14-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-59"><a href="#cb14-59" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(tiempos1, N1, <span class="at">type =</span> <span class="st">"s"</span>,</span>
+<span id="cb14-60"><a href="#cb14-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-61"><a href="#cb14-61" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Tiempo"</span>, <span class="at">ylab =</span> <span class="st">"Llegadas"</span>, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">10</span>), <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">max</span>(N)))</span>
+<span id="cb14-62"><a href="#cb14-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-63"><a href="#cb14-63" aria-hidden="true" tabindex="-1"></a><span class="co"># Dibujamos la trayectoria del proceso 2</span></span>
+<span id="cb14-64"><a href="#cb14-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-65"><a href="#cb14-65" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(tiempos2, N2, <span class="at">type =</span> <span class="st">"s"</span>, <span class="at">col=</span><span class="st">"blue"</span>)</span>
+<span id="cb14-66"><a href="#cb14-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-67"><a href="#cb14-67" aria-hidden="true" tabindex="-1"></a><span class="co"># Dibujamos la trayectoria del proceso superposición</span></span>
+<span id="cb14-68"><a href="#cb14-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-69"><a href="#cb14-69" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(tiempos, N, <span class="at">type =</span> <span class="st">"s"</span>, <span class="at">col=</span><span class="st">"red"</span>)</span>
+<span id="cb14-70"><a href="#cb14-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-71"><a href="#cb14-71" aria-hidden="true" tabindex="-1"></a><span class="co"># Añadimos una leyenda</span></span>
+<span id="cb14-72"><a href="#cb14-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-73"><a href="#cb14-73" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="dv">0</span>, <span class="dv">25</span>, <span class="at">legend=</span><span class="fu">c</span>(<span class="st">"Proceso 1"</span>, <span class="st">"Proceso 2"</span>, <span class="st">"Superposición"</span>),</span>
+<span id="cb14-74"><a href="#cb14-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-75"><a href="#cb14-75" aria-hidden="true" tabindex="-1"></a>       <span class="at">col=</span><span class="fu">c</span>(<span class="st">"black"</span>, <span class="st">"blue"</span>, <span class="st">"red"</span>), <span class="at">lty=</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>))</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Tema3_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" style="width:70.0%"></p>
+<figcaption>Superposición de dos procesos de Poisson</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="separación-de-procesos-de-poisson" class="level3" data-number="4.4.2">
+<h3 data-number="4.4.2" class="anchored" data-anchor-id="separación-de-procesos-de-poisson"><span class="header-section-number">4.4.2</span> Separación de procesos de Poisson</h3>
+<p>Imaginemos una cafetería en los Pirineos donde los clientes, de España y de Francia, van llegando de acuerdo a un proceso de Poisson <span class="math inline">\((N_t)_{t\in[0,\infty)}\)</span> con tasa de 10 clientes por hora. Supongamos además que el 60% de los clientes son españoles y el 40% de los clientes son franceses. De este manera, los clientes españoles tendrán su propio proceso de conteo <span class="math inline">\((N_t^1)_{t\in[0,\infty)}\)</span> y, de la misma manera, los clientes franceses tendrán otro proceso de conteo <span class="math inline">\((N_t^2)_{t\in[0,\infty)}\)</span>. Nos preguntamos qué tipo de procesos son <span class="math inline">\((N_t^1)_{t\in[0,\infty)}\)</span> y <span class="math inline">\((N_t^2)_{t\in[0,\infty)}\)</span>.</p>
+<p>En general, un proceso de Poisson <span class="math inline">\((N_t)_{t\in[0,\infty)}\)</span> puede ser separado en dos procesos <span class="math inline">\((N_t^1)_{t\in[0,\infty)}\)</span> y <span class="math inline">\((N_t^2)_{t\in[0,\infty)}\)</span> contando llegadas de “tipo 1” y “tipo 2”, de acuerdo a una sucesión <span class="math inline">\(Y_1,Y_2,\ldots\)</span> de variables aleatorias independientes entre sí, e independientes del proceso <span class="math inline">\((N_t)_{t\in [0,\infty)}\)</span>, tal que</p>
+<p><span class="math display">\[\mathbb{P}(Y_i=1)=p\quad\mbox{ y }\quad\mathbb{P}(Y_i=2)=1-p.\]</span></p>
+<p>Intuitivamente, para cada llegada <span class="math inline">\(i\)</span>, podemos pensar en la variable aleatoria <span class="math inline">\(Y_i\)</span> como un lanzamiento de moneda (no equilibrada si <span class="math inline">\(p\neq 1/2\)</span>) realizado al producirse dicha llegada, de modo que si se obtiene cara (valor 1) se clasifica la llegada como de tipo 1, y si se obtiene cruz (valor 2) se clasifica la clasifica como de tipo 2.</p>
+<p>De esta manera, si <span class="math inline">\(T_n=\tau_1+\tau_2+\ldots+\tau_n\)</span> es el tiempo transcurrido hasta la n-ésima llegada, entonces los procesos <span class="math inline">\((N_t^1)_{t\in[0,\infty)}\)</span> y <span class="math inline">\((N_t^2)_{t\in[0,\infty)}\)</span> contando las llegadas de tipo 1 y las llegadas de tipo 2 hasta tiempo <span class="math inline">\(t\)</span> vendrán respectivamente dados por</p>
+<p><span id="eq-sepPoi"><span class="math display">\[
+N_t^1=\#\{n\colon Y_n=1,\:T_n\le t\},\quad N_t^2=\#\{n\colon Y_n=2,\:T_n\le t\},
+\tag{4.3}\]</span></span></p>
+<p>donde # denota el cardinal de un conjunto.</p>
+<p>Tenemos el siguiente resultado.</p>
+<div id="thm-separacion" class="theorem">
+<p><span class="theorem-title"><strong>Teorema 4.3 (Separación)</strong></span> Sea <span class="math inline">\((N_t)_{t\in[0,\infty)}\)</span> un proceso de Poisson con tasa <span class="math inline">\(\lambda\)</span>. Consideremos que cada llegada es de tipo 1 con probabilidad <span class="math inline">\(p\)</span> o de tipo 2 con probabilidad <span class="math inline">\(1-p\)</span>, independientemente de las demás llegadas y de <span class="math inline">\((N_t)_{t\in[0,\infty)}\)</span>. Entonces, los procesos <span class="math inline">\((N_t^1)_{t\in[0,\infty)}\)</span> y <span class="math inline">\((N_t^2)_{t\in[0,\infty)}\)</span> contando las llegadas de tipo 1 y las llegadas de tipo 2, respectivamente, verifican:</p>
+<ol type="1">
+<li><p><span class="math inline">\((N_t^1)_{t\in[0,\infty)}\)</span> es un proceso de Poisson con tasa <span class="math inline">\(\lambda p\)</span>.</p></li>
+<li><p><span class="math inline">\((N_t^2)_{t\in[0,\infty)}\)</span> es un proceso de Poisson con tasa <span class="math inline">\(\lambda (1-p)\)</span>.</p></li>
+<li><p><span class="math inline">\((N_t^1)_{t\in[0,\infty)}\)</span> y <span class="math inline">\((N_t^2)_{t\in[0,\infty)}\)</span> son procesos de Poisson independientes.</p></li>
+</ol>
+</div>
+<p>Volvamos al ejemplo de la cafetería en los Pirineos. Dijimos que llegan una media de 10 clientes por hora, por lo que el correspondiente proceso de Poisson <span class="math inline">\((N_t)_{t\in [0,\infty)}\)</span> tendrá tasa <span class="math inline">\(\lambda=10\)</span>. Al ser el 60% de los clientes que llegan españoles y el 40% franceses, tendremos que los clientes españoles llegarán a la cafetería siguiendo un proceso de Poisson con tasa <span class="math inline">\(10\cdot 0.6=6\)</span>, y los clientes franceses llegarán a la cafetería siguiendo un proceso de Poisson con tasa <span class="math inline">\(10\cdot 0.4=4\)</span>.</p>
+<p>A continuación simulamos en <em>R</em> la separación del proceso de clientes en españoles y franceses:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Valores para simulación de los procesos</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> <span class="dv">10</span>  <span class="co"># tasa del proceso de Poisson</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fl">0.6</span>  <span class="co"># tasa del segundo proceso de Poisson</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>T <span class="ot">&lt;-</span> <span class="dv">10</span>      <span class="co"># Intervalo de tiempo en el que observamos el proceso</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Simulación de los tiempos entre llegadas y tipos de llegadas</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>tau <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>i <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span>(<span class="fu">sum</span>(tau) <span class="sc">&lt;</span> T){</span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>  tau[i] <span class="ot">&lt;-</span> <span class="fu">rexp</span>(<span class="at">n =</span> <span class="dv">1</span>, <span class="at">rate =</span> lambda1)</span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a>  y[i]<span class="ot">=</span><span class="fu">sample</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="at">size =</span> <span class="dv">1</span>)</span>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a>  i <span class="ot">&lt;-</span> i<span class="sc">+</span><span class="dv">1</span></span>
+<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-29"><a href="#cb15-29" aria-hidden="true" tabindex="-1"></a><span class="co"># Definimos los tiempos y los valores de N</span></span>
+<span id="cb15-30"><a href="#cb15-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-31"><a href="#cb15-31" aria-hidden="true" tabindex="-1"></a>tiempos <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="fu">cumsum</span>(tau))</span>
+<span id="cb15-32"><a href="#cb15-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-33"><a href="#cb15-33" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="dv">0</span><span class="sc">:</span><span class="fu">length</span>(tau)</span>
+<span id="cb15-34"><a href="#cb15-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-35"><a href="#cb15-35" aria-hidden="true" tabindex="-1"></a><span class="co"># Definimos los valores del proceso de Poisson 1</span></span>
+<span id="cb15-36"><a href="#cb15-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-37"><a href="#cb15-37" aria-hidden="true" tabindex="-1"></a>N1 <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb15-38"><a href="#cb15-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-39"><a href="#cb15-39" aria-hidden="true" tabindex="-1"></a>N1[y<span class="sc">==</span><span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb15-40"><a href="#cb15-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-41"><a href="#cb15-41" aria-hidden="true" tabindex="-1"></a>N1[y<span class="sc">==</span><span class="dv">2</span>] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb15-42"><a href="#cb15-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-43"><a href="#cb15-43" aria-hidden="true" tabindex="-1"></a>N1 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">cumsum</span>(N1))</span>
+<span id="cb15-44"><a href="#cb15-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-45"><a href="#cb15-45" aria-hidden="true" tabindex="-1"></a><span class="co"># Definimos los valores del proceso de Poisson 1</span></span>
+<span id="cb15-46"><a href="#cb15-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-47"><a href="#cb15-47" aria-hidden="true" tabindex="-1"></a>N2 <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb15-48"><a href="#cb15-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-49"><a href="#cb15-49" aria-hidden="true" tabindex="-1"></a>N2[y<span class="sc">==</span><span class="dv">2</span>] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb15-50"><a href="#cb15-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-51"><a href="#cb15-51" aria-hidden="true" tabindex="-1"></a>N2[y<span class="sc">==</span><span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb15-52"><a href="#cb15-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-53"><a href="#cb15-53" aria-hidden="true" tabindex="-1"></a>N2 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">cumsum</span>(N2))</span>
+<span id="cb15-54"><a href="#cb15-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-55"><a href="#cb15-55" aria-hidden="true" tabindex="-1"></a><span class="co"># Dibujamos la trayectoria del proceso 1</span></span>
+<span id="cb15-56"><a href="#cb15-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-57"><a href="#cb15-57" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(tiempos, N1, <span class="at">type =</span> <span class="st">"s"</span>,</span>
+<span id="cb15-58"><a href="#cb15-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-59"><a href="#cb15-59" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Tiempo"</span>, <span class="at">ylab =</span> <span class="st">"Llegadas"</span>, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">10</span>), <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">max</span>(N)))</span>
+<span id="cb15-60"><a href="#cb15-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-61"><a href="#cb15-61" aria-hidden="true" tabindex="-1"></a><span class="co"># Dibujamos la trayectoria del proceso 2</span></span>
+<span id="cb15-62"><a href="#cb15-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-63"><a href="#cb15-63" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(tiempos, N2, <span class="at">type =</span> <span class="st">"s"</span>, <span class="at">col=</span><span class="st">"blue"</span>)</span>
+<span id="cb15-64"><a href="#cb15-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-65"><a href="#cb15-65" aria-hidden="true" tabindex="-1"></a><span class="co"># Dibujamos la trayectoria del proceso original</span></span>
+<span id="cb15-66"><a href="#cb15-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-67"><a href="#cb15-67" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(tiempos, N, <span class="at">type =</span> <span class="st">"s"</span>, <span class="at">col=</span><span class="st">"red"</span>)</span>
+<span id="cb15-68"><a href="#cb15-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-69"><a href="#cb15-69" aria-hidden="true" tabindex="-1"></a><span class="co"># Añadimos una leyenda</span></span>
+<span id="cb15-70"><a href="#cb15-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-71"><a href="#cb15-71" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="dv">0</span>, <span class="dv">18</span>, <span class="at">legend=</span><span class="fu">c</span>(<span class="st">"Españoles"</span>, <span class="st">"Franceses"</span>, <span class="st">"Totales"</span>),</span>
+<span id="cb15-72"><a href="#cb15-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-73"><a href="#cb15-73" aria-hidden="true" tabindex="-1"></a>       <span class="at">col=</span><span class="fu">c</span>(<span class="st">"black"</span>, <span class="st">"blue"</span>, <span class="st">"red"</span>), <span class="at">lty=</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>))</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Tema3_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" style="width:70.0%"></p>
+<figcaption>Separación del proceso de Poisson</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="procesos-de-renovación" class="level2" data-number="4.5">
+<h2 data-number="4.5" class="anchored" data-anchor-id="procesos-de-renovación"><span class="header-section-number">4.5</span> Procesos de renovación</h2>
+<p>Hemos visto anteriormente que los procesos de Poisson son caracterizados como el proceso de conteo cuando los tiempos entre llegadas vienen dados por una sucesión <span class="math inline">\(\tau_1,\tau_2,\tau_3,\ldots\)</span> de variables independientes y exponenciales con la misma tasa <span class="math inline">\(\lambda\)</span>. Una generalización de los procesos de Poisson son los procesos de renovación donde los tiempos entre llegadas son independientes e idénticamente distribuidos, pero no necesariamente siguen una distribución exponencial. Dicho concepto es definido formalmente como sigue.</p>
+<div id="def-renovacion" class="theorem definition">
+<p><span class="theorem-title"><strong>Definición 4.5 (Proceso de renovación)</strong></span> Sean <span class="math inline">\(\tau_1,\tau_2,\tau_3,\ldots\)</span> variables aleatorias no negativas (es decir, <span class="math inline">\(\tau_n\ge 0\)</span>), independientes, e idénticamente distribuidas, de modo que <span class="math inline">\(\mathbb{P}(\tau_n=0)&lt;1\)</span> para todo <span class="math inline">\(n\)</span>. Llamamos <strong>proceso de renovación</strong> con tiempos entre llegadas <span class="math inline">\(\tau_1,\tau_2,\tau_3,\ldots\)</span> al proceso estocástico <span class="math inline">\((N_t)_{t\in[0,\infty)}\)</span> verificando <span class="math inline">\(N_0=0\)</span> y</p>
+<p><span id="eq-conteo"><span class="math display">\[
+N_t=\max\{n\colon T_n\le t\},
+\tag{4.4}\]</span></span></p>
+<p>donde <span class="math inline">\(T_n=\tau_1+\tau_2+\ldots+\tau_n\)</span>.</p>
+</div>
+<p>Al igual que con los procesos de Poisson interpretamos <span class="math inline">\(\tau_1,\tau_2,\tau_3,\ldots\)</span> como los tiempos entre llegadas, por lo que <span class="math inline">\(T_n=\tau_1+\tau_3+\ldots+\tau_n\)</span> es el tiempo de la n-ésima llegada. La condición (<a href="#eq-conteo" class="quarto-xref">Ecuación&nbsp;<span>4.4</span></a>) implica que si <span class="math inline">\(N_t=n\)</span>, entonces</p>
+<p><span class="math display">\[
+T_{n}\le t &lt; T_{n+1}.
+\]</span></p>
+<div class="callout callout-style-simple callout-none no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Ejemplo
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Imaginemos una máquina que funciona durante un tiempo <span class="math inline">\(\alpha\)</span> y, tras fallar, tarda un tiempo <span class="math inline">\(\beta\)</span> en ser reparada. Si la máquina falla y es reparada reiteradas veces, obtendremos variables aleatorias independientes <span class="math inline">\(\alpha_1,\beta_1,\alpha_2,\beta_2,\alpha_3,\beta_3,\ldots\)</span> con los correspondientes tiempos de fallo y reparación. El tiempo total de cada ciclo donde la máquina empieza a funcionar, falla y es reparada viene dado por <span class="math inline">\(\tau_i=\alpha_i+\beta_i\)</span>. Las variables <span class="math inline">\(\tau_1,\tau_2,\tau_3,\ldots\)</span> son i.i.d.. Podemos, por tanto, considerar el proceso de renovación <span class="math inline">\((N_t)_{t\in [0,\infty)}\)</span> contando el número total de ciclos hasta tiempo <span class="math inline">\(t\)</span>.</p>
+</div>
+</div>
+<p>Una importante propiedad de los procesos de renovación es la siguiente versión de la ley de los grandes números.</p>
+<div id="thm-grandesNum" class="theorem">
+<p><span class="theorem-title"><strong>Teorema 4.4 (Ley de los grandes números para procesos de renovación)</strong></span> Sea <span class="math inline">\((N_t)_{t\in[0,\infty)}\)</span> un proceso de renovación con tiempos entre llegadas <span class="math inline">\(\tau_1,\tau_2,\tau_3,\ldots\)</span>. Si <span class="math inline">\(\mathbb{E}(\tau_i)=\mu\)</span>, entonces con probabilidad 1 se verifica que</p>
+<p><span class="math display">\[
+\frac{N_t}{t}\to \frac{1}{\mu}\quad\mbox{ cuando }t\to\infty.
+\]</span></p>
+</div>
+<p>La interpretación del anterior resultado es sencilla. Si el tiempo medio entre llegadas (ciclos consecutivos) de un proceso de renovación es de <span class="math inline">\(\mu\)</span> horas, entonces en el largo plazo se producirán <span class="math inline">\(1/\mu\)</span> llegadas (ciclos) por hora. En el caso de un proceso de Poisson con tasa <span class="math inline">\(\lambda\)</span> se tendrá que</p>
+<p><span class="math display">\[
+\frac{N_t}{t}\to \lambda\quad\mbox{ cuando }t\to\infty,
+\]</span></p>
+<p>ya que los tiempos entre llegadas tienen media <span class="math inline">\(1/\lambda\)</span>.</p>
+<p>La demostración del anterior resultado se basa en la ley fuerte de los grandes números la cual recordamos a continuación.</p>
+<div id="lem-leyFuerte" class="theorem lemma">
+<p><span class="theorem-title"><strong>Lema 4.1 (Ley fuerte de los grandes números)</strong></span> Sean <span class="math inline">\(\tau_1,\tau_2,\tau_3,\ldots\)</span> variables aleatorias i.i.d. con <span class="math inline">\(\mathbb{E}(\tau_i)=\mu\)</span>. Entonces con probabilidad 1 se verifica que</p>
+<p><span class="math display">\[
+\frac{T_n}{n}\to \mu\quad\mbox{ cuando }n\to\infty,
+\]</span></p>
+<p>donde <span class="math inline">\(T_n=\tau_1+\tau_2+\ldots+\tau_n\)</span> para cada <span class="math inline">\(n\in\mathbb{N}\)</span>.</p>
+</div>
+<p>A continuación damos la demostración de la ley de los grandes números para procesos de renovación.</p>
+<p><strong>Demostración del Teorema <a href="#thm-grandesNum" class="quarto-xref">Teorema&nbsp;<span>4.4</span></a>.</strong></p>
+<p>Para cada <span class="math inline">\(n\in\mathbb{N}\)</span>, sea <span class="math inline">\(T_n=\tau_1+\tau_2+\ldots+\tau_n\)</span>. Como las variables <span class="math inline">\(\tau_1,\tau_2,\tau_3,\ldots\)</span> son i.i.d. con media <span class="math inline">\(\mu\)</span>, la ley fuerte de los grandes números nos dice que, con probabilidad 1, se verifica</p>
+<p><span id="eq-grandesNum"><span class="math display">\[
+\frac{T_n}{n}\to \mu\quad\mbox{ cuando }n\to\infty.
+\tag{4.5}\]</span></span></p>
+<p>Ahora, por definición de proceso de renovación tenemos que</p>
+<p><span class="math display">\[
+T_{N_t}\le t &lt; T_{N_t+1}.
+\]</span></p>
+<p>Dividiendo entre <span class="math inline">\(N_t\)</span> tenemos que</p>
+<p><span class="math display">\[
+\frac{T_{N_t}}{N_t}\le \frac{t}{N_t} &lt; \frac{T_{N_t+1}}{N_t}.
+\]</span></p>
+<p>De ahí se sigue que</p>
+<p><span id="eq-des"><span class="math display">\[
+\frac{T_{N_t}}{N_t}\le \frac{t}{N_t} &lt; \frac{T_{N_t+1}}{N_t+1}\frac{N_t+1}{N_t}.
+\tag{4.6}\]</span></span></p>
+<p>Puesto que las trayectorias de <span class="math inline">\(N_t\)</span> son crecientes, dando infinitos saltos de longitud 1, tendremos que <span class="math inline">\(\lim_{t\to \infty}N_t=\infty\)</span>. Como consecuencia de (<a href="#eq-grandesNum" class="quarto-xref">Ecuación&nbsp;<span>4.5</span></a>) se verifica, con probabilidad 1, que</p>
+<p><span class="math display">\[
+\lim_{t\to \infty}\frac{T_{N_t}}{N_t}=\mu.
+\]</span></p>
+<p>Por las misma razones también se cumplirá, con probabilidad 1, que</p>
+<p><span class="math display">\[
+\lim_{t\to \infty} \frac{T_{N_t+1}}{N_t+1}\frac{N_t+1}{N_t}=\mu.
+\]</span></p>
+<p>Finalmente, tomando límites en (<a href="#eq-des" class="quarto-xref">Ecuación&nbsp;<span>4.6</span></a>) cuando <span class="math inline">\(t\to\infty\)</span>, y teniendo en cuenta lo anterior, llegamos a la conclusión deseada, ya que <span class="math inline">\(t/N_t\)</span> se encuentra, con probabilidad 1, entre dos sucesiones las cuales convergen a <span class="math inline">\(\mu\)</span>. <span class="math inline">\(\square\)</span></p>
+<p>Volvamos al ejemplo donde una máquina se estropea y es reparada reiteradas veces. Supongamos que, de media, la máquina tarda una hora en estropearse, y quince minutos en ser reparada. Supongamos, además, que cada tiempo de fallo <span class="math inline">\(\alpha_i\)</span> y cada tiempo de reparación <span class="math inline">\(\beta_i\)</span> siguen distribuciones exponenciales. De este modo, <span class="math inline">\(\alpha_i\sim {\rm Exp}(1)\)</span> y <span class="math inline">\(\beta_i\sim {\rm Exp}(4)\)</span>. El proceso de renovación resultante puede ser simulado fácilmente en <em>R</em>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fijemos los valores de los parámetros</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>lambda_1 <span class="ot">&lt;-</span> <span class="dv">1</span>  <span class="co"># tasa de fallo</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>lambda_2 <span class="ot">&lt;-</span> <span class="dv">4</span>  <span class="co"># tasa de reparación</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>T <span class="ot">&lt;-</span> <span class="dv">10</span>      <span class="co"># Intervalo de tiempo en el que observamos el proceso</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Simulación de los tiempos entre llegadas</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">13</span>)</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>tau <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>i <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span>(<span class="fu">sum</span>(tau) <span class="sc">&lt;</span> T){</span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>  alpha <span class="ot">&lt;-</span> <span class="fu">rexp</span>(<span class="at">n =</span> <span class="dv">1</span>, <span class="at">rate =</span> lambda_1)</span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>  beta <span class="ot">&lt;-</span> <span class="fu">rexp</span>(<span class="at">n =</span> <span class="dv">1</span>, <span class="at">rate =</span> lambda_2)</span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>  tau[i] <span class="ot">&lt;-</span>  alpha <span class="sc">+</span> beta</span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a>  i <span class="ot">&lt;-</span> i<span class="sc">+</span><span class="dv">1</span></span>
+<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculamos los valores del proceso de renovación</span></span>
+<span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-31"><a href="#cb16-31" aria-hidden="true" tabindex="-1"></a>tiempos <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="fu">cumsum</span>(tau))</span>
+<span id="cb16-32"><a href="#cb16-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-33"><a href="#cb16-33" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="dv">0</span><span class="sc">:</span><span class="fu">length</span>(tau)</span>
+<span id="cb16-34"><a href="#cb16-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-35"><a href="#cb16-35" aria-hidden="true" tabindex="-1"></a><span class="co"># Dibujamos la trayectoria</span></span>
+<span id="cb16-36"><a href="#cb16-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-37"><a href="#cb16-37" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(tiempos, N, <span class="at">type =</span> <span class="st">"s"</span>,</span>
+<span id="cb16-38"><a href="#cb16-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-39"><a href="#cb16-39" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Tiempo"</span>, <span class="at">ylab =</span> <span class="st">"Ciclos"</span>, <span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">10</span>))</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Tema3_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" style="width:70.0%"></p>
+<figcaption>Simulación del proceso de renovación donde una máquina se estropea y repara reiteradamente</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>El tiempo medio de cada ciclo es <span class="math inline">\(\mathbb{E}(\tau_i)=\mathbb{E}(\alpha_i)+\mathbb{E}(\beta_i)=1+1/4=5/4\)</span>. Por tanto, la ley de los grandes números para procesos de renovación nos dice que</p>
+<p><span class="math display">\[
+\frac{N_t}{t}\to \frac{4}{5}\quad\mbox{ cuando }t\to\infty.
+\]</span></p>
+<p>Vamos a comprobar dicho resultado simulando una trayectoria a un plazo elevado de tiempo (por ejemplo, <span class="math inline">\(T=1000\)</span>), y dibujando la gráfica del cociente <span class="math inline">\(N_t/t\)</span>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fijemos los valores de los parámetros</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>lambda_1 <span class="ot">&lt;-</span> <span class="dv">1</span>  <span class="co"># tasa de fallo</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>lambda_2 <span class="ot">&lt;-</span> <span class="dv">4</span>  <span class="co"># tasa de reparación</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>T <span class="ot">&lt;-</span> <span class="dv">1000</span>      <span class="co"># Intervalo de tiempo en el que observamos el proceso</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Simulación de los tiempos entre llegadas</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">13</span>)</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>tau <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>i <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span>(<span class="fu">sum</span>(tau) <span class="sc">&lt;</span> T){</span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>  alpha <span class="ot">&lt;-</span> <span class="fu">rexp</span>(<span class="at">n =</span> <span class="dv">1</span>, <span class="at">rate =</span> lambda_1)</span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>  beta <span class="ot">&lt;-</span> <span class="fu">rexp</span>(<span class="at">n =</span> <span class="dv">1</span>, <span class="at">rate =</span> lambda_2)</span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a>  tau[i] <span class="ot">&lt;-</span>  alpha <span class="sc">+</span> beta</span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a>  i <span class="ot">&lt;-</span> i<span class="sc">+</span><span class="dv">1</span></span>
+<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb17-28"><a href="#cb17-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-29"><a href="#cb17-29" aria-hidden="true" tabindex="-1"></a>tiempos <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="fu">cumsum</span>(tau))</span>
+<span id="cb17-30"><a href="#cb17-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-31"><a href="#cb17-31" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="dv">0</span><span class="sc">:</span><span class="fu">length</span>(tau)</span>
+<span id="cb17-32"><a href="#cb17-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-33"><a href="#cb17-33" aria-hidden="true" tabindex="-1"></a>cociente <span class="ot">&lt;-</span> N <span class="sc">/</span> tiempos</span>
+<span id="cb17-34"><a href="#cb17-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-35"><a href="#cb17-35" aria-hidden="true" tabindex="-1"></a><span class="co"># Dibujamos la trayectoria</span></span>
+<span id="cb17-36"><a href="#cb17-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-37"><a href="#cb17-37" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(tiempos, cociente, <span class="at">type =</span> <span class="st">"S"</span>,</span>
+<span id="cb17-38"><a href="#cb17-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-39"><a href="#cb17-39" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Tiempo"</span>, <span class="at">ylab =</span> <span class="st">"N_t/t"</span>, <span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1000</span>))</span>
+<span id="cb17-40"><a href="#cb17-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-41"><a href="#cb17-41" aria-hidden="true" tabindex="-1"></a><span class="co"># Dibujamos una línea horizontal a la altura de la inversa de la media</span></span>
+<span id="cb17-42"><a href="#cb17-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-43"><a href="#cb17-43" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h=</span><span class="dv">4</span><span class="sc">/</span><span class="dv">5</span>, <span class="at">col=</span><span class="st">"blue"</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Tema3_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" style="width:70.0%"></p>
+<figcaption>El cociente entre el proceso de renovación y el tiempo se va aproximando a una constante, debido a la ley de los grandes números</figcaption>
+</figure>
+</div>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copiado");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copiado");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./Tema2.html" class="pagination-link" aria-label="Tema 2. Cadenas de Markov">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Tema 2. Cadenas de Markov</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
