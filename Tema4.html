@@ -1,0 +1,1383 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.32">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>5&nbsp; Tema 4. Conceptos básicos en series temporales – Procesos estocásticos y series temporales</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./Tema3.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-364982630eef5352dd1537128a8ed5cb.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Sin resultados",
+    "search-matching-documents-text": "documentos encontrados",
+    "search-copy-link-title": "Copiar el enlace en la búsqueda",
+    "search-hide-matches-text": "Ocultar resultados adicionales",
+    "search-more-match-text": "resultado adicional en este documento",
+    "search-more-matches-text": "resultados adicionales en este documento",
+    "search-clear-button-title": "Borrar",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancelar",
+    "search-submit-button-title": "Enviar",
+    "search-label": "Buscar"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Tema4.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Tema 4. Conceptos básicos en series temporales</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Buscar" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Procesos estocásticos y series temporales</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Buscar"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Presentación</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tema1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Tema 1. Introducción a los procesos estocásticos</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tema2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Tema 2. Cadenas de Markov</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tema3.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Tema 3. Procesos de Poisson</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tema4.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Tema 4. Conceptos básicos en series temporales</span></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Tabla de contenidos</h2>
+   
+  <ul>
+  <li><a href="#introducción" id="toc-introducción" class="nav-link active" data-scroll-target="#introducción"><span class="header-section-number">5.1</span> Introducción</a></li>
+  <li><a href="#definición-de-serie-temporal.-gráficos" id="toc-definición-de-serie-temporal.-gráficos" class="nav-link" data-scroll-target="#definición-de-serie-temporal.-gráficos"><span class="header-section-number">5.2</span> Definición de serie temporal. Gráficos</a></li>
+  <li><a href="#medidas-para-evaluación-de-predicciones" id="toc-medidas-para-evaluación-de-predicciones" class="nav-link" data-scroll-target="#medidas-para-evaluación-de-predicciones"><span class="header-section-number">5.3</span> Medidas para evaluación de predicciones</a></li>
+  <li><a href="#componentes-de-una-serie-temporal-y-esquemas-de-integración" id="toc-componentes-de-una-serie-temporal-y-esquemas-de-integración" class="nav-link" data-scroll-target="#componentes-de-una-serie-temporal-y-esquemas-de-integración"><span class="header-section-number">5.4</span> Componentes de una serie temporal y esquemas de integración</a></li>
+  <li><a href="#diferenciación-de-una-serie-temporal-y-medias-móviles" id="toc-diferenciación-de-una-serie-temporal-y-medias-móviles" class="nav-link" data-scroll-target="#diferenciación-de-una-serie-temporal-y-medias-móviles"><span class="header-section-number">5.5</span> Diferenciación de una serie temporal y medias móviles</a></li>
+  <li><a href="#descomposición-clásica-de-series-temporales" id="toc-descomposición-clásica-de-series-temporales" class="nav-link" data-scroll-target="#descomposición-clásica-de-series-temporales"><span class="header-section-number">5.6</span> Descomposición clásica de series temporales</a>
+  <ul class="collapse">
+  <li><a href="#método-de-la-diferencia-a-la-media-móvil" id="toc-método-de-la-diferencia-a-la-media-móvil" class="nav-link" data-scroll-target="#método-de-la-diferencia-a-la-media-móvil"><span class="header-section-number">5.6.1</span> Método de la diferencia a la media móvil</a></li>
+  <li><a href="#método-de-la-razón-a-la-media-móvil" id="toc-método-de-la-razón-a-la-media-móvil" class="nav-link" data-scroll-target="#método-de-la-razón-a-la-media-móvil"><span class="header-section-number">5.6.2</span> Método de la razón a la media móvil</a></li>
+  </ul></li>
+  <li><a href="#predicciones-con-análisis-clásico-y-limitaciones" id="toc-predicciones-con-análisis-clásico-y-limitaciones" class="nav-link" data-scroll-target="#predicciones-con-análisis-clásico-y-limitaciones"><span class="header-section-number">5.7</span> Predicciones con Análisis Clásico y limitaciones</a></li>
+  <li><a href="#la-descomposición-stl" id="toc-la-descomposición-stl" class="nav-link" data-scroll-target="#la-descomposición-stl"><span class="header-section-number">5.8</span> La descomposición STL</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Tema 4. Conceptos básicos en series temporales</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<!-- El siguiento código permite renderizar un solo capitulo: -->
+<!-- quarto render capitulo1.qmd --to pdf -->
+<section id="introducción" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="introducción"><span class="header-section-number">5.1</span> Introducción</h2>
+<p>El estudio de series temporales es fundamental para el proceso de predicción (Forecasting), que consiste en anticipar eventos futuros basándose en datos históricos y patrones identificables. Esta disciplina es esencial en diversos campos, desde la economía hasta la ingeniería, y su aplicación es vital para la toma de decisiones informadas en el ámbito empresarial y gubernamental.</p>
+<p><strong>¿Qué se puede predecir?</strong></p>
+<p>La predicción se utiliza en múltiples situaciones de la vida cotidiana y la industria, como son la gestión de inventarios, la planificación de la producción, la gestión energética o la asignación de personal. La capacidad de predecir con precisión depende de varios factores, entre ellos la comprensión de las causas subyacentes, la disponibilidad de datos históricos, la consistencia del comportamiento pasado y futuro, y el impacto de las predicciones en los propios eventos. Por ejemplo, las predicciones a corto plazo de la demanda eléctrica residencial suelen ser precisas debido a la estabilidad de los factores que la afectan y la abundancia de datos históricos relevantes.</p>
+<p><strong>Diferencia entre predicciones, objetivos y planificación</strong></p>
+<p>Es crucial diferenciar entre predicciones, objetivos y planificación. Predecir implica anticipar el futuro con la mayor precisión posible mediante el análisis de datos históricos y el conocimiento de eventos futuros. Los objetivos son metas específicas que deben alinearse con las predicciones y servir como guía para la planificación. La planificación involucra diseñar estrategias y acciones basadas en las predicciones para alcanzar los objetivos establecidos.</p>
+<p><strong>Determinación de qué predecir</strong></p>
+<p>Decidir qué predecir es un paso crucial. Puede involucrar observaciones individuales o datos agregados. Es importante definir el horizonte de predicción, que puede ser a corto plazo (una hora, o unos días), a medio plazo (por ejemplo, un mes) o a largo plazo (por ejemplo, un año). Además, se debe determinar la frecuencia de las predicciones, que puede ser diaria, semanal, mensual o anual, según las necesidades de los usuarios de las predicciones. La recolección y organización de datos relevantes y precisos es esencial para asegurar la calidad de las predicciones.</p>
+<p><strong>Datos y métodos de predicción</strong></p>
+<p>Los métodos cuantitativos de predicción son útiles cuando hay datos numéricos disponibles y se espera que los patrones pasados continúen en el futuro. Los datos de series temporales, como las ventas trimestrales o la demanda horaria de electricidad, son fundamentales en estos análisis. La descomposición de datos permite estudiar tendencias y patrones estacionales. Entre los métodos más utilizados se encuentran el análisis clásico de series, el suavizamiento exponencial y los modelos ARIMA, efectivos para capturar y predecir patrones en los datos históricos. Los modelos explicativos, que emplean variables predictoras, y los modelos mixtos, que combinan características de varios enfoques, pueden mejorar la precisión y la utilidad de las predicciones.</p>
+<p><strong>Pasos básicos en Forecasting</strong></p>
+<p>Las etapas a tener en cuenta en un problema de predicciones son:</p>
+<ol type="1">
+<li><p>Definición del problema: Entender el uso y los usuarios de las predicciones para asegurar que se adapten a sus necesidades específicas.</p></li>
+<li><p>Recolección de información: Obtener datos estadísticos relevantes y utilizar la experiencia de expertos en el campo.</p></li>
+<li><p>Análisis preliminar: Graficar y analizar datos para identificar patrones, tendencias y estacionalidad, lo cual ayuda en la selección del modelo de predicción adecuado.</p></li>
+<li><p>Elección y ajuste de modelos: Seleccionar y ajustar el método de predicción más apropiado basado en los datos disponibles y la situación específica.</p></li>
+<li><p>Uso de las predicciones: Aplicar los resultados en la planificación y toma de decisiones, alineando las acciones con las expectativas futuras y los objetivos de la organización o empresa.</p></li>
+</ol>
+</section>
+<section id="definición-de-serie-temporal.-gráficos" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="definición-de-serie-temporal.-gráficos"><span class="header-section-number">5.2</span> Definición de serie temporal. Gráficos</h2>
+<p>Una de las técnica más importante para hacer inferencias sobre el futuro con base en lo ocurrido en el pasado, es el análisis de series de tiempo.</p>
+<p>Dada una serie temporal, nuestros objetivos principales serán: describir el comportamiento de la serie, investigar el mecanismo generador de la serie temporal y buscar posibles patrones temporales que permitan sobrepasar la incertidumbre del futuro.</p>
+<p>Se suele hablar del estudio clásico o descriptivo de las series temporales para referirse a la metodología que se ha venido empleando desde la segunda mitad del siglo XIX. A pesar de sus limitaciones, los métodos clásicos se siguen usando por su sencillez y simplificación. En la década de los 60 se plantearon métodos de previsión alternativos a los clásicos que suplen varias de sus limitaciones, como son los métodos de alisado exponencial, y a principios de los 70 aparece un nuevo enfoque, debido a los estadísticos Box y Jenkins, para los modelos univariantes de series temporales.</p>
+<div id="def-conteo" class="theorem definition">
+<p><span class="theorem-title"><strong>Definición 5.1 (Serie temporal)</strong></span> Llamamos <strong>serie temporal</strong> a un conjunto de mediciones de cierto fenómeno o experimento registradas secuencialmente en el tiempo. Estas observaciones suelen denotarse por:</p>
+<p><span class="math display">\[
+\left\{ x_{t_1},x_{t_2},...,x_{t_n}\right\} \quad \text{con }%
+\{t_1&lt;t_2&lt;...&lt;t_n\}=\mathbb{T}\subset \Bbb{R}
+\]</span> donde <span class="math inline">\(x_{t_i}\)</span> representa el valor, en el instante <span class="math inline">\(t_i\)</span>, de una variable aleatoria que evoluciona con el tiempo.</p>
+</div>
+<div class="callout callout-style-simple callout-none no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Observación
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Teniendo en cuenta la definición anterior, una serie temporal puede verse también como una realización (o trayectoria) de un proceso estocástico <span class="math inline">\((X_t)_{t\in\mathbb{T}}\)</span>.</p>
+</div>
+</div>
+<p>En muchas áreas de conocimiento, las observaciones de interés son obtenidas en instantes sucesivos del tiempo. Por ejemplo, cada hora, cada día, datos mensuales, trimestrales, semestrales o bien registradas por algún aparato de medición en forma continua.</p>
+<ul>
+<li><p>De una manera sencilla, podemos decir que si <span class="math inline">\(\mathbb{T}\subset\Bbb{Z}\)</span> es un conjunto contable, se dice que la serie es de <strong>tiempo discreto</strong>, mientras que si <span class="math inline">\(T\subset\Bbb{R}\)</span> es un intervalo real, se dice que la serie es de <strong>tiempo continuo</strong>.</p></li>
+<li><p>Cuando <span class="math inline">\(t_{i+1}-t_i=k\)</span>, para todo <span class="math inline">\(i=1,...,n-1\)</span>, se dice que la serie es <strong>equiespaciada</strong>; en caso contrario será no equiespaciada.</p></li>
+</ul>
+<p>En adelante, trabajaremos por comodidad con series de tiempo equiespaciadas. Por tanto, se denotarán de la siguiente forma:</p>
+<p><span class="math display">\[
+\left\{ x_{t_1},x_{t_2},...,x_{t_n}\right\} =\left\{ x_1,x_2,...,x_n\right\}.
+\]</span></p>
+<p>El primer paso en el análisis de cualquier serie de tiempo consiste en representarla gráficamente (<strong>gráfico temporal</strong>). En la representación gráfica de las series temporales se utilizan los ejes cartesianos. En el eje de abscisas se representa el tiempo <span class="math inline">\(t,\)</span> y en el eje de ordenadas, los valores de la magnitud observada <span class="math inline">\(x_t\)</span>. Se obtiene así una nube de puntos <span class="math inline">\((t,x_t)\)</span> que, unidos por segmentos, proporcionan una visión dinámica de la evolución de la variable a lo largo del tiempo.</p>
+<p>Veamos algunos ejemplos de series de datos incluidos en <em>R</em>. La primera, LakeHuron, contiene las medidas anuales del nivel del lago Huron (en pies), en el tramo 1875-1972. Observamos una tendencia decreciente que parece estabilizarse en el tramo final. La segunda serie de datos, AirPassengers, contiene el los viajeros mensuales en aerolíneas internacionales, en el tramo 1949-1960. Observamos un patrón periódico que se repite a lo largo de la serie, así como tendencia creciente. La tercera, EuStockMarkets, contiene los precios diarios al cierre de 4 índices stock europeos (DAX, SMI, CAC y FTSE), en el tramo 1991-1998. Observamos que las cuatro series presentan un patrón de comportamiento similar, con tendencia creciente y picos de crecimiento en los mismos tramos temporales.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ts.plot</span>(LakeHuron, </span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>        <span class="at">gpars =</span> <span class="fu">list</span>(<span class="at">xlab =</span> <span class="st">"Year"</span>, </span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>                   <span class="at">ylab =</span> <span class="st">"Level LakeHuron in feet"</span>, </span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>                   <span class="at">lwd =</span> <span class="fl">1.5</span>))</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ts.plot</span>(AirPassengers, </span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>        <span class="at">gpars =</span> <span class="fu">list</span>(<span class="at">xlab =</span> <span class="st">"Month &amp; Year"</span>, </span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>                   <span class="at">ylab =</span> <span class="st">"Thousand of passengers"</span>, </span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>                   <span class="at">lwd =</span> <span class="fl">1.5</span>))</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Tema4_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ts.plot</span>(EuStockMarkets, </span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>        <span class="at">gpars =</span> <span class="fu">list</span>(<span class="at">xlab =</span> <span class="st">"Time"</span>, </span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>                   <span class="at">ylab =</span> <span class="st">"Daily closing price"</span>, </span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>                   <span class="at">col =</span> <span class="fu">rainbow</span>(<span class="dv">4</span>), </span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>                   <span class="at">lty =</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>)))</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Tema4_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>El gráfico de la serie permitirá:</p>
+<ol type="a">
+<li><p><strong>Detectar outliers (datos atípicos):</strong> se refiere a puntos de la serie que se escapan de lo “normal”. Un outlier puede corresponderse con un error de medición, o bien con un valor real del fenómeno, el cual a su vez puede tener o no influencia destacada en el modelo propuesto. Conviene identificar los outliers para determinar si deben eliminarse, reemplazarse por otro valor, o bien mantenerlos en el análisis.</p></li>
+<li><p><strong>Detectar estacionalidad:</strong> la variación estacional representa un movimiento periódico de la serie de tiempo. Cada estación puede corresponder con un trimestre, un mes, un día, etc.</p></li>
+<li><p><strong>Detectar tendencias:</strong> la tendencia representa el comportamiento predominante de la serie una vez eliminada la estacionalidad. Esta puede ser definida vagamente como la curva maestra que muestra el cambio de la media a lo largo del tiempo.</p></li>
+</ol>
+</section>
+<section id="medidas-para-evaluación-de-predicciones" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="medidas-para-evaluación-de-predicciones"><span class="header-section-number">5.3</span> Medidas para evaluación de predicciones</h2>
+<p>En esta sección introduciremos conceptos y alguna notación referidos al contexto de predicción con series temporales.</p>
+<p>En primer lugar, debemos destacar que para que tenga sentido la realización de predicciones se supondrá que los datos recopilados a lo largo del tiempo se han tomado siempre en las mismas magnitudes y que la serie presenta cierta estabilidad en la estructura del fenómeno estudiado.</p>
+<p>En el análisis clásico, las predicciones futuras se realizan teniendo en cuenta únicamente el valor de la serie para instantes pasados. Si diponemos de <span class="math inline">\(T\)</span> observaciones de la serie en estudio, la información disponible viene dada por:</p>
+<p><span class="math display">\[
+x_1,x_2,...,x_T.
+\]</span></p>
+<p>Dada esta información, la <strong>predicción</strong> de la variable en estudio en el instante siguiente <span class="math inline">\(T+1\)</span> se denotará por:</p>
+<p><span class="math display">\[\widehat{x}_{T+1}\]</span></p>
+<p>y en un instante posterior cualquiera <span class="math inline">\(T+m\)</span> será:</p>
+<p><span class="math display">\[\widehat{x}_{T+m}\]</span></p>
+<p>Así, el <strong>error de predicción</strong> vendrá dado por la diferencia entre el valor observado de la serie y la predicción:</p>
+<p><span class="math display">\[
+e_{T+1}=x_{T+1}-\widehat{x}_{T+1}
+\]</span></p>
+<p>Comentar que, al igual que sucede en muchos procesos de inferencia, se pueden realizar predicciones puntuales y predicciones por intervalos de confianza para las observaciones futuras. En la mayoría de los casos, nos limitaremos a proporcionar estimaciones puntuales.</p>
+<p>Para poder comparar diversos procedimientos de predicción, es decir, para responder a la pregunta ¿qué método es mejor para predecir esta serie?, necesitamos disponer de algún criterio que nos permita evaluar las predicciones realizadas.</p>
+<p>Como primer paso, podemos comentar la existencia de algunos métodos extremadamente básicos, denominados métodos ingenuos, que sirven de referencia en la comparación de predicciones. Es decir, las predicciones que se obtienen con cualquier procedimiento suelen compararse con las predicciones que se obtendrían con algún método ingenuo. Si el método ingenuo proporciona mejores predicciones (menores errores de predicción), esto será indicativo de que el método usado no es el adecuado y conviene probar con otro.</p>
+<p>Dos ejemplos de métodos ingenuos que se utilizan como referencia son:</p>
+<ul>
+<li><strong>Método ingenuo I</strong>: La predicción para el próximo instante es igual a la observación actual (último valor observado).</li>
+</ul>
+<p><span class="math display">\[
+\widehat{x}_{t+1}=x_t
+\]</span></p>
+<ul>
+<li><strong>Método ingenuo II</strong>: La predicción para el próximo instante es igual a la observación actual más el último incremento observado.</li>
+</ul>
+<p><span class="math display">\[
+\widehat{x}_{t+1}=x_t+(x_t-x_{t-1})
+\]</span></p>
+<p>Como segunda opción para medir la capacidad predictiva de un modelo, se suelen calcular las siguientes medidas. Si se dispone de <span class="math inline">\(T\)</span> observaciones y se han realizado predicciones desde el instante 1, las medidas son:</p>
+<ul>
+<li><em>RMSE (la raíz cuadrada del error cuadrático medio):</em></li>
+</ul>
+<p><span class="math display">\[
+\mbox{RMSE}=\sqrt{\frac{\sum\limits_{t=1}^Te_{t}^2}{T}}
+\]</span></p>
+<ul>
+<li><em>MAE (el error absoluto medio):</em></li>
+</ul>
+<p><span class="math display">\[
+\mbox{MAE}=\frac{\sum\limits_{t=1}^T\left| e_{t}\right| }{T}
+\]</span></p>
+<p>Evidentemente, cuanto menores sean estas medidas mayor será la capacidad predictiva del modelo. Conviene indicar la existencia de otras medidas para evaluar predicciones, además de las vistas aquí.</p>
+<p>Por último destacaremos que para que un modelo predictivo sea adecuado no basta con que los errores de predicción sean pequeños (valores pequeños de RMSE y de MAE), sino que además pretendemos describir completamente el comportamiento sistemático de la serie (la parte determinista), de manera que la parte que queda sin describir (los errores de predicción) deberían ser un ruido blanco.</p>
+</section>
+<section id="componentes-de-una-serie-temporal-y-esquemas-de-integración" class="level2" data-number="5.4">
+<h2 data-number="5.4" class="anchored" data-anchor-id="componentes-de-una-serie-temporal-y-esquemas-de-integración"><span class="header-section-number">5.4</span> Componentes de una serie temporal y esquemas de integración</h2>
+<p>El principal fin del estudio de series temporales es realizar predicciones. Un punto muy importante a tener en cuenta en este contexto es la cantidad de información contenida en una serie temporal.</p>
+<p>Por ejemplo, podemos considerar la serie temporal correspondiente a la hora de salida del sol (medida todos los días durante 10 años). Con la serie de observaciones pasadas podemos realizar una buena predicción para días futuros, es decir, la serie contiene mucha información relevante para predecir el futuro. Consideremos por otra parte la serie temporal correspondiente al número premiado del sorteo de la lotería (medida todos los sábados durante 20 años). En este caso las observaciones pasadas no nos permiten realizar una buena predicción del fenómeno en el futuro, es decir, la serie contiene poca información relevante para predecir el futuro.</p>
+<p>Podríamos decir que la primera serie es prácticamente determinista mientras que la segunda es totalmente aleatoria. En general, las series de tiempo contienen una parte determinista (permiten realizar predicciones) y otra parte aleatoria (perturbación impredecible).</p>
+<p>En el <strong>Análisis Clásico</strong> se supone que una serie temporal, <span class="math inline">\(\{x_t\}_{t=1,...,n},\)</span> se puede descomponer en todas o algunas de las siguientes componentes:</p>
+<ul>
+<li><p>Componente de Tendencia <span class="math inline">\((T_t)\)</span></p></li>
+<li><p>Componente de Ciclo <span class="math inline">\((C_t)\)</span></p></li>
+<li><p>Componente de Estacionalidad <span class="math inline">\((S_t)\)</span></p></li>
+<li><p>Componente Irregular <span class="math inline">\((I_t)\)</span>,</p></li>
+</ul>
+<p>y que la serie de tiempo se obtiene como una función de sus componentes:</p>
+<p><span class="math display">\[
+x_t=f\left( T_t,C_t,S_t,I_t\right)
+\]</span> Veamos a continuación el significado de cada una de las componentes, aunque resulta complicado dar una definición exacta de cada una de ellas.</p>
+<ol type="a">
+<li><p><strong>Componente de Tendencia (Trend):</strong> Es la componente que representa la evolución a largo plazo de la serie, es decir, la curva maestra de evolución del fenómeno en estudio. Las variaciones de la tendencia de una serie pueden deberse a diversos motivos.</p></li>
+<li><p><strong>Componente de Ciclo (Cycle):</strong> El factor cíclico refleja movimientos oscilatorios por encima y por debajo de la tendencia a largo plazo. La duración de un ciclo se suele medir desde un pico al siguiente pico de la serie suavizada (o desde un valle al siguiente valle). Se entiende que el periodo de cada ciclo es siempre superior al año. A veces se confunde con la componente estacional. La diferencia principal es que las fluctuaciones de los ciclos no tienen frecuencia fija, y suelen asociarse a aspectos económicos, mientras que las fluctuaciones de la componente estacional tienen frecuencia fija y se asocian con aspectos del calendario.</p></li>
+</ol>
+<div class="callout callout-style-simple callout-none no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Observación
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>En general, las componentes de tendencia y ciclo son muy difíciles de separar, de manera que se suelen fusionar en una única componente denominada Tendencia-Ciclo. En adelante, nosotros trabajaremos con ambas componentes fusionadas y usaremos la notación <span class="math inline">\(T_t\)</span> y hablaremos de Tendencia para referirnos a la componente Tendencia-Ciclo.</p>
+</div>
+</div>
+<ol start="3" type="a">
+<li><strong>Componente de Estacionalidad (Seasonal):</strong> La componente estacional recoge el comportamiento periódico (repetitivo) de la serie. Las razones de la estacionalidad suelen ser de tipo físico-natural (tiempo meteorológico, ciclos biológicos, etc) y de tipo institucional (vacaciones, horarios comerciales, etc.). Es decir, aparece debido al efecto del calendario.</li>
+</ol>
+<p>En general, la estacionalidad se refiere a las oscilaciones de una serie temporal que se completan dentro de un año y que se repiten en años sucesivos. Por tanto, el periodo de esta componente suele ser menor o igual a un año. Por ejemplo, si disponemos de datos mensuales podemos tener estacionalidad con periodo 12 meses (un año), si disponemos de datos trimestrales podemos tener estacionalidad con periodo 4 trimestres (un año). Si disponemos de datos diarios, podemos tener estacionalidad con periodo 7 días (una semana), si disponemos de datos cada hora, podemos tener estacionalidad con periodo 24 horas (un día), etc. El <strong>periodo</strong> de la componente estacional hace referencia al número de datos que conforman la parte repetitiva de la serie.</p>
+<p><strong>En Análisis Clásico, se supone que la que componente estacional (patrón periódico) se repite de forma fija a lo largo de toda la serie</strong>. Por tanto, si el periodo es <span class="math inline">\(L\)</span>, diremos que la componente estacional tiene <span class="math inline">\(L\)</span> <strong>estaciones</strong> que podemos denotar por <span class="math inline">\(\{h_1, h_2, ..., h_L \}\)</span> y buscamos estimar un valor correspondiente a cada estación.</p>
+<p>Por ejemplo, si se trata de datos mensuales, probablemente observaremos en la serie temporal un patrón repetitivo cada año (cada 12 datos). Tendremos entonces que el periodo es <span class="math inline">\(L=12\)</span>, cada mes del año sería una estación (<span class="math inline">\(h_1=enero\)</span>, <span class="math inline">\(h_2=febrero\)</span>, …<span class="math inline">\(h_{12}=diciembre\)</span>) y por tanto estimaremos un valor que se repetirá para todos los eneros, un valor que se repetirá para todos los febreros, …, un valor que se repetirá para todos los diciembres. Si se trata de datos diarios (por ejemplo, ingresos por ventas de unos grandes almacenes), observaremos en la serie temporal un patrón repetitivo cada semana (cada 7 datos). Tendremos entonces que el periodo es <span class="math inline">\(L=7\)</span>, cada día sería una estación (<span class="math inline">\(h_1=lunes\)</span>, <span class="math inline">\(h_2=martes\)</span>,…, <span class="math inline">\(h_7=domingo\)</span>) y por tanto estimaremos un valor que se repetirá para todos los lunes, un valor que se repetirá para todos los martes, …, un valor que se repetirá para todos los domingos.</p>
+<ol start="4" type="a">
+<li><strong>Componente Irregular (Reminder):</strong> Esta componente viene dada por las variaciones de la serie que no están recogidas en las demás componentes. La idea es que recoja la perturbación aleatoria pura de la serie, es decir, la parte impredecible de la serie. Lo ideal es que se corresponda con un <em>ruido blanco</em>, de manera que toda la parte determinista de la serie quede recogida en las componentes Tendencia-Ciclo y Estacional.</li>
+</ol>
+<p>Como ya hemos indicado, en el análisis clásico se supone que el valor que toma la serie <span class="math inline">\(\{x_t\}_t\)</span> en cada instante se puede expresar como una función del valor correspondientes a sus componentes en dicho instante:</p>
+<p><span class="math display">\[
+x_t=f\left( T_t,S_t,I_t\right) ,
+\]</span></p>
+<p>donde <span class="math inline">\(T_t\)</span> representa la Tendencia-Ciclo. Conviene señalar que en una serie temporal no tienen por qué estar presentes todas las componentes.</p>
+<p>Los esquemas más utilizados para describir la forma en que las componentes se integran para dar lugar a la serie son el esquema <strong>aditivo</strong> y el <strong>multiplicativo</strong>.</p>
+<ul>
+<li><p><strong>Esquema aditivo:</strong><br>
+Según este esquema, el valor de la serie en cualquier instante se obtiene como <em>suma</em> de los valores correspondientes a sus componentes en dicho instante:</p>
+<p><span class="math display">\[
+\boxed{x_t = T_t + S_t + I_t}
+\]</span></p></li>
+<li><p><strong>Esquema multiplicativo:</strong><br>
+Según este esquema, el valor de la serie en cualquier instante se obtiene como <em>producto</em> de los valores correspondientes a sus componentes en dicho instante:</p>
+<p><span class="math display">\[
+\boxed{x_t = T_t \times S_t \times I_t}
+\]</span></p>
+<p>Obsérvese que, al tomar logaritmos neperianos, el esquema multiplicativo se transforma en aditivo.</p>
+<p>Aunque por su sencillez los esquemas más utilizados son los dos anteriores, también suelen utilizarse los esquemas mixtos, donde algunas componentes se integran de forma multiplicativa y otras de forma aditiva. Un ejemplo de <strong>esquema mixto</strong> sería:</p></li>
+</ul>
+<p><span class="math display">\[
+x_t=T_t\times S_t+I_t
+\]</span> <strong>¿Esquema aditivo o multiplicativo?</strong> Para determinar si las componentes de la serie se combinan de forma aditiva o multiplicativa, se pueden usar varias herramientas:</p>
+<ol type="1">
+<li><p>Inspección visual: En un esquema aditivo, la representación gráfica de la serie mostrará una componente estacional aproximadamente estable en todo momento, independientemente de los valores que tome la tendencia (nivel de la serie). Sin embargo, en un esquema multiplicativo, la componente estacional se amplifica cuando la serie se mueve en niveles más altos.</p></li>
+<li><p>Gráfico de desviaciones típicas frente a medias: Este gráfico consiste en calcular, para cada tramo periódico (por ejemplo, un año), tanto la desviación típica como la media de los valores de la serie. En un esquema aditivo, las desviaciones típicas se mantienen aproximadamente constantes sea cual sea el valor de la media, mientras que en el esquema multiplicativo, las desviaciones típicas aumentan cuando crece la media.</p></li>
+</ol>
+<p>A continuación mostramos un ejemplo de esquema multiplicativo (figura de la izquierda) y un esquema aditivo (figura de la derecha).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ts.plot</span>(AirPassengers, <span class="at">lwd =</span> <span class="fl">1.5</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ts.plot</span>(<span class="fu">log</span>(AirPassengers), <span class="at">lwd =</span> <span class="fl">1.5</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Tema4_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="diferenciación-de-una-serie-temporal-y-medias-móviles" class="level2" data-number="5.5">
+<h2 data-number="5.5" class="anchored" data-anchor-id="diferenciación-de-una-serie-temporal-y-medias-móviles"><span class="header-section-number">5.5</span> Diferenciación de una serie temporal y medias móviles</h2>
+<p>La representación gráfica de la serie temporal nos puede ayudar a decidir el tipo de tendencia de la serie, pero a veces no es tan sencillo. Un método que permite determinar el tipo de tendencia de una serie y a su vez eliminarla consiste en <em>tomar diferencias</em>.</p>
+<p><strong>Diferenciación de una serie</strong></p>
+<div id="def-diferencia" class="theorem definition">
+<p><span class="theorem-title"><strong>Definición 5.2 (Diferencia de primer orden)</strong></span> Dada una serie temporal <span class="math inline">\(\{x_t\}_{t=1,...,n}\)</span> , se define su <strong>diferencia de primer orden</strong> como la serie que resulta de restar a cada observación, la observación anterior:</p>
+<p><span class="math display">\[
+\Delta x_t=x_t-x_{t-1}
+\]</span></p>
+</div>
+<p>De manera análoga, se puede definir la <em>diferencia de orden 2</em> de la serie como:</p>
+<p><span class="math display">\[
+\Delta ^2x_t=\Delta \left( x_t-x_{t-1}\right) =\left( x_t-x_{t-1}\right)
+-\left( x_{t-1}-x_{t-2}\right) =x_t-2x_{t-1}+x_{t-2}
+\]</span></p>
+<p>así como la <em>diferencia de orden k</em>, en general.</p>
+<div class="callout callout-style-simple callout-none no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Observación
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Al tomar diferencias de orden uno, la serie resultante tiene un dato menos (se pierde el primer dato). Si se toman diferencias de orden dos, la serie resultante tiene dos datos menos (se pierden los dos primeros). En general, al tomar diferencias de orden <span class="math inline">\(k\)</span>, la serie resultante tiene <span class="math inline">\(k\)</span> datos menos (se pierden los <span class="math inline">\(k\)</span> primeros datos).</p>
+</div>
+</div>
+<ul>
+<li><p><strong>Si la tendencia es de tipo lineal</strong>, ésta se puede eliminar tomando diferencias de orden uno:</p>
+<p><span class="math display">\[
+\begin{aligned}
+x_t &amp;= b_0 + b_1 \cdot t + \varepsilon_t \quad \text{con} \quad \varepsilon_t \sim \text{ruido blanco} \\
+&amp;\Rightarrow \; \Delta x_t = x_t - x_{t-1} = (b_0 + b_1 t + \varepsilon_t) - (b_0 + b_1 (t-1) + \varepsilon_{t-1}) \\
+&amp;\Rightarrow \; \Delta x_t = b_1 + (\varepsilon_t - \varepsilon_{t-1}) = b_1 + \tilde{\varepsilon}_t
+\end{aligned}
+\]</span></p>
+<p>Es decir, la serie obtenida al tomar diferencias de orden uno es una constante (<span class="math inline">\(b_1\)</span>) más un ruido blanco (<span class="math inline">\(\tilde{\varepsilon}_t\)</span>).</p></li>
+<li><p>En general, <strong>si la tendencia es de tipo polinómico</strong> de orden <span class="math inline">\(k\)</span>, ésta se puede eliminar tomando diferencias de orden <span class="math inline">\(k\)</span>.</p></li>
+</ul>
+<p>Veamos un ejemplo del efecto de tomar diferencias de orden 1 sobre la serie de precios del índice DAX y sobre la serie de pasajeros:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>DAX_index <span class="ot">&lt;-</span> EuStockMarkets[ , <span class="dv">1</span>]</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>))</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ts.plot</span>(DAX_index)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ts.plot</span>(<span class="fu">diff</span>(DAX_index, <span class="at">differences =</span> <span class="dv">1</span>))</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ts.plot</span>(AirPassengers)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ts.plot</span>(<span class="fu">diff</span>(AirPassengers, <span class="at">differences =</span> <span class="dv">1</span>))</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Tema4_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li><p><strong>Si la tendencia es de tipo exponencial</strong>, ésta se puede eliminar tomando diferencias en el logaritmo de la serie:</p>
+<p><span class="math display">\[
+\begin{aligned}
+x_t &amp;= e^{b_0 + b_1 \cdot t} \times e^{\varepsilon_t}
+\;\Rightarrow\;
+\ln(x_t) = b_0 + b_1 \cdot t + \varepsilon_t \\[6pt]
+&amp;\Rightarrow\;
+\Delta \ln(x_t) = \ln(x_t) - \ln(x_{t-1})
+= b_1 + \tilde{\varepsilon}_t
+\end{aligned}
+\]</span></p>
+<p>Por otra parte, la diferencia de logaritmos coincide con el logaritmo del cociente, así que:</p>
+<p><span class="math display">\[
+\Rightarrow\;
+\Delta \ln(x_t)
+= \ln(x_t) - \ln(x_{t-1})
+= \ln\!\left(\frac{x_t}{x_{t-1}}\right)
+\]</span></p>
+<p>Usando el desarrollo de Taylor para el logaritmo se tiene que:</p>
+<p><span class="math display">\[
+\Delta \ln(x_t)
+= \ln\!\left(\frac{x_t}{x_{t-1}}\right)
+\simeq
+\frac{x_t - x_{t-1}}{x_{t-1}}
+\quad \text{(Tasa de variación relativa)}
+\]</span></p>
+<p>Por tanto, si la tendencia es de tipo exponencial, las tasas de variación relativa oscilarán alrededor de un valor constante.</p>
+<p><strong>Medias Móviles</strong></p></li>
+</ul>
+<p>Otro método para ayudar a identificar la tendencia de una serie (análisis descriptivo de la serie), son las <strong>medias móviles</strong>, aunque también puede usarse para realizar predicciones y para eliminar la componente estacional de una serie.</p>
+<p>Este método consiste en realizar, para cada instante de tiempo <span class="math inline">\(t\)</span>, la media de unas cuantas observaciones. Necesitamos determinar cuántas observaciones se usarán para el cálculo de la media móvil (longitud u orden de la media móvil).</p>
+<p>Las medias móviles eliminan las irregularidades de la serie observada, es decir, se produce un suavizado de la serie eliminando o atenuando el efecto de la componente irregular, consiguiendo así identificar la trayectoria que sigue la tendencia. Además, cuanto mayor sea el orden de la media móvil, más se suaviza la serie. El problema de determinar el orden de la media móvil no es tan inmediato porque, si es demasiado pequeño, puede que no elimine las irregularidades, y si es demasiado grande, podemos perder información sobre cambios de la serie (en el caso extremo tendríamos siempre una tendencia constante).</p>
+<p>Un aspecto importante de este método frente al ajuste de la tendencia por mínimos cuadrados es que en este caso el análisis de la tendencia se realiza desde un enfoque local, es decir, la trayectoria de la tendencia se obtiene localmente utilizando algunas observaciones de la serie (no todas). En este sentido, este método permitirá obtener mejores predicciones a corto plazo que si ajustamos la tendencia por mínimos cuadrados. Por contra, no dispondremos de un modelo matemático que nos permita describir la serie y realizar predicciones a largo plazo.</p>
+<p>Podemos distinguir dos tipos: medias móviles centradas y medias móviles asimétricas.</p>
+<p>Las <strong>medias móviles centradas</strong> revisten mayor interés, se suelen utilizar para <u>describir</u> la tendencia de la serie de forma más flexible y adecuada que usando mínimos cuadrados.</p>
+<div id="def-mediaMovil" class="theorem definition">
+<p><span class="theorem-title"><strong>Definición 5.3 (Media móvil centrada de orden impar)</strong></span> Dada una serie temporal <span class="math inline">\(\{x_t\}_{t=1,...,n}\)</span>, se define su <strong>media móvil centrada de orden</strong> <span class="math inline">\((2p+1)\)</span> como la serie obtenida mediante la siguiente expresión:</p>
+<p><span class="math display">\[
+MM(2p+1)_t=\frac{x_{t-p}+x_{t-p+1}+...+x_t+...+x_{t+p-1}+x_{t+p}}{2p+1}
+\]</span></p>
+<p>es decir, en cada instante <span class="math inline">\(t\)</span>, se calcula la media usando las <span class="math inline">\(p\)</span> observaciones anteriores, las <span class="math inline">\(p\)</span> observaciones posteriores y la propia observación en el instante <span class="math inline">\(t.\)</span></p>
+</div>
+<p>Si el orden de la media móvil es par, entonces debemos realizar dos veces medias móviles para conseguir que sea centrada.</p>
+<div id="def-mediaMovilII" class="theorem definition">
+<p><span class="theorem-title"><strong>Definición 5.4 (Media móvil centrada de orden par)</strong></span> Dada una serie temporal <span class="math inline">\(\{x_t\}_{t=1,...,n}\)</span>, se define su <strong>media móvil centrada de orden</strong> <span class="math inline">\((2p)\)</span> como la serie obtenida mediante la siguiente expresión:</p>
+<p><span class="math display">\[
+MM(2p)_t=\frac{MM(2p)_{t-0.5}+MM(2p)_{t+0.5}}2
+\]</span></p>
+<p>donde:</p>
+<p><span class="math display">\[
+MM(2p)_{t-0.5}=\frac{x_{t-p}+...+x_{t-1}+x_t+...+x_{t+p-1}}{2p}
+\]</span></p>
+<p>y</p>
+<p><span class="math display">\[
+MM(2p)_{t+0.5}=\frac{x_{t-p+1}+...+x_t+x_{t+1}+...+x_{t+p}}{2p}
+\]</span></p>
+</div>
+<div class="callout callout-style-simple callout-none no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Observación
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>La serie obtenida por médias móviles centradas (ya sea de orden impar <span class="math inline">\(2p+1\)</span> o de orden par <span class="math inline">\(2p\)</span>) pierde los <span class="math inline">\(p\)</span> primeros valores y los <span class="math inline">\(p\)</span> últimos. Es decir, la serie suavizada tendrá <span class="math inline">\(2p\)</span> datos menos que la original, así que no conviene tomar el orden de la media móvil demasiado alto porque se perderían muchos datos.</p>
+</div>
+</div>
+<p>La siguiente figura muestra cómo aumenta el suavizado de una serie (eliminación de las irregularidades) conforme aumentamos el orden de la media móvil (en negro, la serie original; en azul, medias móviles de orden 5; en verde, medias móviles de orden 8; en rojo, medias móviles de orden 12):</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(forecast)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ts.plot</span>(AirPassengers, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(<span class="fu">ma</span>(AirPassengers, <span class="at">order =</span> <span class="dv">5</span>), </span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">lwd =</span> <span class="fl">1.5</span>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(<span class="fu">ma</span>(AirPassengers, <span class="at">order =</span> <span class="dv">8</span>, <span class="at">centre =</span> <span class="cn">TRUE</span>), </span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">col =</span> <span class="st">"green"</span>, <span class="at">lwd =</span> <span class="fl">1.5</span>)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(<span class="fu">ma</span>(AirPassengers, <span class="at">order =</span> <span class="dv">12</span>), </span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">lwd =</span> <span class="fl">1.5</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Tema4_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="def-mediaMovilIII" class="theorem definition">
+<p><span class="theorem-title"><strong>Definición 5.5 (Media móvil asimétrica)</strong></span> Dada una serie temporal <span class="math inline">\(\{x_t\}_{t=1,...,n}\)</span>, la <strong>media móvil asimétrica de orden</strong> <span class="math inline">\(p\)</span> se define de la siguiente forma:</p>
+<p><span class="math display">\[
+MMA(p)_t=\frac{x_{t-p+1}+...+x_{t-1}+x_t}p
+\]</span></p>
+<p>es decir, consiste en realizar la media aritmética de las <span class="math inline">\(p\)</span> últimas observaciones de la serie.</p>
+</div>
+<p>Esta variante de las medias móviles se puede usar para realizar predicciones en un modelo con tendencia aproximadamente constante localmente. Suele ser más adecuado para las predicciones a corto plazo que un ajuste por mínimos cuadrados, debido a su enfoque local para la estimación de la tendencia. Es decir, si disponemos de las observaciones hasta el instante <span class="math inline">\(T\)</span>, la predicción para el instante siguiente viene dada por la media de las <span class="math inline">\(p\)</span> últimas observaciones:</p>
+<p><span class="math display">\[
+\widehat{x}_{T+1}=\frac{x_{T-p+1}+...+x_{T-1}+x_T}p
+\]</span></p>
+<p>En esta expresión se aprecia que todas las observaciones que intervienen en la media tienen el mismo peso. En el tema siguiente veremos que los métodos de alisado exponencial suelen dar mejores resultados porque se les da más peso a las observaciones más recientes que a las más antiguas.</p>
+</section>
+<section id="descomposición-clásica-de-series-temporales" class="level2" data-number="5.6">
+<h2 data-number="5.6" class="anchored" data-anchor-id="descomposición-clásica-de-series-temporales"><span class="header-section-number">5.6</span> Descomposición clásica de series temporales</h2>
+<p>El objetivo de esta sección es mostrar las técnicas clásicas para descomponer una serie temporal en sus 3 componentes fundamentales (Tendencia-Ciclo, Estacional e Irregular). Para ello, es necesario determinar previamente si el esquema de integración de dichas componentes se considera aditivo, o multiplicativo.</p>
+<p>Comenzaremos con el <strong>enfoque clásico</strong> para extraer las componentes en un esquema aditivo, conocido como el método de la diferencia a la media móvil.</p>
+<section id="método-de-la-diferencia-a-la-media-móvil" class="level3" data-number="5.6.1">
+<h3 data-number="5.6.1" class="anchored" data-anchor-id="método-de-la-diferencia-a-la-media-móvil"><span class="header-section-number">5.6.1</span> Método de la diferencia a la media móvil</h3>
+<p>El método de la diferencia a la media móvil es el método que se usa para desestacionalizar una serie que presenta un esquema aditivo:</p>
+<p><span class="math display">\[
+x_t=T_t+S_t+I_t
+\]</span> Consideremos una serie temporal con el esquema anterior, presentando componente estacional, y llamemos <span class="math inline">\(L\)</span> al periodo de la componente estacional. En muchas ocasiones <span class="math inline">\(L\)</span> será un número par, por ejemplo <span class="math inline">\(L=12\)</span> para datos mensuales, <span class="math inline">\(L=4\,\)</span>para datos trimestrales, etc.</p>
+<p>La idea fundamental para intentar eliminar la componentes estacional consiste en tomar medias móviles de orden <span class="math inline">\(L\)</span> (periodo de la componente estacional). Realizamos los siguientes pasos:</p>
+<ol type="1">
+<li><p><em>Calcular la media móvil centrada de orden</em> <span class="math inline">\(L\)</span> <em>para la serie y determinar la componente Tendencia-Ciclo.</em></p>
+<p>Calculando la media móvil centrada de orden <span class="math inline">\(L\)</span>, donde <span class="math inline">\(L\)</span> representa el periodo de la componente estacional, se consigue eliminar en gran parte el efecto de la componente estacional así como de la componente irregular.</p>
+<p>Por tanto, la serie obtenida por medias móviles servirá como estimación de la componente Tendencia-Ciclo (<span class="math inline">\(T_t\)</span>):</p>
+<p><span class="math display">\[
+T_t = MM(L)_t
+\]</span></p>
+<p>Recordar que si <span class="math inline">\(L\)</span> es par, la media móvil centrada se obtiene realizando el promedio de dos series de medias móviles.<br>
+Además, si <span class="math inline">\(L\)</span> es par, la serie obtenida por medias móviles tiene <span class="math inline">\(L\)</span> datos menos que la serie original.<br>
+Por ejemplo, si la serie original se refiere a datos mensuales, tendremos un dato menos por cada mes.<br>
+Si <span class="math inline">\(L\)</span> es impar, la serie obtenida por medias móviles tiene <span class="math inline">\(L-1\)</span> datos menos que la serie original.</p></li>
+<li><p><em>Obtener los índices brutos de variación estacional (IBVE).</em></p>
+<p>Como el esquema es aditivo:</p>
+<p><span class="math display">\[
+x_t = T_t + S_t + I_t
+\]</span></p>
+<p>una estimación de las componentes Estacional e Irregular conjuntamente viene dada por:</p>
+<p><span class="math display">\[
+\widehat{S_t + I_t} = x_t - T_t = x_t - MM(L)_t
+\]</span></p>
+<p>es decir, hay que restar a la serie original la serie obtenida mediante medias móviles de orden <span class="math inline">\(L\)</span> (de ahí el nombre de <em>método de la diferencia a la media móvil</em>).</p>
+<p>Cada uno de los valores obtenidos mediante la diferencia anterior se denomina índice bruto de variación estacional en el instante <span class="math inline">\(t\)</span>:</p>
+<p><span class="math display">\[
+(IBVE)_t = \widehat{S_t + I_t} = x_t - MM(L)_t
+\]</span></p>
+<p>donde el calificativo de <em>bruto</em> se debe a que el índice estacional está contaminado por la componente irregular.</p></li>
+<li><p><em>Obtener los índices de variación estacional no normalizados (IVENN).</em></p>
+<p>Con el fin de eliminar la componente irregular de los índices anteriores, calcularemos la media de los índices para cada estación.</p>
+<p>Si disponemos de información correspondiente a <span class="math inline">\(K\)</span> periodos completos y un total de <span class="math inline">\(N\)</span> observaciones, entonces:</p>
+<p><span class="math display">\[
+N = L \cdot K
+\]</span></p>
+<p>Por ejemplo, pensemos en datos mensuales y un total de 5 años completos, es decir, <span class="math inline">\(12 \times 5 = 60\)</span> datos.<br>
+Al realizar medias móviles se pierden <span class="math inline">\(L\)</span> datos (uno por cada estación, si <span class="math inline">\(L\)</span> es par), de manera que para cada estación dispondríamos de exactamente <span class="math inline">\(K - 1\)</span> datos (en lugar de <span class="math inline">\(K\)</span>).</p>
+<p>Llamaremos índice de variación estacional no normalizado al promedio de los <em>IBVE</em> para cada estación <span class="math inline">\(h\)</span>:</p>
+<p><span class="math display">\[
+(IVENN)_h = \frac{\sum_{\{t:h(t)=h\}} (IBVE)_t}{K - 1}
+\quad h = h_1, h_2, \ldots, h_L
+\]</span></p>
+<p>donde <span class="math inline">\(\{t : h(t) = h\}\)</span> denota el conjunto de instantes de tiempo que se corresponden con la estación <span class="math inline">\(h\)</span>.</p>
+<p>Si <span class="math inline">\(K\)</span> no es muy pequeño, el promedio atenúa en gran medida la componente irregular, de modo que estos índices contienen información estacional pero no irregular.</p>
+<p>En casos con periodos incompletos o cuando <span class="math inline">\(L\)</span> es impar, el número de datos <span class="math inline">\((IBVE)_t\)</span> disponible para cada estación puede ser diferente. Denotando por <span class="math inline">\(K_h\)</span> al número de datos de cada estación <span class="math inline">\(h\)</span>:</p>
+<p><span class="math display">\[
+(IVENN)_h = \frac{\sum_{\{t:h(t)=h\}} (IBVE)_t}{K_h}
+\quad h = h_1, h_2, \ldots, h_L
+\]</span></p></li>
+<li><p><em>Obtener los índices de variación estacional normalizados (IVE) y determinar la componente Estacional.</em></p>
+<p>Si una serie no tiene componente estacional, en un modelo aditivo se tendría que <span class="math inline">\(S_t \equiv 0\)</span>.<br>
+Es razonable suponer que la componente estacional no debe afectar al nivel de la serie, por lo que la media de la componente estacional debería ser 0.</p>
+<p>Por tanto, definimos los índices de variación estacional normalizados para cada estación <span class="math inline">\(h\)</span> como:</p>
+<p><span class="math display">\[
+(IVE)_h = (IVENN)_h -
+\frac{\sum_{h \in \{h_1, \ldots, h_L\}} (IVENN)_h}{L}
+\]</span></p>
+<p>(aunque existen otras formas de normalizar los índices de variación estacional).</p>
+<p>Estos índices suponen una <strong>estimación de la componente estacional</strong> de la serie para cada estación <span class="math inline">\(h\)</span>.<br>
+Es decir, determinamos la componente estacional para cada instante de tiempo <span class="math inline">\(t\)</span>, haciéndola coincidir con el índice correspondiente a su estación <span class="math inline">\(h(t)\)</span>:</p>
+<p><span class="math display">\[
+S_t = (IVE)_{h(t)}
+\]</span></p></li>
+<li><p><em>Desestacionalizar la serie.</em></p>
+<p>En el modelo aditivo, la desestacionalización se logra restando los índices de variación estacional a la serie original:</p>
+<p><span class="math display">\[
+D_t = x_t - S_t = x_t - (IVE)_{h(t)}
+\quad \text{(serie desestacionalizada)}
+\]</span></p>
+<p>En algunos programas (por ejemplo, SPSS) tras la desestacionalización se extrae una nueva componente Tendencia-Ciclo suavizando la serie desestacionalizada (por ejemplo, aplicando dos veces medias móviles de orden 3).<br>
+En R esta etapa puede obviarse.</p></li>
+<li><p><em>Determinar la componente Irregular.</em></p>
+<p>Una vez extraídas las componentes Estacional (<span class="math inline">\(S_t\)</span>) y Tendencia-Ciclo (<span class="math inline">\(T_t\)</span>), la componente Irregular (<span class="math inline">\(I_t\)</span>) se obtiene de forma inmediata mediante:</p>
+<p><span class="math display">\[
+I_t = x_t - T_t - S_t
+\]</span></p>
+<p>La situación ideal sería que dicha componente irregular se comportara como un ruido blanco.</p>
+<p>A continuación, mostramos el <strong>enfoque clásico</strong> para extraer las componentes de una serie temporal si el esquema es multiplicativo.</p></li>
+</ol>
+</section>
+<section id="método-de-la-razón-a-la-media-móvil" class="level3" data-number="5.6.2">
+<h3 data-number="5.6.2" class="anchored" data-anchor-id="método-de-la-razón-a-la-media-móvil"><span class="header-section-number">5.6.2</span> Método de la razón a la media móvil</h3>
+<p>El método de la razón a la media móvil es el método que se usa para desestacionalizar una serie que presenta un esquema multiplicativo:</p>
+<p><span class="math display">\[
+x_t=T_t\times S_t\times I_t
+\]</span></p>
+<p>Los pasos para desestacionalizar la serie y extraer las componentes son similares al caso aditivo, pero realizando cocientes en lugar de diferencias:</p>
+<ol type="1">
+<li><p><em>Calcular la media móvil centrada de orden</em> <span class="math inline">\(L\)</span> <em>para la serie y determinar la componente Tendencia-Ciclo.</em></p>
+<p><span class="math display">\[
+T_t = MM(L)_t
+\]</span></p></li>
+<li><p><em>Obtener los índices brutos de variación estacional (IBVE).</em></p>
+<p>Como el esquema es multiplicativo, una estimación de las componentes Estacional e Irregular conjuntamente viene dada por:</p>
+<p><span class="math display">\[
+\widehat{S_t \times I_t} = \frac{x_t}{\widehat{T}_t} = \frac{x_t}{MM(L)_t}
+\]</span></p>
+<p>Es decir, se divide la serie original entre la serie obtenida mediante medias móviles de orden <span class="math inline">\(L\)</span> (de ahí el nombre de <em>método de la razón a la media móvil</em>).</p>
+<p>Cada uno de los valores obtenidos mediante el cociente anterior se denomina índice bruto de variación estacional en el instante <span class="math inline">\(t\)</span>:</p>
+<p><span class="math display">\[
+(IBVE)_t = \widehat{S_t \times I_t} = \frac{x_t}{MM(L)_t}
+\]</span></p></li>
+<li><p><em>Obtener los índices de variación estacional no normalizados (IVENN).</em></p>
+<p>Llamaremos índice de variación estacional no normalizado al promedio de los <em>IBVE</em> para cada estación <span class="math inline">\(h\)</span>.<br>
+Denotemos por <span class="math inline">\(K_h\)</span> al número de datos <span class="math inline">\((IBVE)_t\)</span> disponible para cada estación <span class="math inline">\(h\)</span>, entonces:</p>
+<p><span class="math display">\[
+(IVENN)_h = \frac{\sum_{\{t : h(t) = h\}} (IBVE)_t}{K_h}
+\quad h = h_1, h_2, \ldots, h_L
+\]</span></p></li>
+<li><p><em>Obtener los índices de variación estacional normalizados (IVE) y determinar la componente Estacional.</em></p>
+<p>Si una serie no tiene componente estacional, en un modelo multiplicativo se tendría que <span class="math inline">\(S_t \equiv 1\)</span>.<br>
+Es razonable suponer que la componente estacional no debe afectar al nivel de la serie, por lo que en el modelo multiplicativo la media de la componente estacional debería ser 1.</p>
+<p>Sin embargo, los índices calculados en el apartado anterior pueden no tener media uno.<br>
+Por tanto, definimos los índices de variación estacional normalizados para cada estación <span class="math inline">\(h\)</span> como:</p>
+<p><span class="math display">\[
+(IVE)_h = \frac{(IVENN)_h}
+{\frac{\sum_{h \in \{h_1, \ldots, h_L\}} (IVENN)_h}{L}}
+\]</span></p>
+<p>Estos índices constituyen una <strong>estimación de la componente estacional</strong> de la serie para cada estación <span class="math inline">\(h\)</span>.<br>
+Es decir, determinamos la componente estacional para cada instante de tiempo <span class="math inline">\(t\)</span>, haciéndola coincidir con el índice de variación estacional correspondiente a su estación <span class="math inline">\(h(t)\)</span>:</p>
+<p><span class="math display">\[
+S_t = (IVE)_{h(t)}
+\]</span></p></li>
+<li><p><em>Desestacionalizar la serie.</em></p>
+<p>En el modelo multiplicativo, la desestacionalización de la serie se consigue dividiendo la serie por los índices de variación estacional:</p>
+<p><span class="math display">\[
+D_t = \frac{x_t}{(IVE)_{h(t)}}
+\]</span></p>
+<p>En algunos programas como SPSS, una vez desestacionalizada la serie, se extrae una nueva componente Tendencia-Ciclo suavizando la serie desestacionalizada (por ejemplo, aplicando dos veces medias móviles de orden 3).<br>
+En R esta etapa puede obviarse.</p></li>
+<li><p><em>Determinar la componente Irregular.</em></p>
+<p>Una vez extraídas las componentes Estacional (<span class="math inline">\(S_t\)</span>) y Tendencia (<span class="math inline">\(T_t\)</span>), la componente Irregular o restante se obtiene de forma inmediata mediante:</p>
+<p><span class="math display">\[
+I_t = \frac{x_t}{T_t \times S_t}
+\]</span></p>
+<p>La situación ideal sería que dicha componente irregular se comportara como un ruido gaussiano de media 1, o bien como la exponencial de un ruido gaussiano de media cero.</p></li>
+</ol>
+<p>A modo de ejemplo, a continuación mostramos una serie temporal y las componentes que resultan con la <strong>descomposición clásica</strong>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">decompose</span>(AirPassengers, <span class="at">type =</span> <span class="st">"multiplicative"</span>))</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Tema4_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-simple callout-none no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Nota:
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Podemos comprobar que la componente estacional se mantiene estable a lo largo del tiempo. Es decir, todos los meses de enero toman el mismo valor, independientemente del año. Lo mismo sucede con los febreros, marzos, …, diciembres. Esta situación es característica para la descomposición clásica.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="predicciones-con-análisis-clásico-y-limitaciones" class="level2" data-number="5.7">
+<h2 data-number="5.7" class="anchored" data-anchor-id="predicciones-con-análisis-clásico-y-limitaciones"><span class="header-section-number">5.7</span> Predicciones con Análisis Clásico y limitaciones</h2>
+<p>En el enfoque clásico, la forma de realizar predicciones se basa en la descomposición de la serie en sus componentes fundamentales (tendencia, estacionalidad e irregular). Extraídas las componentes, se predice cada una de ellas y la predicción de la serie original se obtiene combinando dichas predicciones según se trate de un esquema aditivo o multiplicativo.</p>
+<p><strong>¿Cómo realizar predicciones de la componente irregular</strong> <span class="math inline">\(I_t\)</span>?</p>
+<p>Como se trata de la parte aleatoria de la serie, las predicciones de la componente irregular valdrán cero en el esquema aditivo y uno en el multiplicativo.</p>
+<p>Es decir, para todo instante <span class="math inline">\(t\)</span>, tendremos que la predicción de la componente irregular en dicho instante es:</p>
+<p><span class="math display">\[
+\widehat{I}_{t}=0\quad (esquema \: aditivo), \quad \widehat{I}_{t}=1\quad (esquema \: multiplicativo)
+\]</span></p>
+<p><strong>¿Cómo realizar predicciones de la Componente Estacional</strong> <span class="math inline">\(S_t\)</span>?</p>
+<p>Bastará con repetir el valor obtenido para cada estación. Por ejemplo, si tenemos datos mensuales y la componente estacional extraída asigna un valor de 50 a los eneros, entonces la predicción de la componente estacional será siempre de 50 para los futuros eneros. De la misma forma se realizaría la predicción para el resto de meses, pues el enfoque clásico considera componente estacional estable.</p>
+<p>Si la serie original tiene perido <span class="math inline">\(L\)</span> y disponemos de observaciones hasta el instante <span class="math inline">\(T\)</span>, entonces la predicción de la componente estacional en el instante T+m es:</p>
+<p><span class="math display">\[
+\widehat{S}_{T+m}={S}_{T+m-L}\quad m=1,2,...,L
+\]</span></p>
+<p>donde <span class="math inline">\(S_{T+m-L}\)</span> representa el valor de la componente estacional en el instante <span class="math inline">\(T+m-L\)</span>, es decir, el valor del <em>IVE</em> en la estación que corresponde a dicho instante.</p>
+<p><strong>¿Cómo realizar predicciones de la componente Tendencia-ciclo</strong> <span class="math inline">\(T_t\)</span>?</p>
+<p>La componente tendencia puede modelizarse con cualquier método para series sin estacionalidad. Por ejemplo, realizando un ajuste por mínimos cuadrados usando como predictor (predictores) el tiempo o potencias del mismo. El modelo obtenido para la tendencia usando mínimos cuadrados es adecuado para representar el comportamiento de la serie y captar los aspectos más permanentes del fenómeno estudiado (predicciones a medio o largo plazo). Sin embargo, no es aconsejable para las predicciones a corto plazo.</p>
+<p>Por ejemplo, si la Tendencia es lineal respecto al tiempo: <span class="math display">\[
+T_t=b_0+b_1\cdot t,
+\]</span> podemos estimar la ecuación de dicha recta usando regresión lineal simple. Por tanto, en este caso las predicciones de la tendencia en cualquier instante <span class="math inline">\(t\)</span>, se obtendrán mediante:</p>
+<p><span class="math display">\[
+\widehat{T}_{t}=\widehat{b_0}+\widehat{b_1}\cdot t
+\]</span></p>
+<p>Y si la Tendencia es polinómica: <span class="math display">\[
+\widehat{T}_{t}=\widehat{b_0}+\widehat{b_1}\cdot t+b_2\cdot t^2+...+\widehat{b_k}\cdot t^k
+\]</span> también podemos estimar los coeficientes del modelo usando regresión lineal múltiple.</p>
+<p>Obsérvese que se trata de un <em>enfoque global</em> del análisis de la tendencia, el cual permite obtener un modelo matemático que modeliza la tendencia de la serie usando <u>todas</u> las observaciones de la serie, y además todas con el <u>mismo peso</u>.</p>
+<p>Los procedimientos adecuados para obtener la tendendia desde un <em>enfoque local</em> que permita realizar predicciones adecuadas a corto plazo son, por ejemplo, el método de las medias móviles asimétricas o los métodos de alisado exponencial, que veremos en un tema posterior.</p>
+<p><strong>¿Cómo realizar predicciones de la serie original?</strong></p>
+<p>Si disponemos de <span class="math inline">\(T\)</span> observaciones de la serie y queremos realizar predicciones para los <span class="math inline">\(L\)</span> instantes siguientes (<span class="math inline">\(L\)</span> es el periodo), en el caso de esquema aditivo tendremos:</p>
+<p><span class="math display">\[
+\widehat{x}_{T+m}=\widehat{T}_{T+m}+\widehat{S}_{T+m}\quad m=1,2,...,L
+\]</span></p>
+<p>y en el caso de esquema multiplicativo tendremos:</p>
+<p><span class="math display">\[
+\widehat{x}_{T+m}=\widehat{T}_{T+m}\times \widehat{S}_{T+m}\quad
+m=1,2,...,L
+\]</span></p>
+<p><strong>Limitaciones del Análisis Clásico</strong></p>
+<p>El análisis clásico de series temporales tiene dos usos principalmente:</p>
+<ul>
+<li><p><em>Describir el comportamiento de la serie temporal</em> (análisis descriptivo), haciendo uso por ejemplo de la descomposición de la serie en las componentes Tendencia, Estacionalidad e Irregular.</p></li>
+<li><p><em>Realizar predicciones a medio o largo plazo</em>.</p></li>
+</ul>
+<p>Como método descriptivo sigue siendo interesante su uso gracias a la sencillez de los métodos expuestos. Del mismo modo, cuando sólo nos interesa estudiar el comportamiento futuro de la serie a largo plazo, es decir, estudiar cómo evolucionaría la serie a grandes rasgos, también interesa emplear un análisis clásico.</p>
+<p>Sin embargo, el enfoque global de los método clásicos impide realizar predicciones adecuadas a corto plazo, siendo ésta la principal limitación de un análisis clásico. Además, los métodos clásicos proporcionan demasiada rigidez al modelo, perdiendo en ocasiones información relevante.</p>
+<p>Para suplir las carencias del método clásico, se propusieron nuevos métodos como la descomposición STL, que veremos a continuación, o los métodos de alisado exponencial, que veremos en un tema posterior.</p>
+</section>
+<section id="la-descomposición-stl" class="level2" data-number="5.8">
+<h2 data-number="5.8" class="anchored" data-anchor-id="la-descomposición-stl"><span class="header-section-number">5.8</span> La descomposición STL</h2>
+<p>El método STL (Seasonal and Trend decomposition using LOESS) es una técnica alternativa a la descomposición clásica utilizada para descomponer una serie temporal en sus componentes básicas: tendencia, estacionalidad e irregular. Se basa en el suavizado de datos mediante LOESS (locally estimated scatterplot smoothing), que permite la obtención de las componentes de forma más versátil y flexible. Se trata de un método más reciente que la descomposición clásica, desarrollado en el siguiente artículo: Cleveland, R. B., Cleveland, W. S., McRae, J. E., &amp; Terpenning, I. J. (1990). STL: A seasonal-trend decomposition procedure based on loess. Journal of Official Statistics, 6(1), 3–33.</p>
+<p>Mientras que la descomposición clásica considera que la componente estacional es completamente estable, la descomposición STL permite que la componente estacional varíe a lo largo del tiempo. La diferencia fundamental radica en el proceso de desestacionalización de la serie: mientras que el enfoque clásico usa medias móviles, el STL usa el suavizado local LOESS.</p>
+<p><strong>Importante:</strong> El método STL considera que las componentes de la serie se combinan siguiendo un <strong>esquema aditivo</strong>. En el caso de esquema multiplicativo, primero debe realizarse una transformación logarítmica para convertirlo en esquema aditivo.</p>
+<p><strong>¿En qué consiste el método LOESS?</strong></p>
+<p>LOESS realiza regresiones locales a lo largo de los datos. En cada punto <span class="math inline">\(x_i\)</span> de la serie, se ajusta un polinomio (generalmente de primer o segundo grado) utilizando solo los datos cercanos a ese punto. Los puntos cercanos se definen por una ventana de vecindad, cuyo tamaño está determinado por un parámetro de suavizado. Este parámetro puede ser una proporción del total de puntos (ancho de banda o bandwidth). Los puntos dentro de la ventana de vecindad se ponderan de acuerdo con su distancia al punto <span class="math inline">\(x_i\)</span>. Los puntos más cercanos tienen mayor peso en la estimación del polinomio local que los puntos más lejanos. Para cada punto <span class="math inline">\(x_i\)</span> de la serie, se calcula un valor ajustado <span class="math inline">\(\hat{x_i}\)</span> mediante la regresión local ponderada. Este proceso se repite para cada punto de la serie, resultando en una curva suavizada.</p>
+<p>LOESS es una técnica eficaz para suavizar datos y detectar tendencias locales sin imponer una estructura global rígida. Es especialmente útil para datos que no siguen una forma predefinida y permite capturar patrones locales mediante ajustes flexibles y ponderados.</p>
+<p>A continuación mostramos un ejemplo del método LOESS, así como el efecto del parámetro de suavizado. Para ello usaremos el conjunto de datos “economics” del paquete ggplot2, y suavizaremos la serie correspondiente al tiempo de desempleo (variable <em>uempmed</em>, que representa la mediana del número de días sin empleo). Observamos que la serie original (en negro) contiene numerosas irregularidades, que se suavizan al aplicar LOESS con parámetros de suavizado 10% (en azul), 30% (en verde) y 50% (en rojo). Indicar que si la serie original tiene por ejemplo 100 observaciones y se usa un suavizado del 50% (parámetro span=0.5), entonces para cada punto <span class="math inline">\(x_i\)</span> de la serie, la ventana de vecindad se construye con 25 datos a la izquierda de xi y otros 25 datos a la derecha de <span class="math inline">\(x_i\)</span>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>datos <span class="ot">&lt;-</span> economics  </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>datos<span class="sc">$</span>index <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(datos) </span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>loess10 <span class="ot">&lt;-</span> <span class="fu">loess</span>(uempmed <span class="sc">~</span> index, <span class="at">data=</span>datos, <span class="at">span=</span><span class="fl">0.10</span>) </span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>loess30 <span class="ot">&lt;-</span> <span class="fu">loess</span>(uempmed <span class="sc">~</span> index, <span class="at">data=</span>datos, <span class="at">span=</span><span class="fl">0.30</span>) </span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>loess50 <span class="ot">&lt;-</span> <span class="fu">loess</span>(uempmed <span class="sc">~</span> index, <span class="at">data=</span>datos, <span class="at">span=</span><span class="fl">0.50</span>) </span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(datos<span class="sc">$</span>uempmed, <span class="at">x=</span>datos<span class="sc">$</span>date, <span class="at">type=</span><span class="st">"l"</span>, <span class="at">main=</span><span class="st">"Loess Smoothing"</span>,</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">"Date"</span>, <span class="at">ylab=</span><span class="st">"Unemployment (Median)"</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(<span class="fu">predict</span>(loess10), <span class="at">x=</span>datos<span class="sc">$</span>date, <span class="at">col=</span><span class="st">"blue"</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(<span class="fu">predict</span>(loess30), <span class="at">x=</span>datos<span class="sc">$</span>date, <span class="at">col=</span><span class="st">"green"</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(<span class="fu">predict</span>(loess50), <span class="at">x=</span>datos<span class="sc">$</span>date, <span class="at">col=</span><span class="st">"red"</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Tema4_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Y para valores altos del parámetro de suavizado tendremos un suavizado global en lugar de local (obsérvese que la curva marrón se corresponde con la ecuación de una parábola que ajusta globalmente los datos de la serie):</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>loess100 <span class="ot">&lt;-</span> <span class="fu">loess</span>(uempmed <span class="sc">~</span> index, <span class="at">data=</span>datos, <span class="at">span=</span><span class="dv">1</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>loess200 <span class="ot">&lt;-</span> <span class="fu">loess</span>(uempmed <span class="sc">~</span> index, <span class="at">data=</span>datos, <span class="at">span=</span><span class="dv">2</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(datos<span class="sc">$</span>uempmed, <span class="at">x=</span>datos<span class="sc">$</span>date, <span class="at">type=</span><span class="st">"l"</span>, <span class="at">main=</span><span class="st">"Loess Smoothing"</span>,</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">"Date"</span>, <span class="at">ylab=</span><span class="st">"Unemployment (Median)"</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(<span class="fu">predict</span>(loess100), <span class="at">x=</span>datos<span class="sc">$</span>date, <span class="at">col=</span><span class="st">"orange"</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(<span class="fu">predict</span>(loess200), <span class="at">x=</span>datos<span class="sc">$</span>date, <span class="at">col=</span><span class="st">"brown"</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Tema4_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>Resumen de las etapas en la descomposición STL</strong></p>
+<ol type="1">
+<li><p>Realizar un suavizado de la serie original mediante LOESS con una ventana grande, con el fin de captar las variaciones a largo plazo (eliminando así las fluctuaciones debidas a la componente estacional). El resultado de este suavizado nos dará una primera estimación de la Tendencia-Ciclo (<span class="math inline">\(T_t\)</span>).</p></li>
+<li><p>Restar a la serie original la Tendencia obtenida en la etapa anterior. Es decir, hacemos <span class="math inline">\(x_t-T_t\)</span>, para conseguir una serie temporal con tendencia constante.</p></li>
+<li><p>Dividir la serie de la etapa anterior (sin tendencia) en subseries: Supongamos que la serie original tiene estacionalidad de periodo <span class="math inline">\(L\)</span>, entonces hay que dividir la serie de la etapa anterior en <span class="math inline">\(L\)</span> subseries, una para cada estación. Por ejemplo, para datos mensuales durante varios años, tendremos que <span class="math inline">\(L=12\)</span>. Esta etapa implica considerar una serie para cada estación, es decir, una serie con los datos de enero, otra con los datos de febrero, …, y otra con los datos de diciembre.</p></li>
+<li><p>Obtener una estimación de la componente Estacional (<span class="math inline">\(S_t\)</span>) mediante suavizado LOESS: En esta etapa se fija el valor del parámetro “s.window” correspondiente al ancho de banda del suavizado para la estacionalidad. Dicho parámetro debe tomar un valor impar. Para cada subserie de la etapa anterior, se aplica el suavizado LOESS y “s.window” representa el número de periodos (años) consecutivos usados en la estimación de cada valor de la componente estacional. Valores pequeños permiten cambios más rápidos. Y en el caso de usar todos los periodos se considera estacionalidad estable (igual que en enfoque clásico). Al igual que en la descomposición clásica, las estimaciones resultantes se normalizan para conseguir que la media de cada periodo (año) completo sea cero (recordar que se supone esquema aditivo).</p></li>
+<li><p>Obtener la componente Irregular: Para ello bastará restar a la serie original, las estimaciones obtenidas para la estacionalidad y la tendencia (<span class="math inline">\(I_t=x_t-T_t-S_t\)</span>).</p></li>
+</ol>
+<p><strong>NOTA</strong>: La extracción de las componentes puede ser mejorada siguiendo un ciclo iterativo como el siguiente.</p>
+<p>Con la tendencia inicial <span class="math inline">\(T_t\)</span> y la estacionalidad inicial <span class="math inline">\(S_t\)</span> estimadas, se sigue un ciclo iterativo para ajustar y mejorar las estimaciones:</p>
+<ol type="a">
+<li><p>Ajuste de la Tendencia: eliminar el efecto de la estacionalidad de la serie original (serie desestacionalizada) <span class="math display">\[
+x_t-S_t
+\]</span> y obtener una nueva estimación de la componente Tendencia-Ciclo (nueva <span class="math inline">\(T_t\)</span>) mediante un nuevo suavizado LOESS sobre la serie desestacionalizada. En este proceso se fija el valor del parámetro “t.window” correspondiente al ancho de banda del suavizado para capturar la tendencia subyacente. Dicho parámetro debe tomar un valor impar y representa el número de observaciones consecutivas usadas para estimar la tendencia. Valores pequeños permiten cambios más rápidos.</p></li>
+<li><p>Ajuste de la Estacionalidad: Se elimina la tendencia ajustada de la serie <span class="math display">\[
+x_t-T_t
+\]</span> Las subseries estacionales se suavizan de nuevo para recalcular <span class="math inline">\(S_t\)</span>.</p></li>
+<li><p>Ajuste de la componente Irregular: Se recalcula como <span class="math display">\[
+I_t = x_t-T_t-S_t
+\]</span></p></li>
+</ol>
+<p>Este ciclo se repite varias veces para mejorar la precisión de los componentes.</p>
+<p>Veamos como ejemplo la descomposición STL sobre la serie “AirPassengers” incluida en R.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>serie_pasajeros <span class="ot">&lt;-</span> AirPassengers</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ts.plot</span>(serie_pasajeros, <span class="at">lwd =</span> <span class="dv">2</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Tema4_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Observamos esquema multiplicativo, así que transformamos los datos para conseguir esquema aditivo, necesario para descomposición STL.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>serie_aditiva <span class="ot">&lt;-</span> <span class="fu">log</span>(serie_pasajeros)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ts.plot</span>(serie_aditiva, <span class="at">lwd =</span> <span class="dv">2</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Tema4_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Realizamos ahora la descomposición STL sobre la serie aditiva, fijando s.window (ancho de banda de la estacionalidad):</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>modelo_STL <span class="ot">&lt;-</span> <span class="fu">stl</span>(serie_aditiva, <span class="at">s.window =</span> <span class="dv">7</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(modelo_STL)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Tema4_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>Nota:</strong> Obsérvese que el aspecto de la componente estacional varía a lo largo del tiempo, a diferencia de lo que sucede en el enfoque clásico.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copiado");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copiado");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./Tema3.html" class="pagination-link" aria-label="Tema 3. Procesos de Poisson">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Tema 3. Procesos de Poisson</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
