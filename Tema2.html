@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.32">
+<meta name="generator" content="quarto-1.3.433">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>3&nbsp; Tema 2. Cadenas de Markov – Procesos estocásticos y series temporales</title>
+<title>Procesos estocásticos y series temporales - 3&nbsp; Tema 2. Cadenas de Markov</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -21,7 +21,6 @@ ul.task-list li input[type="checkbox"] {
   vertical-align: middle;
 }
 /* CSS for syntax highlighting */
-html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -67,29 +66,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <meta name="quarto:offset" content="./">
 <link href="./Tema3.html" rel="next">
 <link href="./Tema1.html" rel="prev">
-<script src="site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-364982630eef5352dd1537128a8ed5cb.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
   "collapse-after": 3,
   "panel-placement": "start",
   "type": "textbox",
-  "limit": 50,
-  "keyboard-shortcut": [
-    "f",
-    "/",
-    "s"
-  ],
-  "show-item-context": false,
+  "limit": 20,
   "language": {
     "search-no-results-text": "Sin resultados",
     "search-matching-documents-text": "documentos encontrados",
@@ -98,58 +90,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-more-match-text": "resultado adicional en este documento",
     "search-more-matches-text": "resultados adicionales en este documento",
     "search-clear-button-title": "Borrar",
-    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancelar",
     "search-submit-button-title": "Enviar",
     "search-label": "Buscar"
   }
 }</script>
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 </head>
 
-<body class="nav-sidebar floating quarto-light">
+<body class="nav-sidebar floating">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Tema2.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Tema 2. Cadenas de Markov</span></a></li></ol></nav>
-        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-        </a>
-      <button type="button" class="btn quarto-search-button" aria-label="Buscar" onclick="window.quartoOpenSearch();">
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Tema2.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Tema 2. Cadenas de Markov</span></a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
     </div>
@@ -158,7 +122,7 @@ window.Quarto = {
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Procesos estocásticos y series temporales</a> 
@@ -201,10 +165,16 @@ window.Quarto = {
  <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Tema 4. Conceptos básicos en series temporales</span></span></a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tema5.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Tema 5. Métodos de Alisado Exponencial</span></span></a>
+  </div>
+</li>
     </ul>
     </div>
 </nav>
-<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active">
@@ -244,9 +214,7 @@ window.Quarto = {
   </div>
   
 
-
 </header>
-
 
 <p>En este tema vamos a estudiar un tipo particular de procesos estocásticos: las cadenas de Markov. Este tipo de procesos describen cambios de estado en un sistema, con la peculiaridad de que dichos cambios dependen únicamente del estado actual del sistema y no están influenciados por ningún estado que haya tomado previamente.</p>
 <p>Por ejemplo, imaginemos un aparcamiento y consideremos la variable <span class="math inline">\(X_n\)</span> representando el número de plazas de aparcamiento ocupadas en cada instante de tiempo <span class="math inline">\(n\in\{0,1,2,\ldots\}\)</span>. Claramente el valor de <span class="math inline">\(X_{n+1}\)</span> dependerá de <span class="math inline">\(X_n\)</span> ya que <span class="math inline">\(X_{n+1}\)</span> se obtiene de <span class="math inline">\(X_n\)</span> sumándole los coches que han aparcado y restándole los que se han ido entre los instantes <span class="math inline">\(n\)</span> y <span class="math inline">\(n+1\)</span>. Por tanto, conocido <span class="math inline">\(X_n\)</span>, parece razonable que la cantidad <span class="math inline">\(X_{n+1}\)</span> no dependa de los valores previos <span class="math inline">\(X_0,X_1,X_2,\ldots,X_{n-1}\)</span>.</p>
@@ -254,7 +222,7 @@ window.Quarto = {
 <section id="cadenas-de-markov-de-tiempo-discreto" class="level2" data-number="3.1">
 <h2 data-number="3.1" class="anchored" data-anchor-id="cadenas-de-markov-de-tiempo-discreto"><span class="header-section-number">3.1</span> Cadenas de Markov de tiempo discreto</h2>
 <div id="def-cadenaMarkov" class="theorem definition">
-<p><span class="theorem-title"><strong>Definición 3.1 (Cadena de Markov)</strong></span> Un proceso estocástico <span class="math inline">\((X_n)_{n=0,1,2,\ldots}\)</span> de tiempo discreto se dice que es una <strong>cadena de Markov</strong> si se verifica que</p>
+<p><span class="theorem-title"><strong>Definición 3.1 (Cadena de Markov) </strong></span>Un proceso estocástico <span class="math inline">\((X_n)_{n=0,1,2,\ldots}\)</span> de tiempo discreto se dice que es una <strong>cadena de Markov</strong> si se verifica que</p>
 <p><span id="eq-markov"><span class="math display">\[
 \begin{aligned}
 \mathbb{P}\bigl(X_{n+1}=a_{n+1}\mid X_n=a_n,X_{n-1}=a_{n-1},\ldots, X_0=a_0\bigr)
@@ -263,7 +231,7 @@ window.Quarto = {
 \tag{3.1}\]</span></span></p>
 <p>para todo <span class="math inline">\(n\)</span> y toda sucesión <span class="math inline">\(a_0,a_1,\ldots,a_{n+1}\)</span> de posibles valores del proceso.</p>
 </div>
-<p>La condición (<a href="#eq-markov" class="quarto-xref">Ecuación&nbsp;<span>3.1</span></a>) arriba se llama <strong>propiedad de Markov</strong>. La interpretación es que la probabilidad de cualquier valor futuro del proceso, dado el valor actual, no está influenciada por ningún valor pasado. Se dice que las cadenas de Markov son procesos estocásticos sin memoria.</p>
+<p>La condición (<a href="#eq-markov">Ecuación&nbsp;<span>3.1</span></a>) arriba se llama <strong>propiedad de Markov</strong>. La interpretación es que la probabilidad de cualquier valor futuro del proceso, dado el valor actual, no está influenciada por ningún valor pasado. Se dice que las cadenas de Markov son procesos estocásticos sin memoria.</p>
 <p>Al conjunto <span class="math inline">\(\mathcal{S}\)</span> de todos los valores posibles de la cadena de Markov se le llama <strong>espacio de estados</strong>. Como las cadenas de Markov son de tiempo y estado discretos, el espacio de estados <span class="math inline">\(\mathcal{S}\)</span> es un conjunto finito o infinito numerable.</p>
 <div class="callout callout-style-simple callout-none no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -287,13 +255,13 @@ Ejemplo (PageRank)
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="./pagerank2.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:45.0%"></p>
+<p><img src="./pagerank2.png" class="img-fluid figure-img" style="width:45.0%"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>Además, tenemos las siguientes probabilidades de transición entre estados.</p>
-<table class="caption-top table">
+<table class="table">
 <thead>
 <tr class="header">
 <th></th>
@@ -362,12 +330,12 @@ Ejemplo (Paseo aleatorio)
 </div>
 </div>
 <div id="def-probTransicion" class="theorem definition">
-<p><span class="theorem-title"><strong>Definición 3.2 (Probabilidades de transición)</strong></span> Supongamos que <span class="math inline">\((X_n)_{n=0,1,2,\ldots}\)</span> es una cadena de Markov con espacio de estados <span class="math inline">\(\mathcal{S}\)</span>. Las <strong>probabilidades de transición</strong> son la probabilidades <span class="math display">\[
+<p><span class="theorem-title"><strong>Definición 3.2 (Probabilidades de transición) </strong></span>Supongamos que <span class="math inline">\((X_n)_{n=0,1,2,\ldots}\)</span> es una cadena de Markov con espacio de estados <span class="math inline">\(\mathcal{S}\)</span>. Las <strong>probabilidades de transición</strong> son la probabilidades <span class="math display">\[
 p_{x,y}(n)=\mathbb{P}(X_n=y\mid X_{n-1}=x),
 \]</span> donde <span class="math inline">\(x,y\in\mathcal{S}\)</span> y <span class="math inline">\(n=1,2,3,\ldots\)</span>.</p>
 </div>
 <div id="def-cadenaHomogenea" class="theorem definition">
-<p><span class="theorem-title"><strong>Definición 3.3 (Cadena de Markov homogénea)</strong></span> Decimos que la cadena de Markov <span class="math inline">\((X_n)_{n=0,1,2,\ldots}\)</span> es <strong>homogénea</strong> si las probabilidades de transición no dependen del tiempo. En tal caso, definimos</p>
+<p><span class="theorem-title"><strong>Definición 3.3 (Cadena de Markov homogénea) </strong></span>Decimos que la cadena de Markov <span class="math inline">\((X_n)_{n=0,1,2,\ldots}\)</span> es <strong>homogénea</strong> si las probabilidades de transición no dependen del tiempo. En tal caso, definimos</p>
 <p><span class="math display">\[
 \begin{aligned}
 p_{x,y}=&amp;\mathbb{P}(X_n=y|X_{n-1}=x)\\
@@ -379,7 +347,7 @@ p_{x,y}=&amp;\mathbb{P}(X_n=y|X_{n-1}=x)\\
 <p>En el resto de este tema vamos a trabajar con cadenas de Markov homogéneas con un número de estados <strong>finito</strong>. Por lo que a partir de ahora, cada vez que nos refiramos a una <strong>cadena</strong> estaremos hablando de una cadena de Markov con esas características.</p>
 <p>En general, usaremos que <span class="math inline">\((X_n)_{n=0,1,2,\ldots}\)</span> es una cadena con espacio de estados finito que denotaremos por <span class="math inline">\(\mathcal{S}=\{1,2,3,\ldots,N\}\)</span>.</p>
 <div id="def-matrizTransicion" class="theorem definition">
-<p><span class="theorem-title"><strong>Definición 3.4 (Matriz de transición)</strong></span> Definimos la <strong>matriz de transición</strong> de <span class="math inline">\((X_n)_{n=0,1,2,\ldots}\)</span> como</p>
+<p><span class="theorem-title"><strong>Definición 3.4 (Matriz de transición) </strong></span>Definimos la <strong>matriz de transición</strong> de <span class="math inline">\((X_n)_{n=0,1,2,\ldots}\)</span> como</p>
 <p><span class="math display">\[
 P=(p_{i,j})_{i,j=1,2,\ldots,N}= \left[
 \begin{array}{cccc}
@@ -438,7 +406,7 @@ Ejemplo (Ruina del jugador)
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="Tema2_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%"></p>
+<p><img src="Tema2_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" style="width:70.0%"></p>
 </figure>
 </div>
 </div>
@@ -464,7 +432,7 @@ P = \left[
 <h2 data-number="3.2" class="anchored" data-anchor-id="matriz-de-transición-de-n-pasos"><span class="header-section-number">3.2</span> Matriz de transición de n pasos</h2>
 <p>En esta sección, sea <span class="math inline">\((X_n)_{n=0,1,2,\ldots}\)</span> una cadena con espacio de estados <span class="math inline">\(\mathcal{S}=\{1,2,\ldots,N\}\)</span>. En general, definimos lo siguiente.</p>
 <div id="def-probTransicionnpasos" class="theorem definition">
-<p><span class="theorem-title"><strong>Definición 3.5 (Probabilidad de transición de n pasos)</strong></span> Dados dos estados <span class="math inline">\(i,j\in\mathcal{S}\)</span>, definimos la <strong>probabilidad de transición de</strong> <span class="math inline">\(n\)</span> pasos</p>
+<p><span class="theorem-title"><strong>Definición 3.5 (Probabilidad de transición de n pasos) </strong></span>Dados dos estados <span class="math inline">\(i,j\in\mathcal{S}\)</span>, definimos la <strong>probabilidad de transición de</strong> <span class="math inline">\(n\)</span> pasos</p>
 <p><span class="math display">\[
 p_{i,j}^{(n)}=\mathbb{P}(X_n=j\mid X_{0}=i).
 \]</span></p>
@@ -485,7 +453,7 @@ p_{N,1}^{(n)} &amp; p_{N,2}^{(n)} &amp; \ldots &amp; p_{N,N}^{(n)}\\
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="./diagrama.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%"></p>
+<p><img src="./diagrama.png" class="img-fluid figure-img" style="width:70.0%"></p>
 </figure>
 </div>
 </div>
@@ -517,7 +485,7 @@ p_{1,1}^{(2)}&amp;=\mathbb{P}(111) + \mathbb{P}(121)+\mathbb{P}(131)+\mathbb{P}(
 <p>Escrito de esta manera, vemos que <span class="math inline">\(p_{1,1}^{(2)}\)</span> es la primera entrada de la matriz <span class="math inline">\(P^2=P\cdot P\)</span>. Es más, tenemos que <span class="math inline">\(P^2=(p^{(2)}_{i,j})_{i,j\in\{1,2,3,4\}}\)</span>.</p>
 <p>En general, tenemos lo siguiente.</p>
 <div id="thm-matrizTransicionNpasos" class="theorem">
-<p><span class="theorem-title"><strong>Teorema 3.1</strong></span> La matriz de transición de <span class="math inline">\(n\)</span> pasos vendrá dada por <span class="math inline">\(n\)</span>-ésima potencia de <span class="math inline">\(P\)</span>. Es decir,</p>
+<p><span class="theorem-title"><strong>Teorema 3.1 </strong></span>La matriz de transición de <span class="math inline">\(n\)</span> pasos vendrá dada por <span class="math inline">\(n\)</span>-ésima potencia de <span class="math inline">\(P\)</span>. Es decir,</p>
 <p><span class="math display">\[
 P^n=(p_{i,j}^{(n)})_{i,j=1,2,\ldots,N}.
 \]</span></p>
@@ -537,7 +505,7 @@ P^n=(p_{i,j}^{(n)})_{i,j=1,2,\ldots,N}.
 <p>denota el vector de probabilidades de cada estado en el instante <span class="math inline">\(n\)</span>, es decir, <span class="math inline">\(\pi^{(n)}_j=\mathbb{P}(X_n=j)\)</span>, para todo <span class="math inline">\(j=1,2,...,N\)</span>.</p>
 <p>Teniendo en cuenta el teorema anterior junto al hecho de que <span class="math inline">\(P^{m+n}=P^m P^n\)</span>, tenemos lo siguiente.</p>
 <div id="cor-ChapmanKolmogorov" class="theorem corollary">
-<p><span class="theorem-title"><strong>Corolario 3.1 (Ecuaciones de Chapman-Kolmogorov)</strong></span> <span class="math display">\[
+<p><span class="theorem-title"><strong>Corolario 3.1 (Ecuaciones de Chapman-Kolmogorov) </strong></span><span class="math display">\[
 p_{i,j}^{(n+m)}=\sum_{k=1}^N p_{i,k}^{(n)} p_{k,j}^{(m)}.
 \]</span></p>
 </div>
@@ -546,7 +514,7 @@ p_{i,j}^{(n+m)}=\sum_{k=1}^N p_{i,k}^{(n)} p_{k,j}^{(m)}.
 <h2 data-number="3.3" class="anchored" data-anchor-id="clasificación-de-los-estados"><span class="header-section-number">3.3</span> Clasificación de los estados</h2>
 <p>Sea <span class="math inline">\((X_n)_{n=0,1,2,\ldots}\)</span> una cadena con espacio de estados <span class="math inline">\(\mathcal{S}\)</span>. Dados dos estados <span class="math inline">\(x,y\in\mathcal{S}\)</span>, definimos <span class="math display">\[ r_{x,y}=\mathbb{P}(X_n=y\mbox{ para algún }n\ge 1\mid X_0=x). \]</span> Esto es, <span class="math inline">\(r_{x,y}\)</span> es la probabilidad de que la cadena alcance el estado <span class="math inline">\(y\)</span> (en algún tiempo futuro) si la cadena se inicia en el estado <span class="math inline">\(x\)</span>.</p>
 <div id="def-accesibilidad" class="theorem definition">
-<p><span class="theorem-title"><strong>Definición 3.6</strong></span> Sean <span class="math inline">\(x,y\in\mathcal{S}\)</span> con <span class="math inline">\(x\neq y\)</span>.</p>
+<p><span class="theorem-title"><strong>Definición 3.6 </strong></span>Sean <span class="math inline">\(x,y\in\mathcal{S}\)</span> con <span class="math inline">\(x\neq y\)</span>.</p>
 <ol type="1">
 <li><p>Decimos que <span class="math inline">\(y\)</span> es <strong>accesible</strong> desde <span class="math inline">\(x\)</span> si <span class="math inline">\(r_{x,y}&gt;0\)</span>. En tal caso escribimos <span class="math inline">\(x\to y\)</span>.</p></li>
 <li><p>Decimos que <span class="math inline">\(x\)</span> se <strong>comunica</strong> con <span class="math inline">\(y\)</span> si son accesibles entre sí (es decir, <span class="math inline">\(x\to y\)</span>, <span class="math inline">\(y\to x\)</span>). En tal caso escribimos <span class="math inline">\(x\leftrightarrow y\)</span>.</p></li>
@@ -554,31 +522,27 @@ p_{i,j}^{(n+m)}=\sum_{k=1}^N p_{i,k}^{(n)} p_{k,j}^{(m)}.
 <p>Por convenio, se considera que cualquier estado <span class="math inline">\(x\)</span> es accesible desde sí mismo (<span class="math inline">\(x\to x\)</span>), y que se comunica consigo mismo (<span class="math inline">\(x\leftrightarrow x\)</span>), incluyendo el caso de que <span class="math inline">\(r_{x,x}=0\)</span>.</p>
 </div>
 <p>Cada cadena puede ser representada con un grafo. Podemos ver la accesibilidad simplemente observando si en el grafo existe un camino desde <span class="math inline">\(x\)</span> hasta <span class="math inline">\(y\)</span> respetando la dirección de las flechas. Cuando haya caminos en ambas direcciones, significará que ambos estados se comunican.</p>
-<p>Por ejemplo, consideremos la cadena dada por el grafo en la Figura <a href="#fig-diagrama2" class="quarto-xref">Figura&nbsp;<span>3.1</span></a>. Vemos por ejemplo que <span class="math inline">\(1\to 3\)</span> ya que podemos ir desde 1 hasta 3, siguiendo la dirección de las flechas, pasando por 4 y 2. Sin embargo, <span class="math inline">\(3 \nrightarrow 1\)</span>, ya que de 3 sólo se puede volver a saltar a sí mismo. Por otro lado, <span class="math inline">\(1\leftrightarrow 2\)</span> ya que podemos conectar ambos estados por caminos tanto empezando en 1 como empezando en 2.</p>
+<p>Por ejemplo, consideremos la cadena dada por el grafo en la Figura <a href="#fig-diagrama2">Figura&nbsp;<span>3.1</span></a>. Vemos por ejemplo que <span class="math inline">\(1\to 3\)</span> ya que podemos ir desde 1 hasta 3, siguiendo la dirección de las flechas, pasando por 4 y 2. Sin embargo, <span class="math inline">\(3 \nrightarrow 1\)</span>, ya que de 3 sólo se puede volver a saltar a sí mismo. Por otro lado, <span class="math inline">\(1\leftrightarrow 2\)</span> ya que podemos conectar ambos estados por caminos tanto empezando en 1 como empezando en 2.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-diagrama2" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-diagrama2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="./diagrama2.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-diagrama2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figura&nbsp;3.1: Observando las flechas podemos analizar la accesibilidad y la conexión entre estados
-</figcaption>
+<div id="fig-diagrama2" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="./diagrama2.png" class="img-fluid figure-img" style="width:70.0%"></p>
+<figcaption class="figure-caption">Figura&nbsp;3.1: Observando las flechas podemos analizar la accesibilidad y la conexión entre estados</figcaption>
 </figure>
 </div>
 </div>
 </div>
 <p>En general, si un estado <span class="math inline">\(y\)</span> es accesible desde un estado <span class="math inline">\(x\)</span>, siempre será posible encontrar un camino desde <span class="math inline">\(x\)</span> hasta <span class="math inline">\(y\)</span> de modo que dicho camino no pase por un mismo estado dos veces. Para ello, basta considerar cualquier camino desde <span class="math inline">\(x\)</span> hasta <span class="math inline">\(y\)</span>, y si algún estado <span class="math inline">\(z\)</span> aparece dos veces en el camino, eliminamos el tramo del camino desde la primera aparición de dicho estado hasta la última aparición del mismo, de modo que aparezca una sola vez. Dicho camino, al no pasar dos veces por un mismo estado, tendrá como mucho tantos pasos como estados tenga la cadena. En definitiva, tenemos lo siguiente.</p>
 <div id="prp-camino" class="theorem proposition">
-<p><span class="theorem-title"><strong>Proposición 3.1</strong></span> Supongamos que el espacio de estados <span class="math inline">\(\mathcal{S}\)</span> tiene <span class="math inline">\(N\)</span> elementos. Entonces,</p>
+<p><span class="theorem-title"><strong>Proposición 3.1 </strong></span>Supongamos que el espacio de estados <span class="math inline">\(\mathcal{S}\)</span> tiene <span class="math inline">\(N\)</span> elementos. Entonces,</p>
 <p><span class="math display">\[
 x\to y\quad\mbox{ si, y sólo si, }\quad p_{x,y}^{(n)}&gt;0\mbox{ para algún }n\le N.
 \]</span></p>
 </div>
 <p>La relación entre estados definida por la propiedad de estar comunicados es una relación de equivalencia. Es decir, tenemos lo siguiente.</p>
 <div id="prp-relacionEquivalencia" class="theorem proposition">
-<p><span class="theorem-title"><strong>Proposición 3.2</strong></span> Sean <span class="math inline">\(x,y\in\mathcal{S}\)</span> dos estados. Se verifican las siguiente propiedades:</p>
+<p><span class="theorem-title"><strong>Proposición 3.2 </strong></span>Sean <span class="math inline">\(x,y\in\mathcal{S}\)</span> dos estados. Se verifican las siguiente propiedades:</p>
 <ol type="1">
 <li><p><span class="math inline">\(x\leftrightarrow x\)</span>.</p></li>
 <li><p>Si <span class="math inline">\(x\leftrightarrow y\)</span> entonces <span class="math inline">\(y\leftrightarrow x\)</span>.</p></li>
@@ -587,30 +551,26 @@ x\to y\quad\mbox{ si, y sólo si, }\quad p_{x,y}^{(n)}&gt;0\mbox{ para algún }n
 </div>
 <p>En una cadena, siempre podemos agrupar los estados en clases de modo que dos estados en una misma clase estén comunicados y elementos de clases distintas no estén comunicados. Más específicamente, tenemos lo siguiente.</p>
 <div id="prp-clasesEquivalencia" class="theorem proposition">
-<p><span class="theorem-title"><strong>Proposición 3.3</strong></span> Dado el espacio de estados <span class="math inline">\(\mathcal{S}\)</span>, siempre es posible dividirlo en clases disjuntas <span id="eq-clases"><span class="math display">\[
+<p><span class="theorem-title"><strong>Proposición 3.3 </strong></span>Dado el espacio de estados <span class="math inline">\(\mathcal{S}\)</span>, siempre es posible dividirlo en clases disjuntas <span id="eq-clases"><span class="math display">\[
 \mathcal{S}=C_1\cup C_2\cup\ldots\cup C_n
 \tag{3.2}\]</span></span></p>
 <p>donde para todo <span class="math inline">\(x,y\in\mathcal{S}\)</span> se verifica <span class="math display">\[x\leftrightarrow y\quad\mbox{ si }x,y\in C_i,\]</span> <span class="math display">\[x\nleftrightarrow y\quad\mbox{ si }x\in C_i\mbox{, }y\in C_j,\: i\neq j.\]</span></p>
 </div>
-<p>Las clases en (<a href="#eq-clases" class="quarto-xref">Ecuación&nbsp;<span>3.2</span></a>) se llaman <strong>clases irreducibles</strong>. La proposición anterior nos dice que cada cadena admite siempre una descomposición en clases irreducibles. Una cadena se dice que es <em>irreducible</em> si sólo posee una clase irreducible, es decir, todos sus estados se comunican entre sí.</p>
-<p>Las clases irreducibles pueden ser fácilmente identificadas mirando el grafo de la cadena. Observando de nuevo el grafo de la cadena en la Figura <a href="#fig-diagrama2" class="quarto-xref">Figura&nbsp;<span>3.1</span></a>, vemos que <span class="math inline">\(1\to 5\)</span> pero <span class="math inline">\(5 \nrightarrow 1\)</span>, por lo que están en clases diferentes. Por otro lado, <span class="math inline">\(1\to 4\)</span>, <span class="math inline">\(4\to 2\)</span>, <span class="math inline">\(2\to 1\)</span>, por lo que están en la misma clase. Finalmente, <span class="math inline">\(3\)</span> no está comunicado con nadie, luego forma él solo una clase. En la Figura <a href="#fig-diagrama2_colores" class="quarto-xref">Figura&nbsp;<span>3.2</span></a>, podemos ver las tres clases irreducibles de la cadena que hemos identificado.</p>
+<p>Las clases en (<a href="#eq-clases">Ecuación&nbsp;<span>3.2</span></a>) se llaman <strong>clases irreducibles</strong>. La proposición anterior nos dice que cada cadena admite siempre una descomposición en clases irreducibles. Una cadena se dice que es <em>irreducible</em> si sólo posee una clase irreducible, es decir, todos sus estados se comunican entre sí.</p>
+<p>Las clases irreducibles pueden ser fácilmente identificadas mirando el grafo de la cadena. Observando de nuevo el grafo de la cadena en la Figura <a href="#fig-diagrama2">Figura&nbsp;<span>3.1</span></a>, vemos que <span class="math inline">\(1\to 5\)</span> pero <span class="math inline">\(5 \nrightarrow 1\)</span>, por lo que están en clases diferentes. Por otro lado, <span class="math inline">\(1\to 4\)</span>, <span class="math inline">\(4\to 2\)</span>, <span class="math inline">\(2\to 1\)</span>, por lo que están en la misma clase. Finalmente, <span class="math inline">\(3\)</span> no está comunicado con nadie, luego forma él solo una clase. En la Figura <a href="#fig-diagrama2_colores">Figura&nbsp;<span>3.2</span></a>, podemos ver las tres clases irreducibles de la cadena que hemos identificado.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-diagrama2_colores" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-diagrama2_colores-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="./diagrama2_colores.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-diagrama2_colores-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figura&nbsp;3.2: Tenemos en distinto color las tres clases irreducibles
-</figcaption>
+<div id="fig-diagrama2_colores" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="./diagrama2_colores.png" class="img-fluid figure-img" style="width:70.0%"></p>
+<figcaption class="figure-caption">Figura&nbsp;3.2: Tenemos en distinto color las tres clases irreducibles</figcaption>
 </figure>
 </div>
 </div>
 </div>
 <p>A continuación vamos a introducir un criterio para clasificar los distintos estados de una cadena.</p>
 <div id="def-clasificacion" class="theorem definition">
-<p><span class="theorem-title"><strong>Definición 3.7</strong></span> Sea <span class="math inline">\(x\in\mathcal{S}\)</span>.</p>
+<p><span class="theorem-title"><strong>Definición 3.7 </strong></span>Sea <span class="math inline">\(x\in\mathcal{S}\)</span>.</p>
 <ul>
 <li><p>Decimos que <span class="math inline">\(x\)</span> es <strong>recurrente</strong> si <span class="math inline">\(r_{x,x}=1\)</span>.</p></li>
 <li><p>Decimos que <span class="math inline">\(x\)</span> es <strong>transitorio</strong> si <span class="math inline">\(r_{x,x}&lt;1\)</span>.</p></li>
@@ -620,29 +580,29 @@ Figura&nbsp;3.2: Tenemos en distinto color las tres clases irreducibles
 <p>Si <span class="math inline">\(x\)</span> es recurrente, tendremos que una vez que la cadena alcanza el estado <span class="math inline">\(x\)</span> entonces tendremos total certeza de que volverá a alcanzar el estado <span class="math inline">\(x\)</span> en el futuro.<br>
 Si <span class="math inline">\(x\)</span> es transitorio, tendremos que una vez que la cadena alcanza el estado <span class="math inline">\(x\)</span> entonces no tendremos certeza de que la cadena vuelva a alcanzar el estado <span class="math inline">\(x\)</span> de nuevo.<br>
 Si <span class="math inline">\(x\)</span> es absorbente, tendremos que una vez que la cadena alcanza el estado <span class="math inline">\(x\)</span> con toda certeza permanezca en el estado <span class="math inline">\(x\)</span> en el futuro. En particular, todo estado absorbente es también recurrente.</p>
-<p>Mirando de nuevo al grafo de la Figura <a href="#fig-diagrama2_colores" class="quarto-xref">Figura&nbsp;<span>3.2</span></a> arriba, vemos que el estado 3 es absorbente (y por tanto recurrente), ya que si comenzamos en él sólo llegaremos a él mismo. Los estados 5 y 6 son recurrentes. Por ejemplo, vemos que si empezamos en 5 no podremos llegar a ningún otro estado excepto 6 y él mismo. Además, la única manera para que, empezando en 5, no se vuelva a visitar 5 es que la cadena se cambie al estado 6 y permanezca en ese estado en lo sucesivo. Pero la probabilidad de que eso ocurra es <span class="math inline">\(\frac{1}{2}\cdot \frac{1}{2}\cdot \frac{1}{2}\cdot \ldots=0\)</span>. Así que, con probabilidad 1 se volverá en algún momento a 5, y por lo tanto es recurrente. El mismo argumento es aplicable a 6. Finalmente, los estados 1, 2 y 4 son transitorios ya que desde esos estados se accede a zonas de las que no se puede volver.</p>
+<p>Mirando de nuevo al grafo de la Figura <a href="#fig-diagrama2_colores">Figura&nbsp;<span>3.2</span></a> arriba, vemos que el estado 3 es absorbente (y por tanto recurrente), ya que si comenzamos en él sólo llegaremos a él mismo. Los estados 5 y 6 son recurrentes. Por ejemplo, vemos que si empezamos en 5 no podremos llegar a ningún otro estado excepto 6 y él mismo. Además, la única manera para que, empezando en 5, no se vuelva a visitar 5 es que la cadena se cambie al estado 6 y permanezca en ese estado en lo sucesivo. Pero la probabilidad de que eso ocurra es <span class="math inline">\(\frac{1}{2}\cdot \frac{1}{2}\cdot \frac{1}{2}\cdot \ldots=0\)</span>. Así que, con probabilidad 1 se volverá en algún momento a 5, y por lo tanto es recurrente. El mismo argumento es aplicable a 6. Finalmente, los estados 1, 2 y 4 son transitorios ya que desde esos estados se accede a zonas de las que no se puede volver.</p>
 <p>A continuación, enunciamos, sin demostración, algunos resultados sobre el comportamiento de los estados recurrentes.</p>
 <div id="thm-recurente" class="theorem">
-<p><span class="theorem-title"><strong>Teorema 3.2</strong></span> Si <span class="math inline">\(x\to y\)</span> y <span class="math inline">\(x\)</span> es recurrente, entonces <span class="math inline">\(y\)</span> también es recurrente y, además, <span class="math inline">\(r_{x,y}=1=r_{y,x}\)</span>.</p>
+<p><span class="theorem-title"><strong>Teorema 3.2 </strong></span>Si <span class="math inline">\(x\to y\)</span> y <span class="math inline">\(x\)</span> es recurrente, entonces <span class="math inline">\(y\)</span> también es recurrente y, además, <span class="math inline">\(r_{x,y}=1=r_{y,x}\)</span>.</p>
 </div>
 <p>El teorema de arriba nos dice que si <span class="math inline">\(y\)</span> es accesible desde un estado recurrente, entonces se realizarán viajes de ida y vuelta entre <span class="math inline">\(x\)</span> e <span class="math inline">\(y\)</span>, una y otra vez.</p>
 <div id="thm-recurente2" class="theorem">
-<p><span class="theorem-title"><strong>Teorema 3.3</strong></span> Toda cadena de Markov homogénea posee al menos un estado recurrente.</p>
+<p><span class="theorem-title"><strong>Teorema 3.3 </strong></span>Toda cadena de Markov homogénea posee al menos un estado recurrente.</p>
 </div>
 <p>Como consecuencia de los dos teoremas anteriores tenemos.</p>
 <div id="cor-recurente3" class="theorem corollary">
-<p><span class="theorem-title"><strong>Corolario 3.2</strong></span> Todos los estados de una cadena de Markov irreducible son recurrentes. Además, <span class="math inline">\(r_{x,y}=1\)</span> para cualesquiera dos estados <span class="math inline">\(x,y\)</span> de la cadena.</p>
+<p><span class="theorem-title"><strong>Corolario 3.2 </strong></span>Todos los estados de una cadena de Markov irreducible son recurrentes. Además, <span class="math inline">\(r_{x,y}=1\)</span> para cualesquiera dos estados <span class="math inline">\(x,y\)</span> de la cadena.</p>
 </div>
 <p>En el caso de cadenas no irreducibles tendremos los siguiente.</p>
 <div id="cor-recurente4" class="theorem corollary">
-<p><span class="theorem-title"><strong>Corolario 3.3</strong></span> Supongamos que una cadena de Markov tiene descomposición en clases irreducibles</p>
+<p><span class="theorem-title"><strong>Corolario 3.3 </strong></span>Supongamos que una cadena de Markov tiene descomposición en clases irreducibles</p>
 <p><span class="math display">\[ C_1\cup C_2\cup \ldots \cup C_n. \]</span></p>
 <p>Entonces si existe <span class="math inline">\(x\in C_i\)</span> el cual es recurrente (resp. transitorio), entonces todos los <span class="math inline">\(y\in C_i\)</span> son también recurrentes (resp. transitorios).</p>
 </div>
-<p>Obsérvese que, en la Figura <a href="#fig-diagrama2_colores" class="quarto-xref">Figura&nbsp;<span>3.2</span></a> arriba, los estados 1, 2 y 4 están todos en una misma clase y son transitorios; los estados 5 y 6 están los dos en una misma clase y son recurrentes; finalmente, el estado 3 es absorbente y formará él solo una clase irreducible.</p>
+<p>Obsérvese que, en la Figura <a href="#fig-diagrama2_colores">Figura&nbsp;<span>3.2</span></a> arriba, los estados 1, 2 y 4 están todos en una misma clase y son transitorios; los estados 5 y 6 están los dos en una misma clase y son recurrentes; finalmente, el estado 3 es absorbente y formará él solo una clase irreducible.</p>
 <p>En las cadenas de Markov frecuentemente se observan patrones cíclicos, donde una sucesión de estados se recorre en un camino en forma de bucle empezando y acabando en un mismo estado. Esto da lugar al siguiente concepto.</p>
 <div id="def-periodo" class="theorem definition">
-<p><span class="theorem-title"><strong>Definición 3.8 (Periodo)</strong></span> Un estado <span class="math inline">\(x\in\mathcal{S}\)</span> se dice que tiene <strong>periodo</strong> <span class="math inline">\(d\)</span> si <span class="math inline">\(p^{(n)}_{x,x}=0\)</span> para todo <span class="math inline">\(n\)</span> que no sea divisible por <span class="math inline">\(d\)</span>, y además <span class="math inline">\(d\)</span> es el mayor número con esta propiedad. En el caso de que <span class="math inline">\(p^{(n)}_{x,x}=0\)</span> para todo <span class="math inline">\(n\)</span> (es decir, si <span class="math inline">\(r_{x,x}=0\)</span>), entonces diremos que el periodo de <span class="math inline">\(x\)</span> es infinito. Un estado <span class="math inline">\(x\)</span> con periodo 1 se dice que es <strong>aperiódico</strong>.</p>
+<p><span class="theorem-title"><strong>Definición 3.8 (Periodo) </strong></span>Un estado <span class="math inline">\(x\in\mathcal{S}\)</span> se dice que tiene <strong>periodo</strong> <span class="math inline">\(d\)</span> si <span class="math inline">\(p^{(n)}_{x,x}=0\)</span> para todo <span class="math inline">\(n\)</span> que no sea divisible por <span class="math inline">\(d\)</span>, y además <span class="math inline">\(d\)</span> es el mayor número con esta propiedad. En el caso de que <span class="math inline">\(p^{(n)}_{x,x}=0\)</span> para todo <span class="math inline">\(n\)</span> (es decir, si <span class="math inline">\(r_{x,x}=0\)</span>), entonces diremos que el periodo de <span class="math inline">\(x\)</span> es infinito. Un estado <span class="math inline">\(x\)</span> con periodo 1 se dice que es <strong>aperiódico</strong>.</p>
 </div>
 <p>En otras palabras, un estado <span class="math inline">\(x\)</span> tiene periodo <span class="math inline">\(d\)</span> si la cadena puede volver al estado <span class="math inline">\(x\)</span> sólo en un número de pasos que sea múltiplo de <span class="math inline">\(d\)</span>. En el caso de que la cadena no vuelva nunca más a <span class="math inline">\(x\)</span>, el periodo es infinito.</p>
 <p>Una importante propiedad es la siguiente.</p>
@@ -651,19 +611,19 @@ Si <span class="math inline">\(x\)</span> es absorbente, tendremos que una vez q
 </div>
 <p>Por definición en una cadena irreducible todos los estados se comunican, por lo que tenemos lo siguiente.</p>
 <div id="cor-periodo" class="theorem corollary">
-<p><span class="theorem-title"><strong>Corolario 3.4</strong></span> En una cadena irreducible todos los estados tienen el mismo periodo.</p>
+<p><span class="theorem-title"><strong>Corolario 3.4 </strong></span>En una cadena irreducible todos los estados tienen el mismo periodo.</p>
 </div>
 <p>Dado que todos los estados de una cadena irreducible tienen el mismo periodo, tiene sentido introducir lo siguiente.</p>
 <div id="def-periodoCadena" class="theorem definition">
-<p><span class="theorem-title"><strong>Definición 3.9</strong></span> Se dice que una cadena irreducible tiene periodo <span class="math inline">\(d\)</span> si uno de sus estados (y por tanto todos) tienen periodo <span class="math inline">\(d\)</span>. Se dice que una cadena es aperiódica si uno de sus estados (y por tanto todos) es aperiódico.</p>
+<p><span class="theorem-title"><strong>Definición 3.9 </strong></span>Se dice que una cadena irreducible tiene periodo <span class="math inline">\(d\)</span> si uno de sus estados (y por tanto todos) tienen periodo <span class="math inline">\(d\)</span>. Se dice que una cadena es aperiódica si uno de sus estados (y por tanto todos) es aperiódico.</p>
 </div>
 <p>En el caso de cadenas no irreducibles tendremos los siguiente.</p>
 <div id="cor-periodo2" class="theorem corollary">
-<p><span class="theorem-title"><strong>Corolario 3.5</strong></span> Supongamos que una cadena de Markov tiene descomposición en clases irreducibles <span class="math display">\[ C_1\cup C_2\cup \ldots \cup C_n. \]</span> Todos los estados pertenecientes a una misma clase <span class="math inline">\(C_i\)</span> tienen el mismo periodo.</p>
+<p><span class="theorem-title"><strong>Corolario 3.5 </strong></span>Supongamos que una cadena de Markov tiene descomposición en clases irreducibles <span class="math display">\[ C_1\cup C_2\cup \ldots \cup C_n. \]</span> Todos los estados pertenecientes a una misma clase <span class="math inline">\(C_i\)</span> tienen el mismo periodo.</p>
 </div>
 <p>Veremos más adelante que conocer si una cadena irreducible es aperíodica es importante en el estudio límite de las cadenas de Markov. Para determinar si un estado es aperiódico aplicaremos un simple método que explicaremos a continuación.</p>
 <p>Recuerda que dos números n y m son coprimos si su máximo común divisor es 1. Supongamos que podemos encontrar dos números coprimos <span class="math inline">\(n\)</span> y <span class="math inline">\(m\)</span> tal que <span class="math inline">\(p_{x,x}^{(n)}&gt;0\)</span> y <span class="math inline">\(p_{x,x}^{(m)}&gt;0\)</span>. En este caso, por definición de periodo, <span class="math inline">\(d\)</span> debe dividir a <span class="math inline">\(n\)</span> y <span class="math inline">\(m\)</span>. Como <span class="math inline">\(n\)</span> y <span class="math inline">\(m\)</span> son coprimos, necesariamente tendremos que <span class="math inline">\(d=1\)</span>. Por tanto, para determinar si un estado <span class="math inline">\(x\)</span> es aperiódico, trataremos de buscar en el grafo dos caminos de <span class="math inline">\(x\)</span> en sí mismo de modo que los números de pasos dados en sendos caminos sean coprimos.</p>
-<p>Para ilustrar este método, volvamos al ejemplo en la Figura <a href="#fig-diagrama2_colores" class="quarto-xref">Figura&nbsp;<span>3.2</span></a> arriba. Claramente el estado 3 es aperiódico por ser absorbente. Por otro lado, partiendo del estado 1, podremos volver a dicho estado en tres pasos siguiendo el camino <span class="math inline">\(1\to 4 \to 2 \to 1\)</span>. Pero, partiendo de 1, también podemos volver a <span class="math inline">\(1\)</span> en cuatro pasos a través del camino <span class="math inline">\(1\to 4 \to 4 \to 2 \to 1\)</span> en el que pasamos dos veces por 4. Como 3 y 4 son coprimos, necesariamente tendremos que el estado 1 es aperiódico. Además, los estados 2 y 4 también serán aperiódicos por estar en la misma clase irreducible que 1. Un argumento similar muestra que los estados 5 y 6, los cuales están en la misma clase irreducible, son aperiódicos también.</p>
+<p>Para ilustrar este método, volvamos al ejemplo en la Figura <a href="#fig-diagrama2_colores">Figura&nbsp;<span>3.2</span></a> arriba. Claramente el estado 3 es aperiódico por ser absorbente. Por otro lado, partiendo del estado 1, podremos volver a dicho estado en tres pasos siguiendo el camino <span class="math inline">\(1\to 4 \to 2 \to 1\)</span>. Pero, partiendo de 1, también podemos volver a <span class="math inline">\(1\)</span> en cuatro pasos a través del camino <span class="math inline">\(1\to 4 \to 4 \to 2 \to 1\)</span> en el que pasamos dos veces por 4. Como 3 y 4 son coprimos, necesariamente tendremos que el estado 1 es aperiódico. Además, los estados 2 y 4 también serán aperiódicos por estar en la misma clase irreducible que 1. Un argumento similar muestra que los estados 5 y 6, los cuales están en la misma clase irreducible, son aperiódicos también.</p>
 </section>
 <section id="número-de-visitas" class="level2" data-number="3.4">
 <h2 data-number="3.4" class="anchored" data-anchor-id="número-de-visitas"><span class="header-section-number">3.4</span> Número de visitas</h2>
@@ -684,7 +644,7 @@ Comentario
 En ese caso, <span class="math display">\[ \mathbb{E}(Y)=\frac{1-p}{p}. \]</span> Obsérvese que la anterior esperanza es infinita si <span class="math inline">\(p=0\)</span>. Para los demás valores de <span class="math inline">\(p\)</span> tendremos valores finitos.</p>
 </div>
 </div>
-<p>A partir de (<a href="#eq-nvisitas" class="quarto-xref">Ecuación&nbsp;<span>3.3</span></a>), vemos que el número de visitas a <span class="math inline">\(x\)</span> partiendo de <span class="math inline">\(x\)</span> sigue una distribución Geométrica de parámetro <span class="math inline">\(p=1-r_{x,x}\)</span>. En particular, el <em>número esperado de visitas</em> a <span class="math inline">\(x\)</span> si salimos de <span class="math inline">\(x\)</span> es <span class="math display">\[ \mathbb{E}(\mbox{``número de visitas a $x$''}\mid X_0=x)=\frac{r_{x,x}}{1-r_{x,x}}. \]</span> Además, la expresión arriba es finita si, y sólo si, <span class="math inline">\(r_{x,x}&lt;1\)</span>, en cuyo caso <span class="math inline">\(x\)</span> es transitorio. En caso contrario, tendremos un estado recurrente y el número esperado de visitas será infinito.</p>
+<p>A partir de (<a href="#eq-nvisitas">Ecuación&nbsp;<span>3.3</span></a>), vemos que el número de visitas a <span class="math inline">\(x\)</span> partiendo de <span class="math inline">\(x\)</span> sigue una distribución Geométrica de parámetro <span class="math inline">\(p=1-r_{x,x}\)</span>. En particular, el <em>número esperado de visitas</em> a <span class="math inline">\(x\)</span> si salimos de <span class="math inline">\(x\)</span> es <span class="math display">\[ \mathbb{E}(\mbox{``número de visitas a $x$''}\mid X_0=x)=\frac{r_{x,x}}{1-r_{x,x}}. \]</span> Además, la expresión arriba es finita si, y sólo si, <span class="math inline">\(r_{x,x}&lt;1\)</span>, en cuyo caso <span class="math inline">\(x\)</span> es transitorio. En caso contrario, tendremos un estado recurrente y el número esperado de visitas será infinito.</p>
 <p>Consideremos ahora un estado <span class="math inline">\(y\)</span> distinto de <span class="math inline">\(x\)</span>, de modo que <span class="math inline">\(y\)</span> es accesible desde <span class="math inline">\(x\)</span>. Queremos calcular ahora el número medio de visitas a <span class="math inline">\(y\)</span> empezando en <span class="math inline">\(x\)</span>. Si partimos de <span class="math inline">\(x\)</span>, tenemos dos posibilidades, o bien la cadena alcanza el estado <span class="math inline">\(y\)</span> produciendose al menos una visita, lo cual ocurre con probabilidad <span class="math inline">\(r_{x,y}\)</span>; o bien no lo visita nunca, lo cual ocurre con probabilidad <span class="math inline">\(1-r_{x,y}\)</span>. De esta manera, el número esperado de visitas a <span class="math inline">\(y\)</span> si salimos de <span class="math inline">\(x\)</span> es <span class="math display">\[\begin{align*}
 \mathbb{E}(\mbox{``número de visitas a $y$''}|X_0=x)&amp;=r_{x,y}\cdot\Big(1+ \mathbb{E}(\mbox{``número de visitas a $y$ con $n&gt;1$''}|X_1=y)\Big) + (1-r_{x,y})\cdot 0\\
 &amp;=r_{x,y}\left(1+ \frac{r_{y,y}}{1-r_{y,y}}\right)\\
@@ -712,7 +672,7 @@ En ese caso, <span class="math display">\[ \mathbb{E}(Y)=\frac{1-p}{p}. \]</span
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="./diagrama3.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%"></p>
+<p><img src="./diagrama3.png" class="img-fluid figure-img" style="width:70.0%"></p>
 </figure>
 </div>
 </div>
@@ -764,7 +724,7 @@ r_{4,1}&amp;=0.
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="./diagrama5.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%"></p>
+<p><img src="./diagrama5.png" class="img-fluid figure-img" style="width:70.0%"></p>
 </figure>
 </div>
 </div>
@@ -834,7 +794,7 @@ Para cada <span class="math inline">\(n=0,1,2,\ldots\)</span> y <span class="mat
 <p><span class="math display">\[
 \sum_{j=1}^N \pi_j=1.
 \]</span></p>
-<p>Por otro lado, usando (<a href="#eq-distrLim" class="quarto-xref">Ecuación&nbsp;<span>3.4</span></a>), tenemos</p>
+<p>Por otro lado, usando (<a href="#eq-distrLim">Ecuación&nbsp;<span>3.4</span></a>), tenemos</p>
 <p><span id="eq-distrLim2"><span class="math display">\[
 \begin{aligned}
 \pi&amp;=\lim_{n\to\infty}\pi^{(n+1)}\\
@@ -850,10 +810,10 @@ Para cada <span class="math inline">\(n=0,1,2,\ldots\)</span> y <span class="mat
 \pi=\pi\cdot P.
 \end{aligned}
 \tag{3.6}\]</span></span></p>
-<p>Podemos interpretar esta ecuación de manera intuitiva de la siguiente forma. Supongamos que en un instante de tiempo <span class="math inline">\(n\)</span> la variable aleatoria <span class="math inline">\(X_n\)</span> está distribuida según <span class="math inline">\(\pi\)</span>. Al dar un paso en la cadena, la distribución de <span class="math inline">\(X_{n+1}\)</span> será <span class="math inline">\(\pi P\)</span>. Ahora bien, si se cumple que <span class="math inline">\(\pi=\pi P\)</span>, entonces <span class="math inline">\(X_{n+1}\)</span> sigue teniendo la distribución <span class="math inline">\(\pi\)</span>. Es decir, tras la transición la distribución no cambia. Esto significa que la cadena de Markov ha alcanzado una distribución estable en el tiempo. A una distribución <span class="math inline">\(\pi\)</span> verificando (<a href="#eq-estacionario" class="quarto-xref">Ecuación&nbsp;<span>3.6</span></a>) se llama <strong>distribución estacionaria</strong> de la cadena de Markov.</p>
-<p>Hemos argumentado arriba que la distribución límite, si existe, debe cumplir las ecuaciones (<a href="#eq-distrLim2" class="quarto-xref">Ecuación&nbsp;<span>3.5</span></a>) y (<a href="#eq-estacionario" class="quarto-xref">Ecuación&nbsp;<span>3.6</span></a>). Por otra parte, es posible demostrar que si una cadena irreducible es aperiódica entonces la distribución límite existe. Por tanto, tenemos lo siguiente.</p>
+<p>Podemos interpretar esta ecuación de manera intuitiva de la siguiente forma. Supongamos que en un instante de tiempo <span class="math inline">\(n\)</span> la variable aleatoria <span class="math inline">\(X_n\)</span> está distribuida según <span class="math inline">\(\pi\)</span>. Al dar un paso en la cadena, la distribución de <span class="math inline">\(X_{n+1}\)</span> será <span class="math inline">\(\pi P\)</span>. Ahora bien, si se cumple que <span class="math inline">\(\pi=\pi P\)</span>, entonces <span class="math inline">\(X_{n+1}\)</span> sigue teniendo la distribución <span class="math inline">\(\pi\)</span>. Es decir, tras la transición la distribución no cambia. Esto significa que la cadena de Markov ha alcanzado una distribución estable en el tiempo. A una distribución <span class="math inline">\(\pi\)</span> verificando (<a href="#eq-estacionario">Ecuación&nbsp;<span>3.6</span></a>) se llama <strong>distribución estacionaria</strong> de la cadena de Markov.</p>
+<p>Hemos argumentado arriba que la distribución límite, si existe, debe cumplir las ecuaciones (<a href="#eq-distrLim2">Ecuación&nbsp;<span>3.5</span></a>) y (<a href="#eq-estacionario">Ecuación&nbsp;<span>3.6</span></a>). Por otra parte, es posible demostrar que si una cadena irreducible es aperiódica entonces la distribución límite existe. Por tanto, tenemos lo siguiente.</p>
 <div id="thm-periodo" class="theorem">
-<p><span class="theorem-title"><strong>Teorema 3.4</strong></span> Supongamos que <span class="math inline">\((X_n)_{n=0,1,2,\ldots}\)</span> es una cadena irreducible aperiódica. Entonces, la distribución límite existe y está determinada por las ecuaciones</p>
+<p><span class="theorem-title"><strong>Teorema 3.4 </strong></span>Supongamos que <span class="math inline">\((X_n)_{n=0,1,2,\ldots}\)</span> es una cadena irreducible aperiódica. Entonces, la distribución límite existe y está determinada por las ecuaciones</p>
 <p><span class="math display">\[
 \begin{cases}
 \pi=\pi P,\\
@@ -1050,418 +1010,251 @@ M= \left[
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
-  window.document.addEventListener("DOMContentLoaded", function (event) {
-    const icon = "";
-    const anchorJS = new window.AnchorJS();
-    anchorJS.options = {
-      placement: 'right',
-      icon: icon
-    };
-    anchorJS.add('.anchored');
-    const isCodeAnnotation = (el) => {
-      for (const clz of el.classList) {
-        if (clz.startsWith('code-annotation-')) {                     
-          return true;
-        }
-      }
-      return false;
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
     }
-    const onCopySuccess = function(e) {
-      // button target
-      const button = e.trigger;
-      // don't keep focus
-      button.blur();
-      // flash "checked"
-      button.classList.add('code-copy-button-checked');
-      var currentTitle = button.getAttribute("title");
-      button.setAttribute("title", "Copiado");
-      let tooltip;
-      if (window.bootstrap) {
-        button.setAttribute("data-bs-toggle", "tooltip");
-        button.setAttribute("data-bs-placement", "left");
-        button.setAttribute("data-bs-title", "Copiado");
-        tooltip = new bootstrap.Tooltip(button, 
-          { trigger: "manual", 
-            customClass: "code-copy-button-tooltip",
-            offset: [0, -8]});
-        tooltip.show();    
-      }
-      setTimeout(function() {
-        if (tooltip) {
-          tooltip.hide();
-          button.removeAttribute("data-bs-title");
-          button.removeAttribute("data-bs-toggle");
-          button.removeAttribute("data-bs-placement");
-        }
-        button.setAttribute("title", currentTitle);
-        button.classList.remove('code-copy-button-checked');
-      }, 1000);
-      // clear code selection
-      e.clearSelection();
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
     }
-    const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
-        }
-        return codeEl.innerText;
-    }
-    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
-      text: getTextToCopy
-    });
-    clipboard.on('success', onCopySuccess);
-    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
-        text: getTextToCopy,
-        container: window.document.getElementById('quarto-embedded-source-code-modal')
-      });
-      clipboardModal.on('success', onCopySuccess);
-    }
-      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-      var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp('/' + window.location.host + '/');
-      var isInternal = (href) => {
-          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
-      }
-      // Inspect non-navigation links and adorn them if external
-     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
-      for (var i=0; i<links.length; i++) {
-        const link = links[i];
-        if (!isInternal(link.href)) {
-          // undo the damage that might have been done by quarto-nav.js in the case of
-          // links that we want to consider external
-          if (link.dataset.originalHref !== undefined) {
-            link.href = link.dataset.originalHref;
-          }
-        }
-      }
-    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
-      const config = {
-        allowHTML: true,
-        maxWidth: 500,
-        delay: 100,
-        arrow: false,
-        appendTo: function(el) {
-            return el.parentElement;
-        },
-        interactive: true,
-        interactiveBorder: 10,
-        theme: 'quarto',
-        placement: 'bottom-start',
-      };
-      if (contentFn) {
-        config.content = contentFn;
-      }
-      if (onTriggerFn) {
-        config.onTrigger = onTriggerFn;
-      }
-      if (onUntriggerFn) {
-        config.onUntrigger = onUntriggerFn;
-      }
-      window.tippy(el, config); 
-    }
-    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
-    for (var i=0; i<noterefs.length; i++) {
-      const ref = noterefs[i];
-      tippyHover(ref, function() {
-        // use id or data attribute instead here
-        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
-        try { href = new URL(href).hash; } catch {}
-        const id = href.replace(/^#\/?/, "");
-        const note = window.document.getElementById(id);
-        if (note) {
-          return note.innerHTML;
-        } else {
-          return "";
-        }
-      });
-    }
-    const xrefs = window.document.querySelectorAll('a.quarto-xref');
-    const processXRef = (id, note) => {
-      // Strip column container classes
-      const stripColumnClz = (el) => {
-        el.classList.remove("page-full", "page-columns");
-        if (el.children) {
-          for (const child of el.children) {
-            stripColumnClz(child);
-          }
-        }
-      }
-      stripColumnClz(note)
-      if (id === null || id.startsWith('sec-')) {
-        // Special case sections, only their first couple elements
-        const container = document.createElement("div");
-        if (note.children && note.children.length > 2) {
-          container.appendChild(note.children[0].cloneNode(true));
-          for (let i = 1; i < note.children.length; i++) {
-            const child = note.children[i];
-            if (child.tagName === "P" && child.innerText === "") {
-              continue;
-            } else {
-              container.appendChild(child.cloneNode(true));
-              break;
-            }
-          }
-          if (window.Quarto?.typesetMath) {
-            window.Quarto.typesetMath(container);
-          }
-          return container.innerHTML
-        } else {
-          if (window.Quarto?.typesetMath) {
-            window.Quarto.typesetMath(note);
-          }
-          return note.innerHTML;
-        }
-      } else {
-        // Remove any anchor links if they are present
-        const anchorLink = note.querySelector('a.anchorjs-link');
-        if (anchorLink) {
-          anchorLink.remove();
-        }
-        if (window.Quarto?.typesetMath) {
-          window.Quarto.typesetMath(note);
-        }
-        if (note.classList.contains("callout")) {
-          return note.outerHTML;
-        } else {
-          return note.innerHTML;
-        }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
       }
     }
-    for (var i=0; i<xrefs.length; i++) {
-      const xref = xrefs[i];
-      tippyHover(xref, undefined, function(instance) {
-        instance.disable();
-        let url = xref.getAttribute('href');
-        let hash = undefined; 
-        if (url.startsWith('#')) {
-          hash = url;
-        } else {
-          try { hash = new URL(url).hash; } catch {}
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        if (hash) {
-          const id = hash.replace(/^#\/?/, "");
-          const note = window.document.getElementById(id);
-          if (note !== null) {
-            try {
-              const html = processXRef(id, note.cloneNode(true));
-              instance.setContent(html);
-            } finally {
-              instance.enable();
-              instance.show();
-            }
-          } else {
-            // See if we can fetch this
-            fetch(url.split('#')[0])
-            .then(res => res.text())
-            .then(html => {
-              const parser = new DOMParser();
-              const htmlDoc = parser.parseFromString(html, "text/html");
-              const note = htmlDoc.getElementById(id);
-              if (note !== null) {
-                const html = processXRef(id, note);
-                instance.setContent(html);
-              } 
-            }).finally(() => {
-              instance.enable();
-              instance.show();
-            });
-          }
-        } else {
-          // See if we can fetch a full url (with no hash to target)
-          // This is a special case and we should probably do some content thinning / targeting
-          fetch(url)
-          .then(res => res.text())
-          .then(html => {
-            const parser = new DOMParser();
-            const htmlDoc = parser.parseFromString(html, "text/html");
-            const note = htmlDoc.querySelector('main.content');
-            if (note !== null) {
-              // This should only happen for chapter cross references
-              // (since there is no id in the URL)
-              // remove the first header
-              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
-                note.children[0].remove();
-              }
-              const html = processXRef(null, note);
-              instance.setContent(html);
-            } 
-          }).finally(() => {
-            instance.enable();
-            instance.show();
-          });
-        }
-      }, function(instance) {
-      });
-    }
-        let selectedAnnoteEl;
-        const selectorForAnnotation = ( cell, annotation) => {
-          let cellAttr = 'data-code-cell="' + cell + '"';
-          let lineAttr = 'data-code-annotation="' +  annotation + '"';
-          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
-          return selector;
-        }
-        const selectCodeLines = (annoteEl) => {
-          const doc = window.document;
-          const targetCell = annoteEl.getAttribute("data-target-cell");
-          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
-          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
-          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
-          const lineIds = lines.map((line) => {
-            return targetCell + "-" + line;
-          })
-          let top = null;
-          let height = null;
-          let parent = null;
-          if (lineIds.length > 0) {
-              //compute the position of the single el (top and bottom and make a div)
-              const el = window.document.getElementById(lineIds[0]);
-              top = el.offsetTop;
-              height = el.offsetHeight;
-              parent = el.parentElement.parentElement;
-            if (lineIds.length > 1) {
-              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
-              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
-              height = bottom - top;
-            }
-            if (top !== null && height !== null && parent !== null) {
-              // cook up a div (if necessary) and position it 
-              let div = window.document.getElementById("code-annotation-line-highlight");
-              if (div === null) {
-                div = window.document.createElement("div");
-                div.setAttribute("id", "code-annotation-line-highlight");
-                div.style.position = 'absolute';
-                parent.appendChild(div);
-              }
-              div.style.top = top - 2 + "px";
-              div.style.height = height + 4 + "px";
-              div.style.left = 0;
-              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
-              if (gutterDiv === null) {
-                gutterDiv = window.document.createElement("div");
-                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
-                gutterDiv.style.position = 'absolute';
-                const codeCell = window.document.getElementById(targetCell);
-                const gutter = codeCell.querySelector('.code-annotation-gutter');
-                gutter.appendChild(gutterDiv);
-              }
-              gutterDiv.style.top = top - 2 + "px";
-              gutterDiv.style.height = height + 4 + "px";
-            }
-            selectedAnnoteEl = annoteEl;
-          }
-        };
-        const unselectCodeLines = () => {
-          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
-          elementsIds.forEach((elId) => {
-            const div = window.document.getElementById(elId);
-            if (div) {
-              div.remove();
-            }
-          });
-          selectedAnnoteEl = undefined;
-        };
-          // Handle positioning of the toggle
-      window.addEventListener(
-        "resize",
-        throttle(() => {
-          elRect = undefined;
-          if (selectedAnnoteEl) {
-            selectCodeLines(selectedAnnoteEl);
-          }
-        }, 10)
-      );
-      function throttle(fn, ms) {
-      let throttle = false;
-      let timer;
-        return (...args) => {
-          if(!throttle) { // first call gets through
-              fn.apply(this, args);
-              throttle = true;
-          } else { // all the others get throttled
-              if(timer) clearTimeout(timer); // cancel #2
-              timer = setTimeout(() => {
-                fn.apply(this, args);
-                timer = throttle = false;
-              }, ms);
-          }
-        };
       }
-        // Attach click handler to the DT
-        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
-        for (const annoteDlNode of annoteDls) {
-          annoteDlNode.addEventListener('click', (event) => {
-            const clickedEl = event.target;
-            if (clickedEl !== selectedAnnoteEl) {
-              unselectCodeLines();
-              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
-              if (activeEl) {
-                activeEl.classList.remove('code-annotation-active');
-              }
-              selectCodeLines(clickedEl);
-              clickedEl.classList.add('code-annotation-active');
-            } else {
-              // Unselect the line
-              unselectCodeLines();
-              clickedEl.classList.remove('code-annotation-active');
-            }
-          });
-        }
-    const findCites = (el) => {
-      const parentEl = el.parentElement;
-      if (parentEl) {
-        const cites = parentEl.dataset.cites;
-        if (cites) {
-          return {
-            el,
-            cites: cites.split(' ')
-          };
-        } else {
-          return findCites(el.parentElement)
-        }
-      } else {
-        return undefined;
-      }
-    };
-    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
-    for (var i=0; i<bibliorefs.length; i++) {
-      const ref = bibliorefs[i];
-      const citeInfo = findCites(ref);
-      if (citeInfo) {
-        tippyHover(citeInfo.el, function() {
-          var popup = window.document.createElement('div');
-          citeInfo.cites.forEach(function(cite) {
-            var citeDiv = window.document.createElement('div');
-            citeDiv.classList.add('hanging-indent');
-            citeDiv.classList.add('csl-entry');
-            var biblioDiv = window.document.getElementById('ref-' + cite);
-            if (biblioDiv) {
-              citeDiv.innerHTML = biblioDiv.innerHTML;
-            }
-            popup.appendChild(citeDiv);
-          });
-          return popup.innerHTML;
-        });
-      }
+      return codeEl.innerText;
     }
   });
-  </script>
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copiado");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copiado");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./Tema1.html" class="pagination-link" aria-label="Tema 1. Introducción a los procesos estocásticos">
+      <a href="./Tema1.html" class="pagination-link">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Tema 1. Introducción a los procesos estocásticos</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./Tema3.html" class="pagination-link" aria-label="Tema 3. Procesos de Poisson">
+      <a href="./Tema3.html" class="pagination-link">
         <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Tema 3. Procesos de Poisson</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
 </div> <!-- /content -->
-
 
 
 
