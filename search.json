@@ -280,5 +280,25 @@
     "crumbs": [
       "<span class='chapter-number'>6</span>  <span class='chapter-title'>Tema 5. Métodos de Alisado Exponencial</span>"
     ]
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Procesos estocásticos y series temporales",
+    "section": "",
+    "text": "0.1 Presentación\nEl presente libro contiene los apuntes de la asignatura “Procesos estocásticos y series temporales”, la cual es impartida en el Grado en Ciencia e Ingeniería de Datos de la Universidad Politécnica de Cartagena y la Universidad de Murcia.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Presentación</span>"
+    ]
+  },
+  {
+    "objectID": "index.html#licencia",
+    "href": "index.html#licencia",
+    "title": "Procesos estocásticos y series temporales",
+    "section": "0.2 Licencia",
+    "text": "0.2 Licencia\nEste es un libro abierto bajo la licencia\n\nPuedes copiar, redistribuir y adaptar la obra, siempre que des el crédito correspondiente, no la uses con fines comerciales y compartas bajo la misma licencia.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Presentación</span>"
+    ]
   }
 ]
