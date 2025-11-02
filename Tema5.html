@@ -879,7 +879,7 @@ a_t=a_{t-1}(1+ \alpha \epsilon_t)
 <p>Destacar que, en el caso de modelos con errores aditivos y asumiendo distribución Normal para los errores, el método de máxima verosimilitud proporciona los mismos resultados que minimizar la suma de cuadrados de los errores. Sin embargo, para modelos con errores multiplicativos no es cierto.</p>
 <p>El empleo de la estimación máximo-verosímil en los modelos ETS, permite el uso de criterios de información para la <strong>selección del modelo</strong>, como el AIC (Criterio de Información de Akaike) y el BIC (Criterio de Información Bayesiano). Estos criterios ayudan a determinar qué modelo ETS es el más apropiado para una serie temporal dada. Recordemos las definiciones del AIC y BIC:</p>
 <p><span class="math display">\[
-AIC = 2 \cdot k-2\cdot ln(L) \quad \quad BIC = k \cdot ln(L)-2 \cdot ln(L)
+AIC = 2 \cdot k-2\cdot ln(L) \quad \quad BIC = k \cdot ln(n)-2 \cdot ln(L)
 \]</span></p>
 <p>donde <span class="math inline">\(L\)</span> es la verosimilitud del modelo,<span class="math inline">\(k\)</span> es el número de parámetros estimados y <span class="math inline">\(n\)</span> el número de datos. El modelo con el menor valor de AIC o BIC se considera el mejor ajuste.</p>
 <p>Si disponemos de una serie <span class="math inline">\(\left\{x_t \right\}_{t=1,2,...,T}\)</span>, las <strong>predicciones</strong> con modelos ETS se obtienen iterando las ecuaciones del modelo para los instantes <span class="math inline">\(t=T+1,…,T+h\)</span>, siendo <span class="math inline">\(h\)</span> el horizonte de predicción deseado, y asumiendo que <span class="math inline">\(\epsilon_t=0\)</span> para <span class="math inline">\(t&gt;T\)</span>.</p>
