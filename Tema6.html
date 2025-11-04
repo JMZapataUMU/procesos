@@ -1,0 +1,1713 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.32">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>7&nbsp; Tema 6. Modelos ARIMA – Procesos estocásticos y series temporales</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./Tema5.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-364982630eef5352dd1537128a8ed5cb.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Sin resultados",
+    "search-matching-documents-text": "documentos encontrados",
+    "search-copy-link-title": "Copiar el enlace en la búsqueda",
+    "search-hide-matches-text": "Ocultar resultados adicionales",
+    "search-more-match-text": "resultado adicional en este documento",
+    "search-more-matches-text": "resultados adicionales en este documento",
+    "search-clear-button-title": "Borrar",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancelar",
+    "search-submit-button-title": "Enviar",
+    "search-label": "Buscar"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Tema6.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Tema 6. Modelos ARIMA</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Buscar" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Procesos estocásticos y series temporales</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Buscar"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Presentación</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tema1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Tema 1. Introducción a los procesos estocásticos</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tema2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Tema 2. Cadenas de Markov</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tema3.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Tema 3. Procesos de Poisson</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tema4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Tema 4. Conceptos básicos en series temporales</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tema5.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Tema 5. Métodos de Alisado Exponencial</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tema6.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Tema 6. Modelos ARIMA</span></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Tabla de contenidos</h2>
+   
+  <ul>
+  <li><a href="#introducción" id="toc-introducción" class="nav-link active" data-scroll-target="#introducción"><span class="header-section-number">7.1</span> Introducción</a></li>
+  <li><a href="#procesos-débilmente-estacionarios.-el-correlograma." id="toc-procesos-débilmente-estacionarios.-el-correlograma." class="nav-link" data-scroll-target="#procesos-débilmente-estacionarios.-el-correlograma."><span class="header-section-number">7.2</span> Procesos débilmente estacionarios. El correlograma.</a></li>
+  <li><a href="#procesos-lineales" id="toc-procesos-lineales" class="nav-link" data-scroll-target="#procesos-lineales"><span class="header-section-number">7.3</span> Procesos lineales</a></li>
+  <li><a href="#proceso-de-ruido-blanco-gaussiano" id="toc-proceso-de-ruido-blanco-gaussiano" class="nav-link" data-scroll-target="#proceso-de-ruido-blanco-gaussiano"><span class="header-section-number">7.4</span> Proceso de ruido blanco gaussiano</a></li>
+  <li><a href="#modelos-autorregresivos-de-orden-p-arp" id="toc-modelos-autorregresivos-de-orden-p-arp" class="nav-link" data-scroll-target="#modelos-autorregresivos-de-orden-p-arp"><span class="header-section-number">7.5</span> Modelos Autorregresivos de orden p, AR(p)</a>
+  <ul class="collapse">
+  <li><a href="#determinación-del-orden-de-la-autorregresión" id="toc-determinación-del-orden-de-la-autorregresión" class="nav-link" data-scroll-target="#determinación-del-orden-de-la-autorregresión"><span class="header-section-number">7.5.1</span> Determinación del orden de la autorregresión</a></li>
+  <li><a href="#estimación-de-los-parámetros-del-modelo" id="toc-estimación-de-los-parámetros-del-modelo" class="nav-link" data-scroll-target="#estimación-de-los-parámetros-del-modelo"><span class="header-section-number">7.5.2</span> Estimación de los parámetros del modelo</a></li>
+  <li><a href="#ejemplo-de-modelo-ar1" id="toc-ejemplo-de-modelo-ar1" class="nav-link" data-scroll-target="#ejemplo-de-modelo-ar1"><span class="header-section-number">7.5.3</span> Ejemplo de modelo AR(1)</a></li>
+  </ul></li>
+  <li><a href="#modelos-de-medias-móviles-maq" id="toc-modelos-de-medias-móviles-maq" class="nav-link" data-scroll-target="#modelos-de-medias-móviles-maq"><span class="header-section-number">7.6</span> Modelos de medias móviles, MA(q)</a>
+  <ul class="collapse">
+  <li><a href="#determinación-del-orden-del-modelo" id="toc-determinación-del-orden-del-modelo" class="nav-link" data-scroll-target="#determinación-del-orden-del-modelo"><span class="header-section-number">7.6.1</span> Determinación del orden del modelo</a></li>
+  <li><a href="#estimación-de-los-parámetros-del-modelo-1" id="toc-estimación-de-los-parámetros-del-modelo-1" class="nav-link" data-scroll-target="#estimación-de-los-parámetros-del-modelo-1"><span class="header-section-number">7.6.2</span> Estimación de los parámetros del modelo</a></li>
+  <li><a href="#ejemplo-de-modelo-ma1" id="toc-ejemplo-de-modelo-ma1" class="nav-link" data-scroll-target="#ejemplo-de-modelo-ma1"><span class="header-section-number">7.6.3</span> Ejemplo de modelo MA(1)</a></li>
+  </ul></li>
+  <li><a href="#modelos-armapq" id="toc-modelos-armapq" class="nav-link" data-scroll-target="#modelos-armapq"><span class="header-section-number">7.7</span> Modelos ARMA(p,q)</a>
+  <ul class="collapse">
+  <li><a href="#estimación-de-los-parámetros-del-modelo-2" id="toc-estimación-de-los-parámetros-del-modelo-2" class="nav-link" data-scroll-target="#estimación-de-los-parámetros-del-modelo-2"><span class="header-section-number">7.7.1</span> Estimación de los parámetros del modelo</a></li>
+  </ul></li>
+  <li><a href="#procesos-lineales-no-estacionarios-modelos-arima" id="toc-procesos-lineales-no-estacionarios-modelos-arima" class="nav-link" data-scroll-target="#procesos-lineales-no-estacionarios-modelos-arima"><span class="header-section-number">7.8</span> Procesos lineales no estacionarios: modelos ARIMA</a>
+  <ul class="collapse">
+  <li><a href="#paseo-aleatorio" id="toc-paseo-aleatorio" class="nav-link" data-scroll-target="#paseo-aleatorio"><span class="header-section-number">7.8.1</span> Paseo aleatorio</a></li>
+  <li><a href="#procesos-arima" id="toc-procesos-arima" class="nav-link" data-scroll-target="#procesos-arima"><span class="header-section-number">7.8.2</span> Procesos ARIMA</a></li>
+  </ul></li>
+  <li><a href="#identificación-del-modelo-validación-y-predicciones" id="toc-identificación-del-modelo-validación-y-predicciones" class="nav-link" data-scroll-target="#identificación-del-modelo-validación-y-predicciones"><span class="header-section-number">7.9</span> Identificación del modelo, validación y predicciones</a>
+  <ul class="collapse">
+  <li><a href="#análisis-de-la-estacionariedad-de-la-serie" id="toc-análisis-de-la-estacionariedad-de-la-serie" class="nav-link" data-scroll-target="#análisis-de-la-estacionariedad-de-la-serie"><span class="header-section-number">7.9.1</span> Análisis de la estacionariedad de la serie</a></li>
+  <li><a href="#determinación-del-orden-de-la-parte-ar-y-de-la-parte-ma" id="toc-determinación-del-orden-de-la-parte-ar-y-de-la-parte-ma" class="nav-link" data-scroll-target="#determinación-del-orden-de-la-parte-ar-y-de-la-parte-ma"><span class="header-section-number">7.9.2</span> Determinación del orden de la parte AR y de la parte MA</a></li>
+  <li><a href="#estimación-de-los-coeficientes-del-modelo" id="toc-estimación-de-los-coeficientes-del-modelo" class="nav-link" data-scroll-target="#estimación-de-los-coeficientes-del-modelo"><span class="header-section-number">7.9.3</span> Estimación de los coeficientes del modelo</a></li>
+  <li><a href="#validación-del-modelo-análisis-de-los-residuos" id="toc-validación-del-modelo-análisis-de-los-residuos" class="nav-link" data-scroll-target="#validación-del-modelo-análisis-de-los-residuos"><span class="header-section-number">7.9.4</span> Validación del modelo: análisis de los residuos</a></li>
+  <li><a href="#bondad-del-ajuste-y-selección-del-mejor-modelo" id="toc-bondad-del-ajuste-y-selección-del-mejor-modelo" class="nav-link" data-scroll-target="#bondad-del-ajuste-y-selección-del-mejor-modelo"><span class="header-section-number">7.9.5</span> Bondad del ajuste y selección del mejor modelo</a></li>
+  <li><a href="#predicciones" id="toc-predicciones" class="nav-link" data-scroll-target="#predicciones"><span class="header-section-number">7.9.6</span> Predicciones</a></li>
+  <li><a href="#un-ejemplo-de-modelo-arma-con-r" id="toc-un-ejemplo-de-modelo-arma-con-r" class="nav-link" data-scroll-target="#un-ejemplo-de-modelo-arma-con-r"><span class="header-section-number">7.9.7</span> Un ejemplo de modelo ARMA con R</a></li>
+  </ul></li>
+  <li><a href="#modelos-arima-estacionales-sarima" id="toc-modelos-arima-estacionales-sarima" class="nav-link" data-scroll-target="#modelos-arima-estacionales-sarima"><span class="header-section-number">7.10</span> Modelos ARIMA estacionales, SARIMA</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Tema 6. Modelos ARIMA</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="introducción" class="level2" data-number="7.1">
+<h2 data-number="7.1" class="anchored" data-anchor-id="introducción"><span class="header-section-number">7.1</span> Introducción</h2>
+<p>Tanto en los métodos de análisis clásico de series como en los métodos de alisado exponencial, partimos de un esquema establecido a priori: descomposición de la serie en las componentes tendencia-ciclo, estacionalidad e irregular. Sin embargo, a principios de 1970 aparece un nuevo enfoque en el estudio de series temporales univariantes (debido a los estadísticos Box y Jenkins) y que se basa en estudiar la correlación de los datos. Este nuevo enfoque consiste en considerar que la serie temporal en estudio ha sido generada por un proceso estocástico. El objetivo en este caso es identificar el proceso estocástico que ha generado la serie, para posteriormente poder realizar predicciones.</p>
+<p>Por tanto, se pretende construir un modelo que nos permita explicar la estructura y prever la evolución, a corto y medio plazo, de una serie temporal. La variable observada puede ser económica (I.P.C., demanda de un producto, existencias en un determinado almacén, etc…), física (temperatura de un proceso, velocidad del viento en una central eólica, concentración en la atmósfera de un contaminante, etc.) o social (número de nacimientos, votos de un determinado partido, etc.).</p>
+<p>Recordemos que la definición de serie temporal (una sucesión de valores de una variable obtenidos de manera secuencial en el tiempo) coincide con el concepto de realización de un proceso estocástico. Es decir, los datos <span class="math inline">\({x_1, x_2, \dots, x_n}\)</span> de una serie temporal observados en <span class="math inline">\(n\)</span> instantes de tiempo pueden interpretarse como una trayectoria o realización particular de un proceso estocástico <span class="math inline">\((X_t)_{t=1,2,\dots,n}\)</span>. Teniendo en cuenta esta interpretación, la teoría de los procesos estocásticos será aplicable al estudio de series temporales.</p>
+<p>Si dispusiéramos de muchas realizaciones de un mismo proceso estocástico, es decir, de muchas series temporales generadas por un mismo proceso, podríamos intentar obtener la función de distribución de cada variable <span class="math inline">\(X_i\)</span> del proceso, aunque no sería sencillo. En general hay que contentarse con conocer algunas características del proceso como la función de medias, la función de varianzas, etc. Supongamos, por ejemplo, que disponemos de las siguientes series que han sido generadas por un mismo proceso:</p>
+<p><span class="math display">\[
+\begin{array}{c}
+\text{Serie 1: } \{x_{11}, x_{12}, \ldots, x_{1n}\} \\[6pt]
+\vdots \\[6pt]
+\text{Serie k: } \{x_{k1}, x_{k2}, \ldots, x_{kn}\}
+\end{array}
+\]</span></p>
+<p>entonces podemos estimar la media de cada variable <span class="math inline">\(X_i\)</span> del proceso mediante:</p>
+<p><span class="math display">\[
+\begin{array}{c}
+\widehat{\mu}_1 = \dfrac{x_{11} + x_{21} + \ldots + x_{k1}}{k} \\[6pt]
+\vdots \\[6pt]
+\widehat{\mu}_n = \dfrac{x_{1n} + x_{2n} + \ldots + x_{kn}}{k}
+\end{array}
+\]</span></p>
+<p>No obstante, nos encontraremos con una importante restricción al trabajar con series temporales: en muchos casos, la serie observada es la única realización accesible del proceso estocástico que la ha generado. Por ejemplo, en la serie de turistas que visitan España mes a mes o en la cantidad de unidades producidas diariamente en una fábrica, solo disponemos de una única trayectoria concreta del fenómeno, sin acceso a múltiples realizaciones independientes del mismo proceso.</p>
+<p>Este problema, que a simple vista parece insalvable, requiere que apliquemos ciertas restricciones e hipótesis al tipo de proceso estocástico que genera la serie en estudio. Específicamente, necesitaremos que el proceso estocástico sea <em>estacionario</em> (al menos en sentido débil) y <em>ergódico</em>. Estas condiciones garantizarán que los datos observados a lo largo de un período de tiempo suficientemente amplio sean representativos del comportamiento probabilístico del proceso subyacente, y que el conocimiento obtenido de los datos actuales sea útil para comprender su comportamiento en momentos futuros.</p>
+</section>
+<section id="procesos-débilmente-estacionarios.-el-correlograma." class="level2" data-number="7.2">
+<h2 data-number="7.2" class="anchored" data-anchor-id="procesos-débilmente-estacionarios.-el-correlograma."><span class="header-section-number">7.2</span> Procesos débilmente estacionarios. El correlograma.</h2>
+<p>Tal como estudiamos en el Tema 1, un proceso estocástico <span class="math inline">\(\{X_t\}_{t=1,2,\ldots}\)</span> se dice <strong>estacionario en sentido débil</strong> (o débilmente estacionario) si cumple que su función de medias es constante, y su función de covarianzas sólo depende del retardo o salto temporal, es decir:</p>
+<ul>
+<li><p><span class="math inline">\(\mu_X(t)=\mu\)</span> para cierta constante <span class="math inline">\(\mu\)</span>,</p></li>
+<li><p><span class="math inline">\(C_X(t,t+k)=\gamma_k\)</span>, para cierta cantidad <span class="math inline">\(\gamma_k\)</span> que sólo depende de <span class="math inline">\(k\)</span> (y no del instantes <span class="math inline">\(t\)</span>).</p></li>
+</ul>
+<p>Cuando el proceso sea débilmente estacionario, se cumplirá además que la función de varianzas es constante en el tiempo, y que la función de correlaciones sólo depende del retardo o salto temporal, es decir:</p>
+<ul>
+<li><p><span class="math inline">\(\sigma_X(t)=\sigma\)</span> para cierta constante <span class="math inline">\(\sigma\)</span>,</p></li>
+<li><p><span class="math inline">\(\rho_X(t,t+k)=\rho_k\)</span>, para cierta cantidad <span class="math inline">\(\rho_k\)</span> que sólo depende de <span class="math inline">\(k\)</span> (y no del instantes <span class="math inline">\(t\)</span>).</p></li>
+</ul>
+<div class="callout callout-style-simple callout-none no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Observación
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>La estacionariedad en sentido débil no garantiza la estacionariedad en sentido estricto, excepto en el caso de normalidad de las variables del proceso. No obstante, la estacionaridad en sentido débil garantizará que algunas características del proceso estocástico tenga un comportamiento estable a lo largo del tiempo.</p>
+</div>
+</div>
+<p>En el estudio de procesos estocásticos estacionarios, la función de correlaciones (o autocorrelaciones), denotada como <span class="math inline">\(\rho_X\)</span>, es de especial importancia. Como mencionamos, cuando el proceso es débilmente estacionario, esta función depende únicamente del retardo <span class="math inline">\(k\)</span>, tomando un valor <span class="math inline">\(\rho_k\)</span> que varía sólo en función de este desfase temporal y no del instante específico. La representación gráfica de la función <span class="math inline">\(\rho_k\)</span> en relación con el retardo <span class="math inline">\(k\)</span> se denomina correlograma (o autocorrelograma).</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="correlograma_ejemplo.jpg" class="img-fluid figure-img" style="width:70.0%"></p>
+<figcaption>Ejemplo de correlograma</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Observar que el correlograma, tal y como se ha definido, sólo tiene sentido para procesos débilmente estacionarios.</p>
+<p>En el contexto de procesos estocásticos débilmente estacionarios, aunque dispongamos de una única realización (una única serie temporal), podemos obtener una estimación de las características del proceso del siguiente modo. Si denotamos por <span class="math inline">\(\{x_1,x_2,...,x_n\}\)</span> a la única serie temporal observada del proceso, se tiene:</p>
+<ul>
+<li>Estimación de la función de medias constante:</li>
+</ul>
+<p><span class="math display">\[
+\widehat{\mu }=\overline{x}=\dfrac{x_1+x_2+...+x_n}n
+\]</span></p>
+<ul>
+<li>Estimación de la función de varianzas constante:</li>
+</ul>
+<p><span class="math display">\[
+\widehat{\sigma ^2}=s_x^2=\dfrac{\sum_{t=1}^n\left( x_t-\overline{x}\right)
+^2}n
+\]</span></p>
+<ul>
+<li>Estimación de la función de covarianzas:</li>
+</ul>
+<p><span class="math display">\[
+\widehat{\gamma }_k=\dfrac{\sum_{t=1}^{n-k}\left( x_t-\overline{x}
+\right) \left( x_{t+k}-\overline{x}\right) }n
+\]</span></p>
+<ul>
+<li>Estimación de la función de correlaciones:</li>
+</ul>
+<p><span class="math display">\[
+\widehat{\rho }_k=\dfrac{\sum_{t=1}^{n-k}\left( x_t-\overline{x}
+\right) \left( x_{t+k}-\overline{x}\right) }{\sum_{t=1}^n\left( x_t-
+\overline{x}\right) ^2}
+\]</span></p>
+<p>Si buscamos el comportamiento de estacionariedad para las series temporales, necesitaremos ver gráficas que se mantienen en un nivel constante con unas pautas estables de oscilación. En la figura se muestra un ejemplo de serie estacionaria, realización de un proceso estocástico estacionario.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="serie_estacionaria_ejemplo.jpg" class="img-fluid figure-img" style="width:70.0%"></p>
+<figcaption>Ejemplo de serie estacionaria (en sentido débil)</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>En la práctica del análisis de series encontraremos series con problemas de estacionariedad que afectan a cualquiera de sus parámetros básicos, siendo los más frecuentes las inconstancias en media y varianza. En la figura se muestran dos ejemplos de series no estacionarias, la primera en media y la segunda en varianza.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="series_NOestacionarias.jpg" class="img-fluid figure-img" style="width:100.0%"></p>
+<figcaption>Ejemplo de series no estacionarias</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Además de ser estacionario, el proceso estocástico ha de ser <em>ergódico</em>. Este concepto es algo más complejo, pero de forma intuitiva puede entenderse como la propiedad que permite que las medias y otras características del proceso puedan estimarse a partir de una sola realización temporal. Una condición necesaria para que un proceso sea ergódico es que <span class="math inline">\(\lim_{k\rightarrow \infty }\rho_k=0\)</span>, es decir, que las autocorrelaciones sean nulas para retardos altos. Esto quiere decir, que para valores altos del retardo habrá poca dependencia entre las observaciones. En caso contrario los valores de la serie alejados en el tiempo estarían altamente correlados y por tanto no se podrían obtener estimaciones consistentes de la función de medias, varianzas, etc.</p>
+<p>En adelante, supondremos siempre que trabajamos con procesos ergódicos y nos centraremos en estudiar si el proceso que ha generado la serie es o no estacionario. Llegados a este punto, cabría preguntarse si la estacionariedad resulta una condición muy restrictiva, es decir, si en la práctica existen muchas series que proceden de procesos estocásticos no estacionarios. En este sentido podemos decir que, aunque trabajaremos con series no estacionarias, en general se podrá conseguir la estacionariedad mediante una transformación sencilla en los datos.</p>
+<p>De hecho, las dos transformaciones más usuales para conseguir la estacionariedad de una serie son:</p>
+<ul>
+<li><p>Realizar una transformación de Box-Cox (cuando la serie no es constante en varianza), siendo la más frecuente el tomar logaritmos neperianos en los datos.</p></li>
+<li><p>Tomar diferencias en la serie (cuando la serie no es constante en media): si la tendencia es lineal se tomarán diferencias de orden 1, si la tendencia es cuadrática se tomarán diferencias de orden 2, etc. Los procesos que no son estacionarios, pero que se convierten en estacionarios al tomar diferencias, se denominan <em>procesos integrados</em>.</p></li>
+</ul>
+<p>Finalizamos la sección indicando una propiedad para procesos estacionarios fácil de demostrar.</p>
+<div id="prp-diferencias" class="theorem proposition">
+<p><span class="theorem-title"><strong>Proposición 7.1</strong></span> Si <span class="math inline">\(\{X_t\}_t\)</span> es un proceso estacionario, entonces el proceso primera diferencia [ Z_t=X_t-X_{t-1} ] también sigue siendo estacionario.</p>
+</div>
+</section>
+<section id="procesos-lineales" class="level2" data-number="7.3">
+<h2 data-number="7.3" class="anchored" data-anchor-id="procesos-lineales"><span class="header-section-number">7.3</span> Procesos lineales</h2>
+<p>Los procesos lineales son una clase particular de procesos estocásticos que incluyen a los siguientes tipos de procesos, que estudiaremos con más detalle en las próximas secciones:</p>
+<ul>
+<li><p>Proceso puramente aleatorios o ruido blanco gaussiano (también suele denominarse simplemente ruido blanco).</p></li>
+<li><p>Procesos autorregresivos, <span class="math inline">\(AR(p)\)</span>.</p></li>
+<li><p>Procesos de medias móviles, <span class="math inline">\(MA(q)\)</span>.</p></li>
+<li><p>Procesos autorregresivos y de medias móviles, <span class="math inline">\(ARMA(p,q)\)</span>.</p></li>
+<li><p>Procesos autorregresivos y de medias móviles no estacionarios, <span class="math inline">\(ARIMA(p,d,q)\)</span>.</p></li>
+</ul>
+</section>
+<section id="proceso-de-ruido-blanco-gaussiano" class="level2" data-number="7.4">
+<h2 data-number="7.4" class="anchored" data-anchor-id="proceso-de-ruido-blanco-gaussiano"><span class="header-section-number">7.4</span> Proceso de ruido blanco gaussiano</h2>
+<p>Recordemos que un ruido blanco gaussiano es un proceso estocástico <span class="math inline">\((\varepsilon _t)_{t=1,2,\dots,n}\)</span> verificando que <span class="math inline">\(\varepsilon _t\sim N(0,\sigma^2)\)</span> para todo <span class="math inline">\(t=1,2,\dots,n\)</span> e independientes entre sí.</p>
+<p>Podemos interpretar un ruido blanco gaussiano como una sucesión de valores sin relación alguna entre ellos, oscilando en torno al cero dentro de un margen constante. En este tipo de procesos, conocer valores pasados no proporciona ninguna información sobre el futuro ya que el proceso es “puramente aleatorio”.</p>
+<p>En el caso del proceso de ruido blanco gaussiano, los correlogramas simple y parcial no presentarán ninguna correlación significativa (salvo para el retardo 0, donde la correlación es de 1). A continuación se muestra un ejemplo de ruido blanco gaussiano y su correlograma simple.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="ruido_blanco.jpg" class="img-fluid figure-img" style="width:45.0%"></p>
+<figcaption>Ejemplo de ruido blanco gaussiano y su correlograma</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="correlograma_ruido.jpg" class="img-fluid figure-img" style="width:45.0%"></p>
+<figcaption>Ejemplo de ruido blanco gaussiano y su correlograma</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="modelos-autorregresivos-de-orden-p-arp" class="level2" data-number="7.5">
+<h2 data-number="7.5" class="anchored" data-anchor-id="modelos-autorregresivos-de-orden-p-arp"><span class="header-section-number">7.5</span> Modelos Autorregresivos de orden p, AR(p)</h2>
+<p>Al representar la influencia de hechos pasados sobre el presente (y en consecuencia sobre el futuro) de un proceso estocástico, podemos considerar diferentes expresiones. Una de ellas consiste en colocar el valor actual del proceso dependiente linealmente de valores pasados del propio proceso, más una perturbación aleatoria que se comporta como un ruido blanco gaussiano:</p>
+<p><span id="eq-Ar_1"><span class="math display">\[
+X_t=\delta +a_1X_{t-1}+a_2 X_{t-2}+...+a_p X_{t-p}+\varepsilon_t  
+\tag{7.1}\]</span></span></p>
+<p>donde <span class="math inline">\(\delta\)</span> representa una constante y <span class="math inline">\(\varepsilon _t\)</span> es un ruido blanco gaussiano, es decir, las variables <span class="math inline">\(\varepsilon_t\)</span> son i.i.d. y todas ellas tienen distribución <span class="math inline">\(N(0,\sigma^2)\)</span>.</p>
+<p>Esta formulación se denomina autorregresiva porque en cierto modo es un modelo de regresión del proceso sobre si mismo.</p>
+<p>Observando el modelo propuesto en (<a href="#eq-Ar_1" class="quarto-xref">Ecuación&nbsp;<span>7.1</span></a>), si lo consideramos estacionario, con <span class="math inline">\(\mathbb{E}(X_t)=\mu ,\)</span> se tiene que:</p>
+<p><span class="math display">\[
+\mu =\delta +a_1\mu +a_2\mu +..+a_p\mu \Rightarrow \mu =\frac \delta
+{1-a_1-a_2-..-a_p}
+\]</span></p>
+<p>por consiguiente, para que exista la media, necesitamos que:</p>
+<p><span class="math display">\[
+a_1+a_2+..+a_p\neq 1
+\]</span></p>
+<p>Sin perder generalidad, en el desarrollo del apartado supondremos que el proceso está centrado, esto es, <span class="math inline">\(\mu =\delta =0\)</span>.</p>
+<p>Un elemento que se suele utilizar para expresar la formulación de los procesos lineales es el llamado operador de retardo <em>B</em>. Tal operador actúa sobre un término de un proceso estocástico reduciendo el índice temporal en una unidad:</p>
+<p><span class="math display">\[
+B\text{ }X_t=X_{t-1}\Rightarrow B^k\text{ }X_t=X_{t-k}
+\]</span></p>
+<p>y por tanto, un proceso autorregresivo de orden <span class="math inline">\(p\)</span> puede expresarse en la forma:</p>
+<p><span class="math display">\[
+(1-a_1B-a_2B^2-...-a_pB^p)X_t=\varepsilon _t
+\]</span></p>
+<p>o equivalentemente:</p>
+<p><span class="math display">\[
+\left[ a_p(B)\right] X_t=\varepsilon _t
+\]</span></p>
+<p>donde</p>
+<p><span class="math display">\[
+a_p(x)=1-a_1\cdot x-a_2\cdot x^2-...-a_p\cdot x^p
+\]</span></p>
+<p>se denomina <em>polinomio característico</em> del proceso autorregresivo.</p>
+<p>Como propiedad, destacaremos que la condición necesaria y suficiente para que un proceso <em>AR(p)</em> sea estacionario es que las raíces de su polinomio característico estén fuera del círculo unidad del plano complejo.</p>
+<p>Los dos problemas fundamentales que nos presentan los procesos autorregresivos son:</p>
+<ul>
+<li><p>Determinación del orden <span class="math inline">\(p\)</span> del modelo autorregresivo.</p></li>
+<li><p>Una vez fijado éste, determinar los parámetros <span class="math inline">\(a_i\)</span> del modelo.</p></li>
+</ul>
+<section id="determinación-del-orden-de-la-autorregresión" class="level3" data-number="7.5.1">
+<h3 data-number="7.5.1" class="anchored" data-anchor-id="determinación-del-orden-de-la-autorregresión"><span class="header-section-number">7.5.1</span> Determinación del orden de la autorregresión</h3>
+<p>Determinar el orden de un proceso autorregresivo a partir de su función de autocorrelación es difícil. En general esta función es una mezcla de decrecimientos exponenciales y sinusoidales, que se amortiguan al avanzar el retardo, y no presenta rasgos fácilmente identificables con el orden del proceso. Para resolver este problema se introduce la función de autocorrelación parcial.</p>
+<p>Si comparamos un <em>AR(1)</em> con un <em>AR(2)</em> vemos que aunque en ambos modelos cada observación está relacionada con las anteriores, el tipo de relación entre observaciones separadas dos períodos, es distinto. En el <em>AR(1)</em> el efecto de <span class="math inline">\(X_{t-2}\)</span> sobre <span class="math inline">\(X_t\)</span>, es siempre a través de <span class="math inline">\(X_{t-1}\)</span>, y no existe efecto directo entre ambas. Conocido <span class="math inline">\(X_{t-1}\)</span>, el valor de <span class="math inline">\(X_{t-2}\)</span> es irrelevante para prever <span class="math inline">\(X_t\)</span>, es decir, tenderemos que</p>
+<p><span class="math display">\[
+\rho(X_{t},X_{t-2}|X_{t-1})=0,
+\]</span></p>
+<p>donde la notación anterior se interpreta como la correlación entre las variables <span class="math inline">\(X_t\)</span> y <span class="math inline">\(X_{t-2}\)</span> eliminando el efecto de <span class="math inline">\(X_{t-1}\)</span>.</p>
+<p>Esta dependencia puede ilustrarse con el esquema siguiente:</p>
+<p><span class="math display">\[
+AR(1):X_{t-3}\rightarrow X_{t-2}\rightarrow X_{t-1}\rightarrow X_t
+\]</span></p>
+<p>donde las flechas muestran una relación de dependencia directa.</p>
+<p>Sin embargo, en un <em>AR(2)</em> además del efecto de <span class="math inline">\(X_{t-2}\)</span> que se transmite a <span class="math inline">\(X_t\)</span> a través de <span class="math inline">\(X_{t-1}\)</span>, existe un efecto directo de <span class="math inline">\(X_{t-2}\)</span>, sobre <span class="math inline">\(X_t\)</span>, por lo que, en general,</p>
+<p><span class="math display">\[
+\rho(X_{t},X_{t-2}|X_{t-1})\neq 0.
+\]</span></p>
+<p>Por otro lado, conocidos <span class="math inline">\(X_{t-1}\)</span> y <span class="math inline">\(X_{t-2}\)</span>, el valor de <span class="math inline">\(X_{t-3}\)</span> es irrelevante para predecir <span class="math inline">\(X_t\)</span>, es decir,</p>
+<p><span class="math display">\[
+\rho(X_{t},X_{t-3}|X_{t-1},X_{t-2})=0.
+\]</span></p>
+<p>En este caso, podemos escribir:</p>
+<p><span class="math display">\[
+AR(2):\quad
+\begin{array}{cccc}
+\Rsh &amp; -\longrightarrow - &amp; \downarrow &amp; {}\\[8pt]
+X_{t-3} &amp; \rightarrow X_{t-2} &amp; \rightarrow X_{t-1} &amp; \rightarrow X_t\\[8pt]
+{} &amp; \downarrow &amp; -\longrightarrow - &amp; \uparrow
+\end{array}
+\]</span></p>
+<p>La función de autocorrelación simple tiene sólo en cuenta que <span class="math inline">\(X_t\)</span> y <span class="math inline">\(X_{t-2}\)</span> están relacionadas en ambos casos, pero si medimos la relación directa entre <span class="math inline">\(X_t\)</span> y <span class="math inline">\(X_{t-2}\)</span>, esto es, eliminando el efecto debido a <span class="math inline">\(X_{t-1}\)</span>, encontraremos que para un <em>AR(1)</em> este efecto es nulo y para un <em>AR(2)</em> no.</p>
+<p>En general, un <em>AR(p)</em> presenta efectos directos de observaciones separadas por 1, 2, …, p retardos y los efectos directos para retardos superiores son nulos, es decir,</p>
+<p><span class="math display">\[
+\rho(X_t,X_{t-k}|X_{t-1},X_{t-2},\ldots,X_{t-k+1})\neq 0\quad\mbox{ si }k\le p,
+\]</span></p>
+<p><span class="math display">\[
+\rho(X_t,X_{t-k}|X_{t-1},X_{t-2},\ldots,X_{t-k+1})= 0\quad\mbox{ si }k&gt; p.
+\]</span></p>
+<p>Esta idea es la clave para la utilización de la función de autocorrelación parcial, entendiendo el coeficiente de autocorrelación parcial de orden k como una medida de la relación lineal entre observaciones separadas k períodos con independencia de los valores intermedios. De este concepto se deduce que un proceso <span class="math inline">\(AR(p)\)</span> tendrá los <span class="math inline">\(p\)</span> primeros coeficientes de autocorrelación parcial distintos de cero. Llamaremos autocorrelograma parcial a la representación de los coeficientes de correlación parcial en función del retardo. <em>Por tanto, para determinar el orden de un modelo autorregresivo nos fijaremos en el correlograma parcial: el número de coeficientes que sean “significativamente” distintos de cero indica el orden del proceso <span class="math inline">\(AR\)</span></em>.</p>
+<p>A continuación mostramos cómo serían los autocorrelogramas simples y parciales <strong>teóricos</strong> de modelos <span class="math inline">\(AR(1)\)</span> y <span class="math inline">\(AR(2)\)</span>.</p>
+<ol type="1">
+<li><p><strong>Modelos AR(1)</strong></p>
+<ol type="a">
+<li><em>Con el parámetro</em> <span class="math inline">\(a_1 &gt; 0\)</span>:</li>
+</ol></li>
+</ol>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="correlograma_teorico_1.jpg" class="img-fluid figure-img" style="width:90.0%"></p>
+<figcaption>Correlogramas teóricos AR(1)</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<ol start="2" type="a">
+<li><em>Con el parámetro</em> <span class="math inline">\(a_1 &lt; 0\)</span>:</li>
+</ol>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="correlograma_teorico_2.jpg" class="img-fluid figure-img" style="width:90.0%"></p>
+<figcaption>Correlogramas teóricos AR(1)</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<ol start="2" type="1">
+<li><p><strong>Modelos AR(2)</strong></p>
+<ol type="a">
+<li><em>Con los parámetros</em> <span class="math inline">\(a_1 &gt; 0\)</span>, <span class="math inline">\(a_2 &gt; 0\)</span>:</li>
+</ol></li>
+</ol>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="correlograma_teorico_3.jpg" class="img-fluid figure-img" style="width:90.0%"></p>
+<figcaption>Correlogramas teóricos AR(2)</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<ol start="2" type="a">
+<li><em>Con los parámetros</em> <span class="math inline">\(a_1 &lt; 0\)</span>, <span class="math inline">\(a_2 &gt; 0\)</span>:</li>
+</ol>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="correlograma_teorico_4.jpg" class="img-fluid figure-img" style="width:90.0%"></p>
+<figcaption>Correlogramas teóricos AR(1)</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<ol start="3" type="a">
+<li><em>Con los parámetros</em> <span class="math inline">\(a_1 &gt; 0\)</span>, <span class="math inline">\(a_2 &lt; 0\)</span>:</li>
+</ol>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="correlograma_teorico_5.jpg" class="img-fluid figure-img" style="width:90.0%"></p>
+<figcaption>Correlogramas teóricos AR(2)</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<ol start="4" type="a">
+<li><em>Con los parámetros</em> <span class="math inline">\(a_1 &lt; 0\)</span>, <span class="math inline">\(a_2 &lt; 0\)</span>:</li>
+</ol>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="correlograma_teorico_6.jpg" class="img-fluid figure-img" style="width:90.0%"></p>
+<figcaption>Correlogramas teóricos AR(2)</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="estimación-de-los-parámetros-del-modelo" class="level3" data-number="7.5.2">
+<h3 data-number="7.5.2" class="anchored" data-anchor-id="estimación-de-los-parámetros-del-modelo"><span class="header-section-number">7.5.2</span> Estimación de los parámetros del modelo</h3>
+<p>En esta sección nos centraremos en la segunda de las cuestiones: estimar los parámetros del modelo. Así, si consideramos un proceso <span class="math inline">\(AR(p)\)</span> centrado:</p>
+<p><span id="eq-AR(p)"><span class="math display">\[
+X_t=a_1X_{t-1}+a_2X_{t-2}+...+a_pX_{t-p}+\varepsilon _t  
+\tag{7.2}\]</span></span></p>
+<p>multiplicando por <span class="math inline">\(X_{t-j}\)</span>, con <span class="math inline">\(j=0,1,2,...,p\)</span>, y tomado esperanzas</p>
+<p><span id="eq-cov"><span class="math display">\[
+\mathbb{E}(X_tX_{t-j})=a_1\mathbb{E}(X_{t-1}X_{t-j})+a_2\mathbb{E}(X_{t-2}X_{t-j})+...+a_p\mathbb{E}(X_{t-p}X_{t-j})+\mathbb{E}(\varepsilon _tX_{t-j})
+\tag{7.3}\]</span></span></p>
+<p>Obsérvese que al ser <span class="math inline">\(\mathbb{E}(\varepsilon _t\varepsilon _{t-j})=0\)</span> para <span class="math inline">\(j&gt;0\)</span>, se tiene que <span class="math inline">\(\mathbb{E}(\varepsilon_tX_{t-j})=0\)</span> para <span class="math inline">\(j&gt;0\)</span> y <span class="math inline">\(\mathbb{E}(\varepsilon_t X_t)=\sigma_{\varepsilon}^2\)</span>, donde <span class="math inline">\(\sigma_{\varepsilon}^2\)</span> denota la varianza común de las perturbaciones <span class="math inline">\(\epsilon_t\)</span>. Por tanto, reescribiendo (<a href="#eq-cov" class="quarto-xref">Ecuación&nbsp;<span>7.3</span></a>) en términos de covarianzas (hemos supuesto proceso de media cero), tendremos las <strong>ecuaciones de Yule-Walker</strong> para un proceso <span class="math inline">\(AR(p)\)</span> <strong>usando covarianzas</strong>:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\gamma_0 &amp;= a_1 \gamma_{1}+a_2\gamma_{2}+...+a_p\gamma_{p}+\sigma_{\varepsilon}^2 \\
+\gamma_j &amp;= a_1 \gamma_{j-1}+a_2\gamma_{j-2}+...+a_p\gamma_{j-p}\quad j&gt;0.
+\end{aligned}
+\]</span></p>
+<p>Observa que al ser <span class="math inline">\(j\le p\)</span> algunos subíndices podrían ser negativos. En general, siempre tomamos el retardo como positivo, es decir, si <span class="math inline">\(h&lt;0\)</span> tomamos <span class="math inline">\(\gamma_h=\gamma_{-h}\)</span>.</p>
+<p>Por otro lado, dividiendo en las ecuaciones anteriores por <span class="math inline">\(\gamma _0\)</span> (varianza común del proceso), tendremos las <strong>ecuaciones de Yule-Walker</strong> para un proceso <span class="math inline">\(AR(p)\)</span> <strong>usando correlaciones</strong>:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\rho_0 &amp;= 1 \\
+\rho_j &amp;= a_1\rho_{j-1}+a_2\rho_{j-2}+...+a_p\rho_{j-p} \quad j&gt;0
+\end{aligned}
+\]</span></p>
+<p>Particularizando para <span class="math inline">\(j=1,2...,p\)</span>, se obtiene un sistema de ecuaciones que relaciona las <span class="math inline">\(p\)</span> primeras autocorrelaciones con los parámetros del proceso. Alternativamente, se denominan ecuaciones de Yule-Walker al sistema:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\rho_1 &amp;= a_1 + a_2 \rho_1 + \dots + a_p \rho_{p-1} \\
+\rho_2 &amp;= a_1 \rho_1 + a_2 + \dots + a_p \rho_{p-2} \\
+\vdots\\
+\rho_p &amp;= a_1 \rho_{p-1} + a_2 \rho_{p-2} + \dots + a_p
+\end{aligned}
+\]</span></p>
+<p>Llamando:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\mathbf{a}' &amp;= (a_1, a_2, \dots, a_p), \quad
+\boldsymbol{\rho}' = (\rho_1, \rho_2, \dots, \rho_p) \\[1em]
+\mathbf{R} &amp;=
+\begin{pmatrix}
+1 &amp; \rho_1 &amp; \cdots &amp; \rho_{p-1} \\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+\rho_{p-1} &amp; \rho_{p-2} &amp; \cdots &amp; 1
+\end{pmatrix}
+\end{aligned}
+\]</span></p>
+<p>el sistema anterior se escribe matricialmente:</p>
+<p><span class="math display">\[
+\mathbf{\rho =R}\cdot \mathbf{a\Rightarrow a=R}^{-1}\cdot \mathbf{\rho }
+\]</span></p>
+<p>por consiguiente, los valores de los parámetros <span class="math inline">\(\mathbf{a}\)</span> se pueden obtener una vez estimada la matriz de autocorrelaciones de orden <span class="math inline">\(p\)</span>.</p>
+<p>Además, las ecuaciones de Yule-Walker coinciden con el criterio de mínimos cuadrados para los residuos. Así, si consideramos un proceso <span class="math inline">\(AR(p)\)</span>:</p>
+<p><span class="math display">\[
+X_t=a_1X_{t-1}+a_2X_{t-2}+...+a_pX_{t-p}+\varepsilon _t
+\]</span></p>
+<p>a partir de <span class="math inline">\(n\)</span> valores observados de la serie, <span class="math inline">\(x_1,x_2,...,x_n,\)</span> los residuos <span class="math inline">\(e_t\)</span> vendrán dados por:</p>
+<p><span class="math display">\[
+e_t=x_t-(a_1x_{t-1}+a_2x_{t-2}+...+a_px_{t-p})=x_t-\hat{x}_t
+\]</span></p>
+<p>donde por <span class="math inline">\(\hat{x}_t\)</span> denotamos el valor estimado de la serie. Los parámetros <span class="math inline">\(a_1\)</span>, <span class="math inline">\(a_2\)</span>, …, <span class="math inline">\(a_p\)</span> que minimizan la suma de cuadrados de los residuos coinciden con la solución a las ecuaciones de Yule-Walker.</p>
+<p>Con el fin obtener los estimadores óptimos de los parámetros según mínimos cuadrados, calcularemos las derivadas parciales respecto de <span class="math inline">\(a_k\)</span> . Igualando estas parciales a cero, obtenemos las llamadas ecuaciones normales del modelo:</p>
+<p><span class="math display">\[
+\sum_{k=1}^pa_k\sum_{i=1}^nx_{i-k}x_{i-j}=\sum_{i=1}^nx_ix_{i-j}\quad \quad
+\quad j=1,2,...p
+\]</span></p>
+<p>Si suponemos que la media del proceso es cero y su varianza es constante igual a la unidad, denotando por:</p>
+<p><span class="math display">\[
+\hat{\rho}_{k-j}=\hat{\rho}_{j-k}=\sum_{i=1}^nx_{i-k}x_{i-j}
+\]</span></p>
+<p>el sistema anterior se transforma en:</p>
+<p><span class="math display">\[
+\sum_{k=1}^pa_k\cdot \hat{\rho}_{k-j}=\hat{\rho}_j\quad \quad \quad
+j=1,2,...p
+\]</span></p>
+<p>sistema que se corresponde con las llamadas ecuaciones de Yule-Walker donde se ha sustituido las correlaciones teóricas por sus estimaciones.</p>
+</section>
+<section id="ejemplo-de-modelo-ar1" class="level3" data-number="7.5.3">
+<h3 data-number="7.5.3" class="anchored" data-anchor-id="ejemplo-de-modelo-ar1"><span class="header-section-number">7.5.3</span> Ejemplo de modelo AR(1)</h3>
+<p>Consideremos el modelo Autorregresivo de orden 1 expresado mediante:</p>
+<p><span class="math display">\[
+X_t= 0.9X_{t-1}+\varepsilon _t
+\]</span></p>
+<p>Una serie temporal generada por el proceso anterior, viene dada en el gráfico de la siguiente figura.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="AR1_serie.jpg" class="img-fluid figure-img" style="width:70.0%"></p>
+<figcaption>Ejemplo de serie AR(1)</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>A continuación se muestran las correlaciones simples y parciales estimadas a partir de la serie <span class="math inline">\(AR(1)\)</span> simulada.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="correlograma_AR1.jpg" class="img-fluid figure-img" style="width:45.0%"></p>
+<figcaption>Correlogramas simple y parcial serie AR(1)</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="correlograma_parcial_AR1.jpg" class="img-fluid figure-img" style="width:45.0%"></p>
+<figcaption>Correlogramas simple y parcial serie AR(1)</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Como se observa, el correlograma simple presenta varias correlaciones significativas decreciendo de forma sinusoidal, pero sólo es significativa la correlación parcial correspondiente al retardo 1, lo que indica que se trata de un modelo <span class="math inline">\(AR(1)\)</span>.</p>
+</section>
+</section>
+<section id="modelos-de-medias-móviles-maq" class="level2" data-number="7.6">
+<h2 data-number="7.6" class="anchored" data-anchor-id="modelos-de-medias-móviles-maq"><span class="header-section-number">7.6</span> Modelos de medias móviles, MA(q)</h2>
+<p>Otra alternativa de representación de la dependencia respecto al pasado consiste en considerar el valor actual como el resultado de la combinación de <span class="math inline">\(q\)</span> factores aleatorios independientes entre si más una perturbación aleatoria contemporánea al modelo:</p>
+<p><span class="math display">\[
+X_t=\varepsilon _t+b_1\varepsilon _{t-1}+b_2\varepsilon
+_{t-2}+...+b_q\varepsilon _{t-q}
+\]</span></p>
+<p>donde <span class="math inline">\(\varepsilon_t\)</span> es un ruido blanco gaussiano. Al modelo anterior se le denomina <strong>proceso de medias móviles</strong>.</p>
+<p><strong>Nota:</strong> Dependiendo del software usado, la notación usada para representar los modelos MA(q) puede variar considerando los coeficientes <span class="math inline">\(b_j\)</span> cambiados de signo. En nuestro caso, usaremos la notación usual del software R.</p>
+<p>Obviamente, se tiene:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\mathbb{E}(X_t) &amp;= 0 \\
+\operatorname{Var}(X_t) &amp;= \sigma_\varepsilon^2 \, (1 + b_1^2 + b_2^2 + \dots + b_q^2)
+\end{aligned}
+\]</span></p>
+<p>Utilizando el operador de retardos tendremos:</p>
+<p><span class="math display">\[
+X_t=(1+b_1B+b_2B^2+...+b_qB^q)\varepsilon _t
+\]</span></p>
+<p>o equivalentemente:</p>
+<p><span class="math display">\[
+X_t=\left[ b_q(B)\right] \varepsilon _t
+\]</span></p>
+<p>donde el polinomio <span class="math inline">\(b_q(x)=(1+b_1x+b_2x^2+...+b_qx^q)\)</span> recibe el nombre de polinomio característico del proceso de medias móviles.</p>
+<p>Estos procesos siempre son estacionarios (no necesitan condición sobre los parámetros <span class="math inline">\(b_i\)</span>). Además, un proceso <span class="math inline">\(MA(q)\)</span> se puede ver como un <span class="math inline">\(AR(\infty )\)</span> siempre y cuando el proceso sea invertible (las raíces del polinomio característico deben estar fuera del círculo unidad).</p>
+<p><span class="math display">\[
+X_t=\left[ b_q(B)\right] \varepsilon _t\Longrightarrow \left[ b_q(B)\right]
+^{-1}X_t=\varepsilon _t
+\]</span></p>
+<section id="determinación-del-orden-del-modelo" class="level3" data-number="7.6.1">
+<h3 data-number="7.6.1" class="anchored" data-anchor-id="determinación-del-orden-del-modelo"><span class="header-section-number">7.6.1</span> Determinación del orden del modelo</h3>
+<p>Consideremos el proceso <span class="math inline">\(MA(q)\)</span> de media nula:</p>
+<p><span class="math display">\[
+X_t=\varepsilon _t+b_1\varepsilon _{t-1}+b_2\varepsilon
+_{t-2}+...+b_q\varepsilon _{t-q}
+\]</span></p>
+<p>Recordemos que la función de covarianzas viene dada por:</p>
+<p><span class="math display">\[
+\gamma_k=Cov(X_t, X_{t-k})=\mathbb{E}(X_t  X_{t-k})-\mathbb{E}(X_t)\mathbb{E}(X_{t-k})
+\]</span></p>
+<p>Entonces, teniendo en cuenta que la función de medias es nula y que <span class="math inline">\((\varepsilon _t)_t\)</span> es un proceso de ruido blanco gaussiano, la función de covarianzas para los procesos MA(q) quedaría:</p>
+<p><span class="math display">\[
+\gamma _k=\left\{
+\begin{array}{lll}
+\sigma_\varepsilon ^2b_k+\sigma _\varepsilon ^2\sum_{j=k+1}^qb_{j-k}b_j &amp;
+si &amp; k=1,2,...,q \\
+&amp;  &amp;  \\
+0 &amp; si &amp; k&gt;q
+\end{array}
+\right.
+\]</span></p>
+<p>de manera que las correlaciones serán nulas para retardos mayores de <span class="math inline">\(q\)</span>:</p>
+<p><span class="math display">\[
+\rho _k=0\quad \text{si }k&gt;q
+\]</span></p>
+<p>Este último resultado tendrá una gran importancia práctica porque nos permitirá identificar el orden del proceso <span class="math inline">\(MA\)</span> al que se ajusta una serie temporal dada. <em>Para ello, observaremos el autocorrelograma de la serie: el número de coeficientes que sean “significativamente” distintos de cero indica el orden del proceso <span class="math inline">\(MA\)</span>.</em></p>
+<p>Veamos en la siguiente tabla un resumen de las características básica de los procesos <span class="math inline">\(AR\)</span> y <span class="math inline">\(MA.\)</span></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 48%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>AR(p)</strong></th>
+<th><strong>MA(q)</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Expresión</strong></td>
+<td><span class="math inline">\(\varepsilon_t = (1 - a_1 B - \dots - a_p B^p) X_t\)</span></td>
+<td><span class="math inline">\(X_t = (1 + b_1 B + \dots + b_q B^q)\varepsilon_t\)</span></td>
+</tr>
+<tr class="even">
+<td><strong>Estacionario</strong></td>
+<td>Raíces del polinomio característico fuera del círculo unidad.</td>
+<td>Siempre</td>
+</tr>
+<tr class="odd">
+<td><strong>Correlograma simple</strong></td>
+<td>Infinitos valores no nulos decreciendo de manera amortiguada</td>
+<td>Valores no nulos hasta un retardo <span class="math inline">\(q\)</span>, el resto nulos</td>
+</tr>
+<tr class="even">
+<td><strong>Correlograma parcial</strong></td>
+<td>Valores no nulos hasta un retardo <span class="math inline">\(p\)</span>, el resto nulos</td>
+<td>Infinitos valores no nulos decreciendo de manera amortiguada</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="estimación-de-los-parámetros-del-modelo-1" class="level3" data-number="7.6.2">
+<h3 data-number="7.6.2" class="anchored" data-anchor-id="estimación-de-los-parámetros-del-modelo-1"><span class="header-section-number">7.6.2</span> Estimación de los parámetros del modelo</h3>
+<p>La estimación de los parámetros en modelos <span class="math inline">\(MA\)</span> resulta más complicada que en modelos <span class="math inline">\(AR\)</span> puesto que las ecuaciones son no lineales en los parámetros y para resolverlas es necesario recurrir a procedimientos iterativos.</p>
+<p>Además, rara vez se trabaja en la práctica con un sistema <span class="math inline">\(MA\)</span> puro, sino que se utiliza una combinación de modelos <span class="math inline">\(AR\)</span> y <span class="math inline">\(MA\)</span> dando lugar a los llamados modelos <span class="math inline">\(ARMA\)</span> que tratamos en la siguiente sección.</p>
+</section>
+<section id="ejemplo-de-modelo-ma1" class="level3" data-number="7.6.3">
+<h3 data-number="7.6.3" class="anchored" data-anchor-id="ejemplo-de-modelo-ma1"><span class="header-section-number">7.6.3</span> Ejemplo de modelo MA(1)</h3>
+<p>Consideremos el modelo de Medias Móviles de orden 1 expresado mediante:</p>
+<p><span class="math display">\[
+X_t=\varepsilon_t + 0.8 \varepsilon_{t-1}
+\]</span></p>
+<p>Una serie temporal generada por el proceso anterior, viene dada en el gráfico de la siguiente figura.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="MA1_serie.jpg" class="img-fluid figure-img" style="width:70.0%"></p>
+<figcaption>Ejemplo de serie MA(1)</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>A continuación se muestran las correlaciones simples y parciales estimadas a partir de la serie <span class="math inline">\(MA(1)\)</span> simulada.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="correlograma_MA1.jpg" class="img-fluid figure-img" style="width:45.0%"></p>
+<figcaption>Correlogramas simple y parcial serie MA(1)</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="correlograma_parcial_MA1.jpg" class="img-fluid figure-img" style="width:45.0%"></p>
+<figcaption>Correlogramas simple y parcial serie MA(1)</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Como se observa, el correlograma simple presenta sólo una correlación significativa, mientras que el correlograma parcial presenta varias correlaciones parciales significativas, lo que indica que se podría tratarse de un modelo <span class="math inline">\(MA(1)\)</span>.</p>
+</section>
+</section>
+<section id="modelos-armapq" class="level2" data-number="7.7">
+<h2 data-number="7.7" class="anchored" data-anchor-id="modelos-armapq"><span class="header-section-number">7.7</span> Modelos ARMA(p,q)</h2>
+<p>Existen procesos que encuentran su representación óptima mediante una combinación de los dos modelos anteriores. Tales modelos reciben el nombre de procesos autorregresivos de medias móviles (ARMA). Su expresión vendrá dada por:</p>
+<p><span class="math display">\[
+X_t-a_1X_{t-1}-a_2X_{t-2}-...-a_pX_{t-p}=\varepsilon _t+b_1\varepsilon
+_{t-1}+b_2\varepsilon _{t-2}+...+b_q\varepsilon _{t-q}
+\]</span></p>
+<p>y usando el operador de retardos:</p>
+<p><span class="math display">\[
+(1-a_1B-a_2B^2-...-a_pB^p)X_t=(1+b_1B+b_2B^2+...+b_qB^q)\varepsilon _t
+\]</span></p>
+<p>o equivalentemente:</p>
+<p><span class="math display">\[
+\left[ a_p(B)\right] X_t=\left[ b_q(B)\right] \varepsilon _t
+\]</span></p>
+<p>donde <span class="math inline">\(a_p(x)\)</span> y <span class="math inline">\(b_q(x)\)</span> son los polinomios característicos.</p>
+<p>El proceso <span class="math inline">\(ARMA\)</span> es estacionario si las raíces del polinomio <span class="math inline">\(a_p(x)\)</span> están fuera del círculo unidad, y será invertible si las raíces del polinomio <span class="math inline">\(b_q(x)\)</span> están fuera del círculo unidad.</p>
+<p>Como se observa, el modelo contiene <span class="math inline">\(p\)</span> retardos del autorregresivo y <span class="math inline">\(q\)</span> medias móviles, por consiguiente se representará por <span class="math inline">\(ARMA(p,q)\)</span>, es decir, el primer índice indicará el orden de la autorregresión y el segundo el de las media móviles.</p>
+<div class="callout callout-style-simple callout-none no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Observación
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Los modelos <em>AR</em> y <em>MA</em> se pueden obtener como caso particular del modelo <em>ARMA</em> haciendo <span class="math inline">\(q=0\)</span> o bien <span class="math inline">\(p=0\)</span>.</p>
+</div>
+</div>
+<p>Si se cumplen las condiciones para que el modelo sea considerado estacionario, todo modelo <span class="math inline">\(ARMA(p,q)\)</span> se puede considerar como un <span class="math inline">\(MA(\infty)\)</span> de la forma:</p>
+<p><span class="math display">\[
+X_t=\frac{(1+b_1B+b_2B^2+...+b_qB^q)}{(1-a_1B-a_2B^2-...-a_pB^p)}\varepsilon
+_t
+\]</span></p>
+<section id="estimación-de-los-parámetros-del-modelo-2" class="level3" data-number="7.7.1">
+<h3 data-number="7.7.1" class="anchored" data-anchor-id="estimación-de-los-parámetros-del-modelo-2"><span class="header-section-number">7.7.1</span> Estimación de los parámetros del modelo</h3>
+<p>El problema de estimación de los parámetros <span class="math inline">\(ARMA\)</span> a partir de <span class="math inline">\(n\)</span> valores observados de la serie, <span class="math inline">\(x_1,x_2,\ldots,x_n\)</span>, resulta mucho más complicado que en modelos <span class="math inline">\(AR\)</span> puesto que como veremos seguidamente las ecuaciones del sistema que se obtienen al aplicar mínimos cuadrados no son lineales. Veamos el caso más sencillo, un proceso <span class="math inline">\(ARMA(1,1).\)</span> Este proceso viene caracterizado por:</p>
+<p><span class="math display">\[
+X_t=a_1X_{t-1}+b_1\varepsilon_{t-1}+\varepsilon_t
+\]</span> los residuos <span class="math inline">\(e_t\)</span> vendrán dados por:</p>
+<p><span class="math display">\[
+\begin{aligned}
+e_1 &amp;= x_1 - \hat{x}_1 \\
+e_2 &amp;= x_2 - \hat{x}_2 = x_2 - a_1 x_1 - b_1 e_1 \\
+&amp;\vdots \\
+e_n &amp;= x_n - \hat{x}_n = x_n - a_1 x_{n-1} - b_1 e_{n-1}
+\end{aligned}
+\]</span></p>
+<p>Obviamente <span class="math inline">\(e_3\)</span> depende de <span class="math inline">\(e_2\)</span> y este a su vez depende de <span class="math inline">\(e_1\)</span>. En general, los residuos contendrán potencias y productos cruzados de los parámetros <span class="math inline">\(a_1\)</span> y <span class="math inline">\(b_1\)</span> y por tanto no se tratará de un sistema lineal.</p>
+</section>
+</section>
+<section id="procesos-lineales-no-estacionarios-modelos-arima" class="level2" data-number="7.8">
+<h2 data-number="7.8" class="anchored" data-anchor-id="procesos-lineales-no-estacionarios-modelos-arima"><span class="header-section-number">7.8</span> Procesos lineales no estacionarios: modelos ARIMA</h2>
+<section id="paseo-aleatorio" class="level3" data-number="7.8.1">
+<h3 data-number="7.8.1" class="anchored" data-anchor-id="paseo-aleatorio"><span class="header-section-number">7.8.1</span> Paseo aleatorio</h3>
+<p>Hemos visto en las secciones anteriores que los procesos <span class="math inline">\(MA\)</span> finitos son siempre estacionarios y que los <span class="math inline">\(AR\)</span> lo son si las raíces del polinomio característico están fuera del círculo unidad. Consideremos un proceso <span class="math inline">\(AR(1):\)</span></p>
+<p><span class="math display">\[
+X_t=a_1X_{t-1}+\varepsilon _t
+\]</span></p>
+<p>Si <span class="math inline">\(\mid a_1\mid &gt;1\)</span>, el proceso resulta “explosivo” (crece rápidamente), si <span class="math inline">\(\mid a_1\mid &lt;1\)</span>, el proceso es estacionario, mientras que si <span class="math inline">\(\mid a_1\mid =1\)</span>, no es ni explosivo ni estacionario. Recordemos que este tipo de procesos reciben el nombre de <strong>paseos aleatorios</strong>. Como veremos en el siguiente apartado, se trata de un proceso integrado de orden 1 (puesto que su primera diferencia <span class="math inline">\(X_t-X_{t-1}=\varepsilon _t\)</span> es estacionaria).</p>
+<p>Observar que si denotamos al operador diferencia mediante:</p>
+<p><span class="math display">\[
+\Delta X_t=X_t-X_{t-1}
+\]</span></p>
+<p>el paseo aleatorio (<span class="math inline">\(a_1=1\)</span>) se escribe como:</p>
+<p><span class="math display">\[
+\Delta X_t=\varepsilon_t
+\]</span></p>
+</section>
+<section id="procesos-arima" class="level3" data-number="7.8.2">
+<h3 data-number="7.8.2" class="anchored" data-anchor-id="procesos-arima"><span class="header-section-number">7.8.2</span> Procesos ARIMA</h3>
+<p>Como acabamos de mostrar, un paseo aleatorio es un proceso <span class="math inline">\(AR(1)\)</span> que no es estacionario, pues la raíz de su polinomio característico es unitaria. Pero si tomamos diferencias de orden 1, conseguimos que el proceso resultante sea estacionario. Esta idea puede generalizarse para cualquier proceso <span class="math inline">\(ARMA\)</span>, dando lugar a lo que se conocen como <em>procesos autorregresivos integrados de medias móviles</em> (<span class="math inline">\(ARIMA\)</span>).</p>
+<p>En el ejemplo del paseo aleatorio antes mencionado se ha obtenido un proceso estacionario aplicando el operador diferencia una vez.</p>
+<div id="def-ARIMA" class="theorem definition">
+<p><span class="theorem-title"><strong>Definición 7.1 (Modelo ARIMA(p,d,q))</strong></span> Diremos que un proceso sigue un modelo <span class="math inline">\(ARIMA(p,d,q)\)</span> si al aplicar <span class="math inline">\(d\)</span> veces el operador diferencia se obtiene un proceso estacionario <span class="math inline">\(ARMA(p,q).\)</span></p>
+</div>
+<p>Así, si denotamos por:</p>
+<p><span class="math display">\[
+Y_t=\Delta ^dX_t=(1-B)^dX_t
+\]</span></p>
+<p>a la serie obtenida al aplicar <span class="math inline">\(d\)</span> veces el operador diferencia, si la serie original <span class="math inline">\(X_t\)</span> seguía un modelo <span class="math inline">\(ARIMA(p,d,q)\)</span> la nueva serie <span class="math inline">\(Y_t\)</span> seguirá un modelo <span class="math inline">\(ARMA(p,q).\)</span></p>
+<p>Por tanto, un modelo <span class="math inline">\(ARIMA(p,d,q)\)</span> se puede expresar mediante: <span class="math display">\[
+[a_p(B)](1-B)^d X_t=[b_q(B)]\varepsilon_t.
+\]</span></p>
+<p>De forma extendida:</p>
+<p><span class="math display">\[
+(1-a_1B-a_2B^2-...-a_pB^p)(1-B)^dX_t=(1+b_1B+b_2B^2+...+b_qB^q)\varepsilon_t
+\]</span></p>
+<div class="callout callout-style-simple callout-none no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Observación
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Los modelos AR, MA y ARMA se obtienen como caso particular de los modelos ARIMA, tomando como parámetro <span class="math inline">\(d=0\)</span>.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="identificación-del-modelo-validación-y-predicciones" class="level2" data-number="7.9">
+<h2 data-number="7.9" class="anchored" data-anchor-id="identificación-del-modelo-validación-y-predicciones"><span class="header-section-number">7.9</span> Identificación del modelo, validación y predicciones</h2>
+<p>Una vez descritas algunas de las propiedades más importantes de los modelos <em>AR, MA, ARMA y ARIMA</em>, vamos a estudiar cómo identificar el proceso estocástico del que procede la serie en estudio.</p>
+<p>Podemos decir que el objetivo concreto perseguido a lo largo de este tema es intentar identificar el proceso <em>ARIMA(p,d,q)</em> que probablemente haya generado nuestra serie. Como es habitual, debemos comenzar realizando un análisis descriptivo previo de la serie que incluya detección de <em>outliers</em>. En el proceso de identificación del proceso generador de la serie seguiremos las siguientes etapas:</p>
+<ol type="1">
+<li><p>Analizar la estacionariedad de la serie y determinar el parámetro <span class="math inline">\(d\)</span>.</p></li>
+<li><p>Determinar el orden de la parte autorregresiva (parámetro <span class="math inline">\(p\)</span>) y de la parte media móvil (parámetro <span class="math inline">\(q\)</span>).</p></li>
+<li><p>Estimar los coeficientes del modelo: parámetros <span class="math inline">\(a_i\)</span>, <span class="math inline">\(b_j\)</span> y <span class="math inline">\(cte\)</span>.</p></li>
+<li><p>Determinar los residuos <span class="math inline">\(e_t = \widehat{\varepsilon }_t\)</span> y validar el modelo.</p></li>
+<li><p>Realizar predicciones.</p></li>
+</ol>
+<section id="análisis-de-la-estacionariedad-de-la-serie" class="level3" data-number="7.9.1">
+<h3 data-number="7.9.1" class="anchored" data-anchor-id="análisis-de-la-estacionariedad-de-la-serie"><span class="header-section-number">7.9.1</span> Análisis de la estacionariedad de la serie</h3>
+<p>La primera etapa en la identificación del proceso generador de la serie consiste en determinar si la serie (proceso generador) es estacionaria. Como ya adelantamos en un apartado anterior, los incumplimientos de la estacionariedad suelen deberse a que la función de medias o la función de varianzas no resulten constantes.</p>
+<p>Como herramienta para verificar la estacionariedad en varianza, podemos usar la representación gráfica de la serie: si observamos que las fluctuaciones de la serie se amplifican con el tiempo o con el nivel de la serie, será indicativo de que la función de varianzas no permanece constante.</p>
+<p>En el caso de que la serie no sea estacionaria en varianza, se suele realizar una transformación de Box-Cox, siendo la más frecuente tomar logaritmos neperianos en los datos para conseguir varianza constante.</p>
+<p>Una vez conseguida la estacionariedad en varianza, analizaremos si es estacionaria en media. Como herramienta para verificar la estacionariedad en media, podemos usar la representación gráfica de la serie: si la trayectoria de la serie oscila aleatoriamente alrededor de un valor constante, será indicativo de que la función de medias es constante, pero si observamos que el nivel de la serie varía a lo largo del tiempo, será indicativo de no estacionariedad en media.</p>
+<p>En el caso de que la serie no sea estacionaria en media, en general se conseguirá que se convierta en estacionaria tomando diferencias de orden <span class="math inline">\(d\)</span>. Por ejemplo, si observamos tendencia lineal en la serie, tomando diferencias de orden 1 conseguiremos un nivel constante de la serie, y si observamos tendencia cuadrática, tomando diferencias de orden 2 se conseguirá la estacionariedad en media.</p>
+<p>Por otra parte, también podemos observar el autocorrelograma de la serie: si las correlaciones estimadas no decrecen rápidamente con el retardo, podría indicarnos que el proceso generador tiene una raíz del polinomio característico igual a uno (paseo aleatorio) y por tanto no es estacionario. En estos casos se suelen tomar diferencias de orden uno y se vuelve a observar el autocorrelograma. En general basta con tomar diferencias de orden uno o dos para lograr la estacionariedad.</p>
+</section>
+<section id="determinación-del-orden-de-la-parte-ar-y-de-la-parte-ma" class="level3" data-number="7.9.2">
+<h3 data-number="7.9.2" class="anchored" data-anchor-id="determinación-del-orden-de-la-parte-ar-y-de-la-parte-ma"><span class="header-section-number">7.9.2</span> Determinación del orden de la parte AR y de la parte MA</h3>
+<p>Como herramientas básicas para determinar los órdenes <span class="math inline">\(p\)</span> y <span class="math inline">\(q\)</span> del modelo ARMA se suelen utilizar tanto el correlograma simple de la serie como el correlograma parcial.</p>
+<p>Para establecer algunas pautas a la hora de determinar los valores de <span class="math inline">\(p\)</span> y <span class="math inline">\(q\)</span>, debemos recordar las propiedades de los modelos AR y MA estudiadas en apartados anteriores.</p>
+<ul>
+<li>En un modelo <span class="math inline">\(AR(p)\)</span>, las correlaciones parciales teóricas son nulas para retardos mayores de <span class="math inline">\(p\)</span>. Sin embargo, las correlaciones teóricas nunca se hacen cero, pero decaen rápidamente a partir del retardo <span class="math inline">\(p.\)</span></li>
+</ul>
+<p>Por tanto, si se trata de un modelo autorregresivo, el orden <span class="math inline">\(p\)</span> se puede determinar a partir del correlograma parcial identificando los valores significativos del mismo.</p>
+<ul>
+<li>En un modelo <span class="math inline">\(MA(q)\)</span>, las correlaciones teóricas son nulas para retardos mayores de <span class="math inline">\(q\)</span>. Sin embargo, las correlaciones parciales teóricas nunca se hacen cero, pero decaen rápidamente a partir del retardo <span class="math inline">\(q.\)</span></li>
+</ul>
+<p>Por tanto, si se trata de un modelo de medias móviles, el orden <span class="math inline">\(q\)</span> se puede determinar a partir del correlograma simple identificando los valores significativos del mismo.</p>
+<ul>
+<li>En un modelo <span class="math inline">\(ARMA(p,q)\)</span> tanto las correlaciones como las correlaciones parciales teóricas nunca se hacen cero.</li>
+</ul>
+<p>Por tanto, si se trata de un modelo ARMA, será difícil identificar los órdenes <span class="math inline">\(p\)</span> y <span class="math inline">\(q\)</span>, puesto que no se produce un corte ni en el autocorrelograma simple ni en el parcial. Podremos al menos proponer algunos modelos como candidatos de partida y posteriormente valorar si son reducibles.</p>
+<p>Evidentemente, si trabajáramos con las <em>correlaciones</em> y correlaciones parciales teóricas} el proceso de identificación se simplificaría bastante. Sin embargo, en la práctica siempre trabajaremos con las <em>correlaciones y correlaciones parciales estimadas</em> a partir de la serie en estudio, de manera que el problema de identificación del modelo resulta todavía más complejo. De hecho, en muchas ocasiones el autocorrelograma estimado a partir de la serie suele presentar ciertas oscilaciones que no se corresponden con el modelo teórico.</p>
+<p>Otro factor importante a la hora de determinar los órdenes de la parte autorregresiva y de medias móviles es el <em>tamaño de la serie</em>. La identificación será más fácil cuanto mayor sea el tamaño de la serie. En este sentido se han realizado simulaciones que muestran una gran diferencia entre las correlaciones (parciales) teóricas y las estimadas para series de tamaño pequeño (inferior a 60 observaciones).</p>
+</section>
+<section id="estimación-de-los-coeficientes-del-modelo" class="level3" data-number="7.9.3">
+<h3 data-number="7.9.3" class="anchored" data-anchor-id="estimación-de-los-coeficientes-del-modelo"><span class="header-section-number">7.9.3</span> Estimación de los coeficientes del modelo</h3>
+<p>Una vez determinados los órdenes <span class="math inline">\(p\)</span> y <span class="math inline">\(q\)</span> del modelo ARMA, necesitamos estimar los coeficientes <span class="math inline">\(a_i\)</span> y <span class="math inline">\(b_j\)</span> del modelo:</p>
+<p><span class="math display">\[
+X_t-a_1X_{t-1}-a_2X_{t-2}-...-a_pX_{t-p}= \varepsilon _t+b_1\varepsilon
+_{t-1}+b_2\varepsilon _{t-1}+...+b_q\varepsilon _{t-q}
+\]</span></p>
+<p>Además, debemos estimar la constante del modelo, en caso de que éste la incluya.</p>
+<p>La estimación de los parámetros se puede realizar minimizando la suma de cuadrados residual o bien maximizando la verosimilitud, dando ambos procedimientos resultados similares (aunque no iguales). Como hemos comentado en secciones anteriores, si el modelo contempla parte MA será necesario resolver sistemas de ecuaciones no lineales. Por ese motivo, diferentes softwares pueden mostrar soluciones distintas para una misma serie de dependiendo del algoritmo de resolución empleado.</p>
+<p>En nuestro caso, realizaremos la estimación de los coeficientes del modelo haciendo uso del software R, que además suele incluir (como en el caso de la regresión lineal múltiple) contrastes sobre la significación de cada uno de los parámetros <span class="math inline">\(a_i\)</span>, <span class="math inline">\(b_j\)</span>, así como de la constante. Estos contrastes nos serán de gran utilidad a la hora de identificar el modelo generador de la serie. En este contexto también haremos uso del <em>principio de parsimonia</em>, según el cual debemos seleccionar como modelo óptimo aquel que contenga menor número de parámetros entre todos los modelos considerados adecuados.</p>
+</section>
+<section id="validación-del-modelo-análisis-de-los-residuos" class="level3" data-number="7.9.4">
+<h3 data-number="7.9.4" class="anchored" data-anchor-id="validación-del-modelo-análisis-de-los-residuos"><span class="header-section-number">7.9.4</span> Validación del modelo: análisis de los residuos</h3>
+<p>Para que el modelo propuesto en la etapa anterior sea adecuado, es necesario que los residuos (diferencia entre los valores observados de la serie y los ajustados por el modelo propuesto) se comporten como un ruido blanco gaussiano. Por tanto, la validez del modelo propuesto pasa por verificar las siguientes hipótesis sobre los residuos:</p>
+<ul>
+<li><p>Los residuos se comportan como una distribución normal (hipótesis de normalidad).</p></li>
+<li><p>Los residuos tienen varianza constante (hipótesis de homocedasticidad).</p></li>
+<li><p>Los residuos son independientes (hipótesis de independencia).</p></li>
+</ul>
+<p>Esta validación coincide con la realizada en el caso de los modelos de regresión, por lo que se pueden usar procedimientos similares.</p>
+<p>Por ejemplo, la <em>normalidad</em> se puede verificar mediante contrastes no paramétricos como los de Kolmogorov-Smirnov o de Shapiro-Wilks, o bien a través de métodos gráficos.</p>
+<p>Por otra parte, podemos contrastar la <em>homocedasticidad</em> observando el gráfico de dispersión de residuos frente a valores ajustados o bien mediante el gráfico de los residuos frente al tiempo: estos gráficos deben mostrar que los residuos se situan aleatoriamente alrededor del cero, dentro de una banda de amplitud constante.</p>
+<p>Con respecto a la <em>independencia</em> de los residuos, haremos uso del autocorrelograma: éste no debe presentar ninguna correlación significativa, es decir, han de ser todas prácticamente nulas para que los residuos se supongan independientes.</p>
+</section>
+<section id="bondad-del-ajuste-y-selección-del-mejor-modelo" class="level3" data-number="7.9.5">
+<h3 data-number="7.9.5" class="anchored" data-anchor-id="bondad-del-ajuste-y-selección-del-mejor-modelo"><span class="header-section-number">7.9.5</span> Bondad del ajuste y selección del mejor modelo</h3>
+<p>Una medida usual para cuantificar la bondad de un ajuste consiste en calcular la suma de cuadrados residual del modelo ajustado. Por ejemplo, en análisis de regresión múltiple, se puede utilizar esta medida para determinar lo “bueno” que es el ajuste realizado.</p>
+<p>Por tanto, un primer criterio para determinar el “mejor” modelo consistiría en seleccionar, dentro de los modelos considerados válidos por verificar las hipótesis de los residuos, aquel modelo que presente una menor suma de cuadrados residual. Sin embargo, este criterio no tiene en cuenta ni el número de parámetros del modelo (órdenes <span class="math inline">\(p\)</span> y <span class="math inline">\(q\)</span>), ni la magnitud de las observaciones. Es decir, si realizamos transformaciones en los datos, el modelo resultante no es comparable con el original a través de los residuos (por ejemplo, una transformación logarítmica siempre proporcionará residuos de menor magnitud que para los datos originales).</p>
+<p>Existen otros criterios para la selección de modelos, entre los que destacaremos los criterios de información AIC, AIC corregido y BIC, basados en la verosimilitud y que tienen en cuenta el número de parámetros a estimar.</p>
+<p>Es importante destacar que estos criterios de información no son adecuados para seleccionar el orden de la diferenciación (parámetro <span class="math inline">\(d\)</span>), pues los valores de la verosimilitud no son comparables para modelos con diferentes órdenes de diferenciación. Por tanto, es conveniente que la selección del orden <span class="math inline">\(d\)</span> se realice de otra forma (por ejemplo, manualmente), y posteriormente se pueden usar los criterios AIC y BIC para determinar los órdenes <span class="math inline">\(p\)</span> y <span class="math inline">\(q\)</span>.</p>
+<p>La <strong>selección del modelo</strong> se puede realizar de manera “manual” (realizando los pasos indicados al principio de la sección), o bien utilizando funciones que realizan la selección de forma automática. En la siguiente figura, extraída de Hyndman and Athanasopoulos (2021), se muestran los pasos a seguir en las dos alternativas:</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="arimaflowchart.jpg" class="img-fluid figure-img" style="width:80.0%"></p>
+<figcaption>Pasos en metodología ARIMA</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="predicciones" class="level3" data-number="7.9.6">
+<h3 data-number="7.9.6" class="anchored" data-anchor-id="predicciones"><span class="header-section-number">7.9.6</span> Predicciones</h3>
+<p>Una vez validado el modelo, el siguiente paso y fin último de nuestro estudio es realizar predicciones para valores futuros de la variable. Para obtener esas previsiones haremos uso del modelo teórico que se ha identificado como adecuado, proyectándolo hacia el futuro.</p>
+<p>Además, las predicciones sirven para contrastar la adecuación de nuestro modelo: las discrepancias sistemáticas entre predicciones y valores observados cuestionarán la validez de nuestro modelo.</p>
+<p>Supongamos que hemos observado la serie hasta un instante <span class="math inline">\(T\)</span>, y denotemos por <span class="math inline">\(\hat{x}_{T+h}\)</span> a la predicción de la serie en el instante <span class="math inline">\(T+h\)</span> a partir del modelo ajustado. La forma de proceder será la siguiente:</p>
+<ul>
+<li>La estimación del término aleatorio (ruido) para instantes anteriores a <span class="math inline">\(T\)</span> se corresponde con el error de previsión a un periodo vista, es decir:</li>
+</ul>
+<p><span class="math display">\[
+\widehat{\varepsilon }_t=x_t-\hat{x}_t\quad t\leq T
+\]</span></p>
+<ul>
+<li>Los términos de ruido posteriores al instante <span class="math inline">\(T\)</span> se considerarán nulos:</li>
+</ul>
+<p><span class="math display">\[
+\widehat{\varepsilon }_t=0\quad t&gt;T
+\]</span></p>
+<ul>
+<li>Los valores de la serie para instantes posteriores a <span class="math inline">\(T\)</span> que se requieran en el cálculo de nuevas predicciones, se sustituyen por sus propias predicciones:</li>
+</ul>
+<p><span class="math display">\[
+x_{T+h}=\hat{x}_{T+h}\quad h=1,2,...
+\]</span></p>
+<p>donde el parámetro <span class="math inline">\(h\)</span> representa el <em>horizonte de predicción</em>.</p>
+<p>Veámos a modo de ejemplo cómo proceder a la hora de realizar predicciones con dos modelos concretos:</p>
+<div class="callout callout-style-simple callout-none no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Ejemplo
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Consideremos el modelo <em>ARIMA(1,1,0)</em>:</p>
+<p><span class="math display">\[
+(1 - 0.6B)(1 - B)X_t = \varepsilon_t
+\]</span></p>
+<p>Supongamos que conocemos el valor de la serie hasta un instante <span class="math inline">\(t_0\)</span> y pretendemos realizar previsiones más allá de ese instante.<br>
+A partir del modelo teórico, la expresión explícita del modelo de previsión será:</p>
+<p><span class="math display">\[
+\hat{x}_{t_0 + h} = 1.6\,\hat{x}_{t_0 + h - 1} - 0.6\,\hat{x}_{t_0 + h - 2} + \hat{\varepsilon}_{t_0 + h}
+\]</span></p>
+<p>y por tanto:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\hat{x}_{t_0 + 1} &amp;= 1.6x_{t_0} - 0.6x_{t_0 - 1} \\
+\hat{x}_{t_0 + 2} &amp;= 1.6\hat{x}_{t_0 + 1} - 0.6x_{t_0} \\
+\hat{x}_{t_0 + 3} &amp;= 1.6\hat{x}_{t_0 + 2} - 0.6\hat{x}_{t_0 + 1} \\
+&amp;\vdots \\
+\hat{x}_{t_0 + h} &amp;= 1.6\hat{x}_{t_0 + h - 1} - 0.6\hat{x}_{t_0 + h - 2}
+\end{aligned}
+\]</span></p>
+<p>Obsérvese que en las dos primeras etapas se trabaja con los valores observados <span class="math inline">\(x_{t_0-1}\)</span> y <span class="math inline">\(x_{t_0}\)</span>, mientras que en el resto de etapas se trabaja con predicciones para obtener nuevas predicciones.</p>
+</div>
+</div>
+<div class="callout callout-style-simple callout-none no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Ejemplo
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Si el modelo incorpora una estructura de medias móviles, no se producen dificultades adicionales de importancia.<br>
+Supongamos el siguiente modelo <em>ARIMA(1,1,2)</em> observado hasta un instante <span class="math inline">\(t_0\)</span>:</p>
+<p><span class="math display">\[
+(1 - 0.6B)(1 - B)X_t = (1 - 0.5B - 0.3B^2)\varepsilon_t
+\]</span></p>
+<p>La expresión del modelo de previsión será:</p>
+<p><span class="math display">\[
+\hat{x}_{t_0 + h} = 1.6\hat{x}_{t_0 + h - 1} - 0.6\hat{x}_{t_0 + h - 2}
++ \hat{\varepsilon}_{t_0 + h} - 0.5\hat{\varepsilon}_{t_0 + h - 1}
+- 0.3\hat{\varepsilon}_{t_0 + h - 2}
+\]</span></p>
+<p>y por consiguiente:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\hat{x}_{t_0 + 1} &amp;= 1.6x_{t_0} - 0.6x_{t_0 - 1} - 0.5\hat{\varepsilon}_{t_0} - 0.3\hat{\varepsilon}_{t_0 - 1} \\
+\hat{x}_{t_0 + 2} &amp;= 1.6\hat{x}_{t_0 + 1} - 0.6x_{t_0} - 0.3\hat{\varepsilon}_{t_0} \\
+\hat{x}_{t_0 + 3} &amp;= 1.6\hat{x}_{t_0 + 2} - 0.6\hat{x}_{t_0 + 1} \\
+&amp;\vdots \\
+\hat{x}_{t_0 + h} &amp;= 1.6\hat{x}_{t_0 + h - 1} - 0.6\hat{x}_{t_0 + h - 2}
+\end{aligned}
+\]</span></p>
+<p>Observa que para obtener las predicciones <span class="math inline">\(\hat{x}_{t_0+1}\)</span> y <span class="math inline">\(\hat{x}_{t_0+2}\)</span> necesitamos los valores de <span class="math inline">\(\hat{\varepsilon}_{t_0-1}\)</span> y <span class="math inline">\(\hat{\varepsilon}_{t_0}\)</span>.</p>
+<p>Dichos valores se pueden obtener mediante la siguiente fórmula recurrente:</p>
+<p><span class="math display">\[
+\hat{\varepsilon}_{t_0 - h} =
+\hat{x}_{t_0 - h}
+- 1.6\hat{x}_{t_0 - h - 1}
++ 0.6\hat{x}_{t_0 - h - 2}
++ 0.5\hat{\varepsilon}_{t_0 - h - 1}
++ 0.3\hat{\varepsilon}_{t_0 - h - 2}
+\quad \text{para } h = 0, 1, 2, \ldots
+\]</span></p>
+<p>La cual permite obtener, a partir de los valores observados de la serie, todos los residuos de los tiempos observados<br>
+<span class="math inline">\(\hat{\varepsilon}_{t_0}, \hat{\varepsilon}_{t_0 - 1}, \hat{\varepsilon}_{t_0 - 2}, \ldots\)</span></p>
+</div>
+</div>
+<p>Como se observa, si una serie incorpora medias móviles, la influencia directa del ruido se transmite tantos periodos hacia adelante como orden del proceso <span class="math inline">\(MA\)</span>. A partir de este instante, la influencia de estos términos es indirecta a través de los valores obtenidos.</p>
+<p><strong>Nota:</strong> Las expresiones para obtener las predicciones puntuales permiten observar que, al aumentar el horizonte de predicción, se recurre a valores estimados en lugar de datos reales, lo que se traduce en mayores errores de predicción. La metodología ARIMA permite, además de obtener predicciones puntuales como hemos descrito arriba, obtener intervalos de predicción para instantes futuros.</p>
+</section>
+<section id="un-ejemplo-de-modelo-arma-con-r" class="level3" data-number="7.9.7">
+<h3 data-number="7.9.7" class="anchored" data-anchor-id="un-ejemplo-de-modelo-arma-con-r"><span class="header-section-number">7.9.7</span> Un ejemplo de modelo ARMA con R</h3>
+<p>Para ilustrar algunos de los conceptos vistos en este tema, primero vamos a generar una serie temporal a partir de un modelo ARMA, proporcionando nosotros mismos tanto los órdenes <span class="math inline">\(p\)</span> y <span class="math inline">\(q\)</span>, como el valor de los coeficientes del modelo. Posteriormente, analizaremos la serie simulada para determinar el modelo generador, comprobando que se asemeja al modelo ARMA fijado en la simulación. Evidentemente, cuanto mayor sea el tamaño de la serie simulada, los resultados del ajuste serán más próximos al modelo generador real.</p>
+<p>Concretamente, vamos a generar una serie a partir del siguiente modelo <span class="math inline">\(ARMA(p=2,q=1)\)</span>:</p>
+<p><span class="math display">\[
+X_t = 0.9 X_{t-1} - 0.5 X_{t-2} + 0.7 \varepsilon_{t-1} + \varepsilon_t
+\]</span></p>
+<p>donde <span class="math inline">\(\varepsilon_t\)</span> representa un ruido blanco gaussiano.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>serie_simulada <span class="ot">&lt;-</span> <span class="fu">arima.sim</span>(<span class="at">n =</span> <span class="dv">1000</span>, </span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>                        <span class="fu">list</span>(<span class="at">ar =</span> <span class="fu">c</span>(<span class="fl">0.9</span>, <span class="sc">-</span><span class="fl">0.5</span>), <span class="at">ma =</span> <span class="fu">c</span>(<span class="fl">0.7</span>)), </span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>                        <span class="at">sd =</span> <span class="dv">1</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ts.plot</span>(serie_simulada)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Tema6_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" style="width:70.0%"></p>
+<figcaption>Serie simulada</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">acf</span>(serie_simulada)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">pacf</span>(serie_simulada)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Tema6_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid figure-img" style="width:45.0%"></p>
+<figcaption>Correlogramas simple y parcial</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Tema6_files/figure-html/unnamed-chunk-18-2.png" class="img-fluid figure-img" style="width:45.0%"></p>
+<figcaption>Correlogramas simple y parcial</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Observamos que la serie es estacionaria (en media y varianza), además centrada (media cero). En los correlogramas vemos bastantes correlaciones simples y parciales significativas, lo que nos sugiere que el proceso generador probablemente contenga tanto parte AR (autorregresiva) como parte MA (medias móviles). Nótese que es especialmente significativo el retardo 1 en el correlograma simple y los retardos 1 y 2 en el correlograma parcial, lo que nos sugiere un modelo <span class="math inline">\(ARMA(2,1)\)</span>, es decir, un <span class="math inline">\(ARIMA(2,0,1)\)</span>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>modelo_ARIMA201 <span class="ot">&lt;-</span> <span class="fu">arima</span>(serie_simulada, </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>                         <span class="at">order =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">0</span>,<span class="dv">1</span>), </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>                         <span class="at">include.mean =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>modelo_ARIMA201</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+arima(x = serie_simulada, order = c(2, 0, 1), include.mean = FALSE)
+
+Coefficients:
+         ar1      ar2     ma1
+      0.8900  -0.4853  0.7366
+s.e.  0.0311   0.0307  0.0248
+
+sigma^2 estimated as 0.9965:  log likelihood = -1418.74,  aic = 2845.49</code></pre>
+</div>
+</div>
+<p>Obtenemos estimaciones de los coeficientes muy parecidos a los coeficientes reales usados en la simulación.</p>
+<p>Podemos probar cómo sería el ajuste si consideramos algún orden superior en la parte AR y/o en la MA.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>modelo_ARIMA301 <span class="ot">&lt;-</span> <span class="fu">arima</span>(serie_simulada, </span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>                         <span class="at">order =</span> <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">0</span>,<span class="dv">1</span>), </span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>                         <span class="at">include.mean =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>modelo_ARIMA301</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+arima(x = serie_simulada, order = c(3, 0, 1), include.mean = FALSE)
+
+Coefficients:
+         ar1      ar2     ar3     ma1
+      0.8938  -0.4910  0.0048  0.7340
+s.e.  0.0467   0.0599  0.0437  0.0345
+
+sigma^2 estimated as 0.9965:  log likelihood = -1418.74,  aic = 2847.47</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>modelo_ARIMA202 <span class="ot">&lt;-</span> <span class="fu">arima</span>(serie_simulada, </span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>                         <span class="at">order =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">0</span>,<span class="dv">2</span>), </span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>                         <span class="at">include.mean =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>modelo_ARIMA202</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+arima(x = serie_simulada, order = c(2, 0, 2), include.mean = FALSE)
+
+Coefficients:
+         ar1      ar2     ma1     ma2
+      0.8833  -0.4819  0.7446  0.0080
+s.e.  0.0657   0.0431  0.0737  0.0693
+
+sigma^2 estimated as 0.9965:  log likelihood = -1418.74,  aic = 2847.47</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>modelo_ARIMA302 <span class="ot">&lt;-</span> <span class="fu">arima</span>(serie_simulada, </span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>                         <span class="at">order =</span> <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">0</span>,<span class="dv">2</span>), </span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>                         <span class="at">include.mean =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>modelo_ARIMA302</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+arima(x = serie_simulada, order = c(3, 0, 2), include.mean = FALSE)
+
+Coefficients:
+         ar1      ar2      ar3     ma1     ma2
+      0.7350  -0.3505  -0.0712  0.8932  0.1180
+s.e.  1.3579   1.2106   0.6614  1.3573  0.9989
+
+sigma^2 estimated as 0.9965:  log likelihood = -1418.73,  aic = 2849.46</code></pre>
+</div>
+</div>
+<p>Obsérvese que al aumentar el orden de la parte AR y/o la MA, obtenemos valores de AIC mayores (peores modelos), indicativo de que el modelo óptimo es el <span class="math inline">\(ARMA(2,1)\)</span>.</p>
+<p>En el manual de prácticas correspondiente a este tema se muestran varios ejemplos detallados de ajustes con metodología ARIMA usando R.</p>
+</section>
+</section>
+<section id="modelos-arima-estacionales-sarima" class="level2" data-number="7.10">
+<h2 data-number="7.10" class="anchored" data-anchor-id="modelos-arima-estacionales-sarima"><span class="header-section-number">7.10</span> Modelos ARIMA estacionales, SARIMA</h2>
+<p>El modelo SARIMA (Seasonal Autoregressive Integrated Moving Average) es una extensión de los modelos ARIMA que incorpora componente estacional. Es decir, variaciones que se repiten en intervalos regulares de tiempo (por ejemplo, mensuales, trimestrales o anuales).</p>
+<p>El modelo se denota mediante <span class="math inline">\(SARIMA(p,d,q)(P,D,Q)_L\)</span>, donde <span class="math inline">\((p,d,q)\)</span> representan los órdenes de la parte ARIMA no estacional y <span class="math inline">\((P,D,Q)\)</span> representan los mismos conceptos pero para la parte estacional. El parámetro <span class="math inline">\(L\)</span> representa la periodicidad estacional (por ejemplo, 12 para datos mensuales con un patrón anual). El modelo completo combina tanto los componentes estacionales como no estacionales para capturar la estructura completa de la serie temporal.</p>
+<p>La estimación de un modelo SARIMA sigue los mismos principios que los modelos ARIMA, pero con la adición de los componentes estacionales. Los pasos típicos incluyen:</p>
+<ul>
+<li><p>Utilizar gráficos de la serie temporal, de las funciones de autocorrelación (ACF) y autocorrelación parcial (PACF), para determinar los posibles valores de los órdenes <span class="math inline">\((p,d,q)\)</span> y <span class="math inline">\((P,D,Q)\)</span>.</p></li>
+<li><p>Estimar los parámetros del modelo utilizando métodos como la máxima verosimilitud.</p></li>
+<li><p>Analizar los residuos del modelo para asegurarse de que no presentan autocorrelación significativa y que son aproximadamente normales.</p></li>
+</ul>
+<p>Como es habitual, para seleccionar el modelo SARIMA más adecuado, se pueden utilizar criterios de información como el AIC, el AIC corregido y el BIC. Una vez estimado y validado el modelo SARIMA, se pueden realizar predicciones futuras.</p>
+<p>En el manual de prácticas correspondiente a este tema se muestran ejemplos de ajustes SARIMA usando R.</p>
+<p><strong>Nota:</strong> La comparativa entre modelos ARIMA (o bien SARIMA) y ETS no debe realizarse usando los criterios de información AIC o BIC, porque son modelos de distinta clase y la verosimilitud se calcula de forma diferente en cada caso. En su lugar, conviene compararlos realizando validación cruzada y calculando medidas de bondad de ajuste como RMSE, MAE o MAPE.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copiado");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copiado");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./Tema5.html" class="pagination-link" aria-label="Tema 5. Métodos de Alisado Exponencial">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Tema 5. Métodos de Alisado Exponencial</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
