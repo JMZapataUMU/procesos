@@ -68,6 +68,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
+<link href="./Tema3.html" rel="next">
 <link href="./Tema1.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -191,6 +192,12 @@ window.Quarto = {
  <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Tema 2. Cadenas de Markov</span></span></a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tema3.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Tema 3. Procesos de Poisson</span></span></a>
+  </div>
+</li>
     </ul>
     </div>
 </nav>
@@ -252,7 +259,7 @@ window.Quarto = {
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Un proceso estocástico <span class="math inline">\((X_n)_{n=0,1,2,\ldots}\)</span> de tiempo discreto y estado discreto se dice que es una <strong>cadena de Markov</strong> si se verifica que</p>
+<p>Un proceso estocástico <span class="math inline">\((X_n)_{n=0,1,2,\ldots}\)</span> de tiempo discreto se dice que es una <strong>cadena de Markov</strong> si se verifica que</p>
 <p><span id="eq-markov"><span class="math display">\[
 \begin{aligned}
 \mathbb{P}\bigl(X_{n+1}=a_{n+1}\mid X_n=a_n,X_{n-1}=a_{n-1},\ldots, X_0=a_0\bigr)
@@ -1011,6 +1018,7 @@ Para cada <span class="math inline">\(n=0,1,2,\ldots\)</span> y <span class="mat
 \end{aligned}
 \tag{3.6}\]</span></span></p>
 <p>Podemos interpretar esta ecuación de manera intuitiva de la siguiente forma. Supongamos que en un instante de tiempo <span class="math inline">\(n\)</span> la variable aleatoria <span class="math inline">\(X_n\)</span> está distribuida según <span class="math inline">\(\pi\)</span>. Al dar un paso en la cadena, la distribución de <span class="math inline">\(X_{n+1}\)</span> será <span class="math inline">\(\pi P\)</span>. Ahora bien, si se cumple que <span class="math inline">\(\pi=\pi P\)</span>, entonces <span class="math inline">\(X_{n+1}\)</span> sigue teniendo la distribución <span class="math inline">\(\pi\)</span>. Es decir, tras la transición la distribución no cambia. Esto significa que la cadena de Markov ha alcanzado una distribución estable en el tiempo. A una distribución <span class="math inline">\(\pi\)</span> verificando (<a href="#eq-estacionario" class="quarto-xref">Equation&nbsp;<span>3.6</span></a>) se llama <strong>distribución estacionaria</strong> de la cadena de Markov.</p>
+<p>La denominación de distribución <em>estacionaria</em> no es arbitraria. Bajo las hipótesis anteriores, a medida que avanza el tiempo, el comportamiento de la cadena se aproxima cada vez más al de un proceso estocástico estacionario. De hecho, si una cadena tiene distribución estacionaria <span class="math inline">\(\pi\)</span> y su distribución inicial es <span class="math inline">\(\pi^{(0)}=\pi\)</span>, entonces es un proceso estocástico estacionario desde el inicio.</p>
 <p>Hemos argumentado arriba que la distribución límite, si existe, debe cumplir las ecuaciones (<a href="#eq-distrLim2" class="quarto-xref">Equation&nbsp;<span>3.5</span></a>) y (<a href="#eq-estacionario" class="quarto-xref">Equation&nbsp;<span>3.6</span></a>). Por otra parte, es posible demostrar que si una cadena irreducible es aperiódica entonces la distribución límite existe. Por tanto, tenemos lo siguiente.</p>
 <div class="callout callout-style-simple callout-none no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -1616,6 +1624,9 @@ Por tanto, el algoritmo PageRank ordenará las páginas en función de estas pro
       </a>          
   </div>
   <div class="nav-page nav-page-next">
+      <a href="./Tema3.html" class="pagination-link" aria-label="Tema 3. Procesos de Poisson">
+        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Tema 3. Procesos de Poisson</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
   </div>
 </nav>
 </div> <!-- /content -->
