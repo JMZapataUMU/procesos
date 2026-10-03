@@ -1,0 +1,1324 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>5&nbsp; Tema 4. Conceptos básicos en series temporales – Procesos estocásticos y series temporales</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./Tema3.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-9e3e5b9121e68b3f077afb32f2c64d95.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No se han encontrado resultados",
+    "search-matching-documents-text": "documentos encontrados",
+    "search-copy-link-title": "Copiar el enlace en la búsqueda",
+    "search-hide-matches-text": "Ocultar resultados adicionales",
+    "search-more-match-text": "resultado adicional en este documento",
+    "search-more-matches-text": "resultados adicionales en este documento",
+    "search-clear-button-title": "Borrar",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancelar",
+    "search-submit-button-title": "Enviar",
+    "search-label": "Buscar"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Tema4.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Tema 4. Conceptos básicos en series temporales</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Buscar" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Procesos estocásticos y series temporales</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Buscar"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Presentación</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tema1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Tema 1. Introducción a los procesos estocásticos</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tema2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Tema 2. Cadenas de Markov</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tema3.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Tema 3. Procesos de Poisson</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tema4.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Tema 4. Conceptos básicos en series temporales</span></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Tabla de contenidos</h2>
+   
+  <ul>
+  <li><a href="#introducción" id="toc-introducción" class="nav-link active" data-scroll-target="#introducción"><span class="header-section-number">5.1</span> Introducción</a></li>
+  <li><a href="#definición-de-serie-temporal.-gráficos" id="toc-definición-de-serie-temporal.-gráficos" class="nav-link" data-scroll-target="#definición-de-serie-temporal.-gráficos"><span class="header-section-number">5.2</span> Definición de serie temporal. Gráficos</a></li>
+  <li><a href="#medidas-para-evaluación-de-predicciones" id="toc-medidas-para-evaluación-de-predicciones" class="nav-link" data-scroll-target="#medidas-para-evaluación-de-predicciones"><span class="header-section-number">5.3</span> Medidas para evaluación de predicciones</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Tema 4. Conceptos básicos en series temporales</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<!-- El siguiento código permite renderizar un solo capitulo: -->
+<!-- quarto render capitulo1.qmd --to pdf -->
+<section id="introducción" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="introducción"><span class="header-section-number">5.1</span> Introducción</h2>
+<p>El estudio de series temporales es fundamental para el proceso de predicción (Forecasting), que consiste en anticipar eventos futuros basándose en datos históricos y patrones identificables. Esta disciplina es esencial en diversos campos, desde la economía hasta la ingeniería, y su aplicación es vital para la toma de decisiones informadas en el ámbito empresarial y gubernamental.</p>
+<p><strong>¿Qué se puede predecir?</strong></p>
+<p>La predicción se utiliza en múltiples situaciones de la vida cotidiana y la industria, como son la gestión de inventarios, la planificación de la producción, la gestión energética o la asignación de personal. La capacidad de predecir con precisión depende de varios factores, entre ellos la comprensión de las causas subyacentes, la disponibilidad de datos históricos, la consistencia del comportamiento pasado y futuro, y el impacto de las predicciones en los propios eventos. Por ejemplo, las predicciones a corto plazo de la demanda eléctrica residencial suelen ser precisas debido a la estabilidad de los factores que la afectan y la abundancia de datos históricos relevantes.</p>
+<p><strong>Diferencia entre predicciones, objetivos y planificación</strong></p>
+<p>Es crucial diferenciar entre predicciones, objetivos y planificación. Predecir implica anticipar el futuro con la mayor precisión posible mediante el análisis de datos históricos y el conocimiento de eventos futuros. Los objetivos son metas específicas que deben alinearse con las predicciones y servir como guía para la planificación. La planificación involucra diseñar estrategias y acciones basadas en las predicciones para alcanzar los objetivos establecidos.</p>
+<p><strong>Determinación de qué predecir</strong></p>
+<p>Decidir qué predecir es un paso crucial. Puede involucrar observaciones individuales o datos agregados. Es importante definir el horizonte de predicción, que puede ser a corto plazo (una hora, o unos días), a medio plazo (por ejemplo, un mes) o a largo plazo (por ejemplo, un año). Además, se debe determinar la frecuencia de las predicciones, que puede ser diaria, semanal, mensual o anual, según las necesidades de los usuarios de las predicciones. La recolección y organización de datos relevantes y precisos es esencial para asegurar la calidad de las predicciones.</p>
+<p><strong>Datos y métodos de predicción</strong></p>
+<p>Los métodos cuantitativos de predicción son útiles cuando hay datos numéricos disponibles y se espera que los patrones pasados continúen en el futuro. Los datos de series temporales, como las ventas trimestrales o la demanda horaria de electricidad, son fundamentales en estos análisis. La descomposición de datos permite estudiar tendencias y patrones estacionales. Entre los métodos más utilizados se encuentran el análisis clásico de series, el suavizamiento exponencial y los modelos ARIMA, efectivos para capturar y predecir patrones en los datos históricos. Los modelos explicativos, que emplean variables predictoras, y los modelos mixtos, que combinan características de varios enfoques, pueden mejorar la precisión y la utilidad de las predicciones.</p>
+<p><strong>Pasos básicos en Forecasting</strong></p>
+<p>Las etapas a tener en cuenta en un problema de predicciones son:</p>
+<ol type="1">
+<li><p>Definición del problema: Entender el uso y los usuarios de las predicciones para asegurar que se adapten a sus necesidades específicas.</p></li>
+<li><p>Recolección de información: Obtener datos estadísticos relevantes y utilizar la experiencia de expertos en el campo.</p></li>
+<li><p>Análisis preliminar: Graficar y analizar datos para identificar patrones, tendencias y estacionalidad, lo cual ayuda en la selección del modelo de predicción adecuado.</p></li>
+<li><p>Elección y ajuste de modelos: Seleccionar y ajustar el método de predicción más apropiado basado en los datos disponibles y la situación específica.</p></li>
+<li><p>Uso de las predicciones: Aplicar los resultados en la planificación y toma de decisiones, alineando las acciones con las expectativas futuras y los objetivos de la organización o empresa.</p></li>
+</ol>
+</section>
+<section id="definición-de-serie-temporal.-gráficos" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="definición-de-serie-temporal.-gráficos"><span class="header-section-number">5.2</span> Definición de serie temporal. Gráficos</h2>
+<p>Una de las técnica más importante para hacer inferencias sobre el futuro con base en lo ocurrido en el pasado, es el análisis de series de tiempo.</p>
+<p>Dada una serie temporal, nuestros objetivos principales serán: describir el comportamiento de la serie, investigar el mecanismo generador de la serie temporal y buscar posibles patrones temporales que permitan sobrepasar la incertidumbre del futuro.</p>
+<p>Se suele hablar del estudio clásico o descriptivo de las series temporales para referirse a la metodología que se ha venido empleando desde la segunda mitad del siglo XIX. A pesar de sus limitaciones, los métodos clásicos se siguen usando por su sencillez y simplificación. En la década de los 60 se plantearon métodos de previsión alternativos a los clásicos que suplen varias de sus limitaciones, como son los métodos de alisado exponencial, y a principios de los 70 aparece un nuevo enfoque, debido a los estadísticos Box y Jenkins, para los modelos univariantes de series temporales.</p>
+<div id="def-conteo" class="theorem definition">
+<p><span class="theorem-title"><strong>Definición 5.1 (Serie temporal)</strong></span> Llamamos <strong>serie temporal</strong> a un conjunto de mediciones de cierto fenómeno o experimento registradas secuencialmente en el tiempo. Estas observaciones suelen denotarse por:</p>
+<p><span class="math display">\[\left\{ x_{t_1},x_{t_2},...,x_{t_n}\right\} \quad \text{con }%
+\{t_1&lt;t_2&lt;...&lt;t_n\}=\mathbb{T}\subset \Bbb{R}\]</span> donde <span class="math inline">\(x_{t_i}\)</span> representa el valor, en el instante <span class="math inline">\(t_i\)</span>, de una variable aleatoria que evoluciona con el tiempo.</p>
+</div>
+<div class="callout callout-style-simple callout-none no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">None</span>Observación
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Teniendo en cuenta la definición anterior, una serie temporal puede verse también como una realización (o trayectoria) de un proceso estocástico <span class="math inline">\((X_t)_{t\in\mathbb{T}}\)</span>.</p>
+</div>
+</div>
+<p>En muchas áreas de conocimiento, las observaciones de interés son obtenidas en instantes sucesivos del tiempo. Por ejemplo, cada hora, cada día, datos mensuales, trimestrales, semestrales o bien registradas por algún aparato de medición en forma continua.</p>
+<ul>
+<li><p>De una manera sencilla, podemos decir que si <span class="math inline">\(\mathbb{T}\subset\Bbb{Z}\)</span> es un conjunto contable, se dice que la serie es de <strong>tiempo discreto</strong>, mientras que si <span class="math inline">\(T\subset\Bbb{R}\)</span> es un intervalo real, se dice que la serie es de <strong>tiempo continuo</strong>.</p></li>
+<li><p>Cuando <span class="math inline">\(t_{i+1}-t_i=k\)</span>, para todo <span class="math inline">\(i=1,...,n-1\)</span>, se dice que la serie es <strong>equiespaciada</strong>; en caso contrario será no equiespaciada.</p></li>
+</ul>
+<p>En adelante, trabajaremos por comodidad con series de tiempo equiespaciadas. Por tanto, se denotarán de la siguiente forma:</p>
+<p><span class="math display">\[\left\{ x_{t_1},x_{t_2},...,x_{t_n}\right\} =\left\{ x_1,x_2,...,x_n\right\}.\]</span></p>
+<p>El primer paso en el análisis de cualquier serie de tiempo consiste en representarla gráficamente (<strong>gráfico temporal</strong>). En la representación gráfica de las series temporales se utilizan los ejes cartesianos. En el eje de abscisas se representa el tiempo <span class="math inline">\(t,\)</span> y en el eje de ordenadas, los valores de la magnitud observada <span class="math inline">\(x_t\)</span>. Se obtiene así una nube de puntos <span class="math inline">\((t,x_t)\)</span> que, unidos por segmentos, proporcionan una visión dinámica de la evolución de la variable a lo largo del tiempo.</p>
+<p>Veamos algunos ejemplos de series de datos incluidos en <em>R</em>. La primera, LakeHuron, contiene las medidas anuales del nivel del lago Huron (en pies), en el tramo 1875-1972. Observamos una tendencia decreciente que parece estabilizarse en el tramo final. La segunda serie de datos, AirPassengers, contiene el los viajeros mensuales en aerolíneas internacionales, en el tramo 1949-1960. Observamos un patrón periódico que se repite a lo largo de la serie, así como tendencia creciente. La tercera, EuStockMarkets, contiene los precios diarios al cierre de 4 índices stock europeos (DAX, SMI, CAC y FTSE), en el tramo 1991-1998. Observamos que las cuatro series presentan un patrón de comportamiento similar, con tendencia creciente y picos de crecimiento en los mismos tramos temporales.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ts.plot</span>(LakeHuron, </span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>        <span class="at">gpars =</span> <span class="fu">list</span>(<span class="at">xlab =</span> <span class="st">"Year"</span>, </span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>                   <span class="at">ylab =</span> <span class="st">"Level LakeHuron in feet"</span>, </span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>                   <span class="at">lwd =</span> <span class="fl">1.5</span>))</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ts.plot</span>(AirPassengers, </span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>        <span class="at">gpars =</span> <span class="fu">list</span>(<span class="at">xlab =</span> <span class="st">"Month &amp; Year"</span>, </span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>                   <span class="at">ylab =</span> <span class="st">"Thousand of passengers"</span>, </span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>                   <span class="at">lwd =</span> <span class="fl">1.5</span>))</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Tema4_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ts.plot</span>(EuStockMarkets, </span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>        <span class="at">gpars =</span> <span class="fu">list</span>(<span class="at">xlab =</span> <span class="st">"Time"</span>, </span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>                   <span class="at">ylab =</span> <span class="st">"Daily closing price"</span>, </span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>                   <span class="at">col =</span> <span class="fu">rainbow</span>(<span class="dv">4</span>), </span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>                   <span class="at">lty =</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>)))</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Tema4_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>El gráfico de la serie permitirá:</p>
+<ol type="a">
+<li><p><strong>Detectar outliers (datos atípicos):</strong> se refiere a puntos de la serie que se escapan de lo “normal”. Un outlier puede corresponderse con un error de medición, o bien con un valor real del fenómeno, el cual a su vez puede tener o no influencia destacada en el modelo propuesto. Conviene identificar los outliers para determinar si deben eliminarse, reemplazarse por otro valor, o bien mantenerlos en el análisis.</p></li>
+<li><p><strong>Detectar estacionalidad:</strong> la variación estacional representa un movimiento periódico de la serie de tiempo. Cada estación puede corresponder con un trimestre, un mes, un día, etc.</p></li>
+<li><p><strong>Detectar tendencias:</strong> la tendencia representa el comportamiento predominante de la serie una vez eliminada la estacionalidad. Esta puede ser definida vagamente como la curva maestra que muestra el cambio de la media a lo largo del tiempo.</p></li>
+</ol>
+</section>
+<section id="medidas-para-evaluación-de-predicciones" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="medidas-para-evaluación-de-predicciones"><span class="header-section-number">5.3</span> Medidas para evaluación de predicciones</h2>
+<p>En esta sección introduciremos conceptos y alguna notación referidos al contexto de predicción con series temporales.</p>
+<p>En primer lugar, debemos destacar que para que tenga sentido la realización de predicciones se supondrá que los datos recopilados a lo largo del tiempo se han tomado siempre en las mismas magnitudes y que la serie presenta cierta estabilidad en la estructura del fenómeno estudiado.</p>
+<p>En el análisis clásico, las predicciones futuras se realizan teniendo en cuenta únicamente el valor de la serie para instantes pasados. Si diponemos de <span class="math inline">\(T\)</span> observaciones de la serie en estudio, la información disponible viene dada por:</p>
+<p><span class="math display">\[x_1,x_2,...,x_T. \]</span></p>
+<p>Dada esta información, la <strong>predicción</strong> de la variable en estudio en el instante siguiente <span class="math inline">\(T+1\)</span> se denotará por: [ <em>{T+1} ] y en un instante posterior cualquiera</em> <span class="math inline">\(T+m\)</span> será: [ ]</p>
+<p>Así, el vendrá dado por la diferencia entre el valor observado de la serie y la predicción: [ e_{T+1}=x_{T+1}-_{T+1} ]</p>
+<p>Comentar que, al igual que sucede en muchos procesos de inferencia, se pueden realizar predicciones puntuales y predicciones por intervalos de confianza para las observaciones futuras. En la mayoría de los casos, nos limitaremos a proporcionar estimaciones puntuales.</p>
+<p>Para poder comparar diversos procedimientos de predicción, es decir, para responder a la pregunta ¿qué método es mejor para predecir esta serie?, necesitamos disponer de algún criterio que nos permita evaluar las predicciones realizadas.</p>
+<p>Como primer paso, podemos comentar la existencia de algunos métodos extremadamente básicos, denominados métodos ingenuos, que sirven de referencia en la comparación de predicciones. Es decir, las predicciones que se obtienen con cualquier procedimiento suelen compararse con las predicciones que se obtendrían con algún método ingenuo. Si el método ingenuo proporciona mejores predicciones (menores errores de predicción), esto será indicativo de que el método usado no es el adecuado y conviene probar con otro.</p>
+<p>Dos ejemplos de métodos ingenuos que se utilizan como referencia son:</p>
+<p>Como segunda opción para medir la capacidad predictiva de un modelo, se suelen calcular las siguientes medidas. Si se dispone de <span class="math inline">\(T\)</span> observaciones y se han realizado predicciones desde el instante 1, las medidas son:</p>
+<p>Evidentemente, cuanto menores sean estas medidas mayor será la capacidad predictiva del modelo. Conviene indicar la existencia de otras medidas para evaluar predicciones, además de las vistas aquí.</p>
+<p>Por último destacaremos que para que un modelo predictivo sea adecuado no basta con que los errores de predicción sean pequeños (valores pequeños de RMSE y de MAE), sino que además pretendemos describir completamente el comportamiento sistemático de la serie (la parte determinista), de manera que la parte que queda sin describir (los errores de predicción) deberían ser un ruido blanco.</p>
+<!-- ## Procesos de conteo -->
+<!-- En este capítulo vamos a ver un tipo de procesos estocásticos que son utilizados para contar la ocurrencia en el tiempo o el espacio de cierto evento aleatorio. Se trata de los procesos de Poisson y, más en general, los procesos de conteo. Este tipo de procesos pueden usarse para contar las llegadas de clientes a una tienda, apariciones de defectos en una línea de producción, las solicitudes individuales a un servidor de internet, el paso de coches por un tramo de carretera, las llegadas de emails a la bandeja de entrada, las ocurrencias de cierto tipo de delito en una gran ciudad, etc. -->
+<!-- <div> -->
+<!-- ### Proceso de conteo -->
+<!-- Un proceso estocástico en tiempo continuo $(N_t)_{t\in [0,\infty)}$ se dice que es un **proceso de conteo** si se verifica: -->
+<!-- 1.  $N_t\ge 0$. -->
+<!-- 2.  $N_t$ toma valores enteros. -->
+<!-- 3.  Si $s<t$ entonces $N_s\le N_t$. -->
+<!-- </div> -->
+<!-- En particular, son procesos estocásticos de tiempo continuo y estado discreto. El valor $N_t$ se interpreta como el número de veces que ocurre el evento aleatorio en estudio durante el intervalo de tiempo $[0,t]$. En particular, si $s<t$, entonces $N_t-N_s$ representa el número de veces que ocurre el evento aleatorio durante el intervalo de tiempo $(s,t]$. Para fijar ideas, vamos a considerar que estamos contando las llegadas de clientes a un establecimiento. Por ejemplo, si $N_1=4$ tendremos que han llegado 4 clientes durante el intervalo de tiempo $[0,1]$. Si $N_2-N_1=3$, tendremos que han llegado 3 clientes durante el intervalo de tiempo $(1,2]$. El tiempo podría medirse por ejemplo en horas. -->
+<!-- ```{r, echo=FALSE, fig.cap="Trayectoria de un proceso de conteo. En cada tiempo $t$, $N_t$ representa el número de llegadas ocurridas en el intervalo [0,t]", fig.align='center', out.width="70%"} -->
+<!-- # Fijemos los valores de los parámetros -->
+<!-- lambda <- 2  # tasa (llegadas por unidad de tiempo) -->
+<!-- T <- 10      # Intervalo de tiempo en el que observamos el proceso -->
+<!-- # Simulación de los tiempos entre llegadas -->
+<!-- set.seed(123) -->
+<!-- t <- NULL -->
+<!-- i <- 1 -->
+<!-- while(sum(t) < T){ -->
+<!--     t[i] <- rexp(n = 1, rate = lambda) -->
+<!--     i <- i+1 -->
+<!-- } -->
+<!-- tiempos <- c(0,cumsum(t)) -->
+<!-- N <- 0:length(t) -->
+<!-- # Dibujamos la trayectoria -->
+<!-- plot(tiempos, N, type = "s",  -->
+<!--      xlab = "Tiempo", ylab = "Llegadas") -->
+<!-- ``` -->
+<!-- ::: {#def-incIndependientes} -->
+<!-- Un proceso estocástico $(X_t)_{t\in[0,\infty)}$ se dice que tiene **incrementos independientes** si para toda sucesión de tiempos $0\le t_1<t_2<\ldots< t_n$ las variables aleatorias -->
+<!-- $$ -->
+<!-- X_{t_2}-X_{t_1},\quad  -->
+<!-- X_{t_3}-X_{t_2},\quad -->
+<!-- \ldots,\quad -->
+<!-- X_{t_n}-X_{t_{n-1}},\quad -->
+<!-- $$ -->
+<!-- son independientes. -->
+<!-- ::: -->
+<!-- Un ejemplo de proceso con incrementos independientes es el movimiento Browniano. Para un proceso de conteo $(N_t)_{t\in [0,\infty)}$ con incrementos independientes contando las llegadas de clientes (o cualquier otro evento aleatorio), se tendrá que los números de llegadas en intervalos disjuntos -->
+<!-- $$ -->
+<!-- (t_1,t_2],\quad (t_2,t_3],\quad \ldots,\quad (t_{n-1},t_n] -->
+<!-- $$ -->
+<!-- son independientes. -->
+<!-- Supongamos que queremos calcular la probabilidad de que haya 2 llegadas en el intervalo $(1,2]$ y 3 llegadas en el intervalo $(2,3]$. Como los intervalos $(1,2]$ y $(2,3]$ son disjuntos, tendremos -->
+<!-- $$ -->
+<!-- \mathbb{P}\Big(\mbox{ 2 llegadas en }(1,2]\mbox{ y 3 llegadas en }(2,3]\Big)= -->
+<!-- \mathbb{P}\Big(\mbox{ 2 llegadas en }(1,2]\Big)\cdot\mathbb{P}\Big(\mbox{ 2 llegadas en }(2,3]\Big). -->
+<!-- $$ -->
+<!-- ## Proceso de Poisson -->
+<!-- El proceso de conteo más usado es el proceso de Poisson. En esta sección veremos su definición y principales propiedades. Antes de introducir este concepto, necesitamos recordar la distribución de Poisson. -->
+<!-- ### Distribución de Poisson -->
+<!-- ::: {#def-distPoisson} -->
+<!-- Una variable aleatoria discreta $X$ se dice que tiene distribución de **Poisson** de parámetro $\lambda>0$ si toma valores en $\{0,1,2,3,\ldots\}$ y tiene función puntual de probabilidad -->
+<!-- $$ -->
+<!-- \mathbb{P}(X=k)=\frac{\lambda^k e^{-\lambda}}{k!}\quad\mbox{ para todo }k\in\{0,1,2,\ldots\}. -->
+<!-- $$ -->
+<!-- En ese caso escribimos $X\sim{\rm Poisson}(\lambda)$. -->
+<!-- ::: -->
+<!-- Algunas propiedades de la distribución de Poisson que conviene recordar son las siguientes. -->
+<!-- ::: {#prp-distPoisson} -->
+<!-- Supongamos que $X\sim{\rm Poisson}(\lambda)$. Entonces $\mathbb{E}(X)=\lambda$ y ${\rm Var}(X)=\lambda$. -->
+<!-- ::: -->
+<!-- La suma de variables Poisson independientes es Poisson. Más concretamente, tenemos lo siguiente. -->
+<!-- ::: {#prp-sumPoisson} -->
+<!-- Supongamos que $X_1,X_2,\ldots,..,X_n$ son variables aleatorias independientes con $X_i\sim{\rm Poisson}(\lambda_i)$. Entonces $$ -->
+<!-- X_1+X_2+\ldots+X_n\sim{\rm Poisson}(\lambda_1+\lambda_2+\ldots+\lambda_n). -->
+<!-- $$ -->
+<!-- ::: -->
+<!-- Las variables Poisson pueden ser interpretadas como el límite en distribución de variables aleatorias binomiales. Más específicamente tenemos lo siguiente. -->
+<!-- ::: {#prp-limitBin} -->
+<!-- Consideremos una sucesión de variables aleatorias $Y_1,Y_2,\ldots$, donde $Y_n\sim{\rm Binomial}(n,p_n)$ con $p_n=\lambda/n$ para cierto $\lambda>0$. Entonces la función puntual de probabilidad de $Y_n$ converge a la función puntual de probabilidad de una variable ${\rm Poisson}(\lambda)$, es decir, -->
+<!-- $$ -->
+<!-- \lim_{n\to\infty}\mathbb{P}(Y_n=k)=\frac{\lambda^k e^{-\lambda}}{k!}\quad\mbox{ para todo }k\in\{0,1,2,\ldots\}. -->
+<!-- $$ -->
+<!-- ::: -->
+<!-- **Demostración.** -->
+<!-- Fijado $k\in\{0,1,2,\ldots\}$, como $Y_n\sim{\rm Binomial}(n,p_n)$, tenemos -->
+<!-- $$ -->
+<!-- \begin{aligned} -->
+<!-- \mathbb{P}(Y_n=k)&=\binom{n}{k} p_n^k (1-p_n)^{n-k}\\ -->
+<!-- &=\frac{n!}{(n-k)!k!} \left(\frac{\lambda}{n}\right)^k \left(1-\frac{\lambda}{n}\right)^{n-k}\\ -->
+<!-- &=\frac{n!}{(n-k)!k!} \left(\frac{\lambda}{n}\right)^k \left(1-\frac{\lambda}{n}\right)^{n}\left(1-\frac{\lambda}{n}\right)^{-k}\\ -->
+<!-- &=\frac{n!}{(n-k)! n^k}\frac{\lambda^k}{k!} \left(1-\frac{\lambda}{n}\right)^{n}\left(1-\frac{\lambda}{n}\right)^{-k}. -->
+<!-- \end{aligned} -->
+<!-- $$ {#eq-Poisson} -->
+<!-- Por otro lado, observamos que -->
+<!-- $$ -->
+<!-- \lim_{n\to\infty}\left(1-\frac{\lambda}{n}\right)^{n}=e^{-\lambda}, -->
+<!-- $$ -->
+<!-- $$ -->
+<!-- \lim_{n\to\infty}\left(1-\frac{\lambda}{n}\right)^{-k}=1, -->
+<!-- $$ -->
+<!-- $$ -->
+<!-- \begin{aligned} -->
+<!-- \lim_{n\to\infty}\frac{n!}{(n-k)! n^k}&=\lim_{n\to\infty}\left(\frac{n}{n}\cdot\frac{n-1}{n}\cdot\frac{n-2}{n}\cdot\ldots \cdot\frac{n-(k-1)}{n}\right)\\ -->
+<!-- &=\lim_{n\to\infty}\left(1\cdot\left(1-\frac{1}{n}\right)\cdot\left(1-\frac{2}{n}\right)\cdot\ldots \cdot\left(1-\frac{k-1}{n}\right)\right)=1, -->
+<!-- \end{aligned} -->
+<!-- $$ -->
+<!-- donde para calcular el último límite hemos usado que tenemos un número constante $k$ de factores que convergen a $1$. -->
+<!-- Tomando límites cuando $n\to\infty$ en @eq-Poisson teniendo en cuenta las anteriores igualdades, obtenemos el resultado deseado.\hfill$\square$ -->
+<!-- ### Definición de proceso de Poisson -->
+<!-- El proceso de Poisson se usa para contar la ocurrencia de un evento aleatorio cuyas observaciones se dan en el tiempo con una frecuencia promedio constante $\lambda$. Por ejemplo, supongamos que mediante la observación se llega a la conclusión de que a un establecimiento llegan, de media, 5 clientes por hora. Puesto que las llegadas son aleatorias, cada hora llegará un número de clientes que no tiene por qué ser exactamente igual a 5; sin embargo, dicha cifra se verificará en promedio al avanzar el tiempo. -->
+<!-- ::: {#def-Poisson} -->
+<!-- ### Proceso de Poisson -->
+<!-- Un proceso de conteo $(N_t)_{t\in [0,\infty)}$ se dice que es un \textbf{proceso de Poisson} con tasa $\lambda>0$ si se verifican las siguientes condiciones: -->
+<!-- 1.  $N_0=0$, -->
+<!-- 2.  $N_t$ tiene incrementos independientes, -->
+<!-- 3.  Para cada $t,s\ge 0$ se verifica que $N_{t+s}-N_s\sim {\rm Poisson}(\lambda t)$. -->
+<!-- ::: -->
+<!-- Para justificar la definición anterior pensemos en los clientes que llegan al establecimiento. Supongamos que llegan de media $\lambda$ clientes por hora. Sea $N_t$ el número de clientes que han llegado a la tienda tras $t$ horas. Queremos encontrar qué distribución debería seguir la variable aleatoria $N_t$. -->
+<!-- Para simplificar el problema, vamos a suponer en primer lugar que, dado $n\in\mathbb{N}$, los clientes van llegando en instantes de tiempo equiespaciados -->
+<!-- $$ -->
+<!-- 0<\frac{t}{n}<\frac{2t}{n}<\frac{3t}{n}<\ldots< t, -->
+<!-- $$ -->
+<!-- de forma que al final de cada intervalo $\left(\frac{kt}{n},\frac{(k+1)t}{n}\right]$ podrá llegar un solo cliente con probabilidad $p$, o no llegará ninguno con probabilidad $1-p$. Además, consideramos que la llegada o no de un cliente en cada intervalo ocurre de forma independiente de lo que haya pasado en los intervalos anteriores. -->
+<!-- Bajo estos supuestos, tenemos que el número total $N_t$ de clientes llegados en el intervalo de tiempo $[0,t]$ sigue una distribución ${\rm Binomial}(n,p)$. En particular, como llegan de media $\lambda$ clientes por hora, tendremos que -->
+<!-- $$ -->
+<!-- \lambda t=\mathbb{E}(N_t)=n p. -->
+<!-- $$ -->
+<!-- Necesariamente, se tiene que verificar que $p=\lambda t/n$. De esta manera obtenemos la probabilidad de llegada de un cliente en cada intervalo, la cual depende del número de subdivisiones $n$ en el que dividimos el intervalo de tiempo. -->
+<!-- Para pasar a tiempo continuo, tomemos límites cuando $n\to\infty$. De este modo, como consecuencia de la Proposición @prp-limitBin, obtenemos que -->
+<!-- $$ -->
+<!-- \mathbb{P}(N_t=k)=\frac{(t\lambda)^k e^{-\lambda t}}{k!},\quad k\in\{0,1,2,\ldots\}. -->
+<!-- $$ -->
+<!-- Concluimos que $N_t$ sigue una distribución ${\rm Poisson}(\lambda t)$, lo cual justifica el punto 3 de la definición de Proceso de Poisson. -->
+<!-- Es lógico considerar que los clientes que llegan en dos intervalos de tiempo disjuntos sean independientes, por lo que el proceso de conteo correspondiente debería tener incrementos independientes. Por lo cual, la condición 2 de la definición anterior es natural. -->
+<!-- Como hemos observado arriba tenemos que $\mathbb{E}(N_t)=\lambda t$, lo cual es también consecuencia de la condición 3. En particular, la tasa $\lambda$ de un proceso de Poisson nos informa del número medio de llegadas por unidad de tiempo. -->
+<!-- ::: callout -->
+<!-- ### Ejemplo -->
+<!-- A una gasolinera llegan de media 10 coches por hora. Supongamos que la llegada de coches a la gasolinera sigue un proceso de Poisson. Calcula: -->
+<!-- 1.  Probabilidad de que lleguen 2 coches entre las 9:00 y las 9:20. -->
+<!-- 2.  Probabilidad de que lleguen 3 coches entre las 9:00 y las 9:20 y 7 -->
+<!-- coches entre 10:20 y las 11:00. -->
+<!-- **Solución:** Consideramos el proceso $(N_t)_{t\ge 0}$ de conteo de coches tras $t$ horas. Como llegan una media de 10 coches por hora, tendremos que $\lambda=10$. -->
+<!-- 1.  Sea $X=\mbox{``Núm. de coches entre las 9:00 y las 9:20''}$. Debido a la condición 3 de la definición de proceso de Poisson, tenemos que $X\sim {\rm Poisson}(10/3)$ ya que entre las 9:00 y las 9:20 ha pasado 1/3 de hora. Por tanto, -->
+<!-- $$ -->
+<!-- \mathbb{P}(X=2)=\frac{e^{-10/3}\cdot (10/3)^2}{2!}=0.1982. -->
+<!-- $$ -->
+<!-- Alternativamente, podemos usar el siguiente código en *R* para calcular el resultado anterior mediante la función puntual de probabilidad de la Poisson: -->
+<!-- ```{r} -->
+<!-- t <- 1/3 -->
+<!-- lambda <- 10 -->
+<!-- # Evaluamos la función puntual de probabilidad de la Poisson -->
+<!-- dpois(2, t*lambda) -->
+<!-- ``` -->
+<!-- 2.  Sea $Y=\mbox{``Núm. de coches entre las 10:20 y las 11:00''}$. Tenemos que $Y\sim {\rm Poisson}(20/3)$ y, además, $X,Y$ son independientes. Entonces, -->
+<!-- ```{=tex} -->
+<!-- \begin{align*} -->
+<!-- \mathbb{P}(X=3,Y=7)&=\mathbb{P}(X=3)\mathbb{P}(Y=7)\\ -->
+<!-- &=\frac{e^{-10/3}\cdot (10/3)^3}{3!} \frac{e^{-20/3}\cdot (20/3)^7}{7!}=0.0325. -->
+<!-- \end{align*} -->
+<!-- ``` -->
+<!-- Alternativamente, podemos usar el siguiente código de *R* para calcular el resultado anterior: -->
+<!-- ```{r} -->
+<!-- t <- 1/3 -->
+<!-- s <- 2/3 -->
+<!-- lambda <- 10 -->
+<!-- # Evaluamos la función puntual de probabilidad de la Poisson -->
+<!-- dpois(3, t*lambda)*dpois(7, s*lambda) -->
+<!-- ``` -->
+<!-- ::: -->
+<!-- ## Tiempos de ocurrencia (llegada) en un Proceso de Poisson -->
+<!-- Hemos visto que los procesos de Poisson surgen de manera natural cuando se trata de contar las llegadas de clientes a un establecimiento. En esta sección vamos a estudiar qué distribución de probabilidad sigue el tiempo aleatorio que pasa entre la llegada de dos clientes consecutivos. -->
+<!-- ### Distribución exponencial -->
+<!-- Recordemos que una variable aleatoria continua $\tau$ tiene distribución exponencial de parámetro $\lambda>0$, en cuyo caso escribimos $\tau\sim {\rm Exp}(\lambda)$, si toma valores reales positivos y tiene función de densidad -->
+<!-- $$ -->
+<!-- f(t)=\lambda e^{-\lambda t},\quad t>0. -->
+<!-- $$ -->
+<!-- Recordemos además que si $\tau\sim{\rm Exp}(\lambda)$, entonces la función de distribución de $\tau$ es $F(t)=1-e^{-\lambda t}$. -->
+<!-- En particular, -->
+<!-- $$ -->
+<!-- \mathbb{P}(\tau>t)=1-F(t)=e^{-\lambda t}. -->
+<!-- $$ -->
+<!-- Las variables exponenciales suelen interpretarse como el tiempo de espera para la observación de un evento aleatorio. Por ejemplo, la llegada del primer cliente a una tienda, el tiempo de fallo de un sistema, el tiempo de quiebra de una entidad financiera, tiempo en el que una acción alcanza un determinado nivel, etc. -->
+<!-- ::: {#prp-espExp} -->
+<!-- Si $\tau\sim{\rm Exp}(\lambda)$, entonces -->
+<!-- $$ -->
+<!-- \mathbb{E}(\tau)=\frac{1}{\lambda},\quad {\rm Var}(\tau)=\frac{1}{\lambda^2}. -->
+<!-- $$ -->
+<!-- ::: -->
+<!-- Si pensamos en la llegada del primer cliente a un establecimiento, la proposición anterior nos dice que el tiempo medio que esperaremos en observar llegar dicho cliente será $1/\lambda$. -->
+<!-- Por otro lado, tendremos que $\mathbb{P}(\tau\le t)$ es la probabilidad que el primer cliente llegue en algún instante del intervalo de tiempo $[0,t]$. Por tanto, $\mathbb{P}(\tau>t)$ es la probabilidad de que ningún cliente llegue durante el intervalo de tiempo $[0,t]$. -->
+<!-- Una importante propiedad de las variables exponenciales es que no tienen memoria, es decir, tenemos lo siguiente. -->
+<!-- <div> -->
+<!-- ### Falta de memoria -->
+<!-- Si $\tau\sim {\rm Exp}(\lambda)$, entonces -->
+<!-- $$ -->
+<!-- \mathbb{P}(\tau>s)=\mathbb{P}(\tau>t+s|\tau>t) -->
+<!-- $$ para todo $t,s>0$. -->
+<!-- </div> -->
+<!-- La anterior propiedad, conocida como **falta de memoria** de la distribución exponencial, quiere decir que la probabilidad de que en el intervalo de tiempo $[0,s]$ no haya ninguna llegada, es igual a la probabilidad de que en el intervalo de tiempo $[t,t+s]$ de igual longitud no haya ninguna llegada si en el intervalo de tiempo previo $[0,t]$ no ha habido llegadas, es decir, -->
+<!-- $$ -->
+<!-- \mathbb{P}\left(\text{no hay llegadas en }[0,s]\right)= -->
+<!-- \mathbb{P}\left(\text{no hay llegadas en }[t,t+s]|\text{no hay llegadas en }[0,t] \right). -->
+<!-- $$ -->
+<!-- Por ejemplo, si en 30 minutos no ha llegado ningún cliente a la tienda, la probabilidad de esperar 10 minutos más y no ver ningún cliente es la misma que si no hubiéramos esperado los 30 minutos iniciales. -->
+<!-- ### Modelización de tiempos de llegada y entre llegadas consecutivas -->
+<!-- El siguiente resultado, para el cual no damos la demostración, caracteriza a los procesos de Poisson en términos de tiempos de espera exponenciales. -->
+<!-- ::: {#thm-espExp} -->
+<!-- ### Caracterización proceso de Poisson -->
+<!-- Un proceso estocástico $(N_{t})_{t\in[0,\infty)}$ es un proceso de Poisson con tasa $\lambda$ si y sólo si existe una sucesión $\tau_1,\tau_2,\tau_3,\ldots$ de variables aleatorias independientes con distribución ${\rm Exp}(\lambda)$ tal que -->
+<!-- $$ -->
+<!-- N_t=\max\{n\colon \tau_1+\tau_2+\ldots+\tau_n\le t\}. -->
+<!-- $$ {#eq-tiemposEsp} -->
+<!-- ::: -->
+<!-- Podemos pensar en $\tau_i$ como el tiempo de espera entre las llegadas, es decir, $\tau_1$ es el tiempo transcurrido hasta la primera llegada, $\tau_2$ es el tiempo trascurrido entre la primera y la segunda llegada, $\tau_3$ es el tiempo entre la segunda y la tercera llegada, etc. De esta manera, $T_n=\tau_1+\tau_2+\ldots+\tau_n$ es el tiempo transcurrido hasta la n-ésima llegada. En particular, la condición (@eq-tiemposEsp) puede ser reescrita como -->
+<!-- $$ -->
+<!-- N_t=\max\{n\colon T_n\le t\}. -->
+<!-- $$ -->
+<!-- Si, por ejemplo, $N_t=4$, la condición anterior nos dice que -->
+<!-- $$ -->
+<!-- T_4 \le t < T_5. -->
+<!-- $$ -->
+<!-- En términos de llegadas, tenemos que en el instante $t$ habrán llegado los cuatro primeros clientes, pero no el quinto. -->
+<!-- Recordemos que $\lambda$ era el promedio de llegadas por unidad de tiempo. Por otro lado, como $\mathbb{E}(\tau)=1/\lambda$, tendremos que esperar de media $1/\lambda$ unidades de tiempo entre cada dos llegadas sucesivas. -->
+<!-- ::: callout -->
+<!-- ### Ejemplo -->
+<!-- A la bandeja de entrada de mi email llegan de media 2 emails por hora (o un email cada media hora). Supongamos que abro el correo a las 8:00 am. Calcula: -->
+<!-- 1.  La probabilidad de que el primer email llegue más tarde de las 8:30. -->
+<!-- 2.  La probabilidad de que el primer email llegue más tarde de las 11:00 si no ha llegado ningún correo hasta las 9:00. -->
+<!-- **Solución:** Consideremos los tiempos $\tau_1,\tau_2,\tau_3,\ldots$ entre llegadas de emails, medidos en horas. -->
+<!-- 1.  Tenemos que $\tau_1\sim {\rm Exp}(2)$, luego -->
+<!-- $$ -->
+<!-- \mathbb{P}(\tau_1>0.5)=e^{-2\cdot 0.5}=0.3679. -->
+<!-- $$ -->
+<!-- Alternativamente, podemos usar *R* para calcular la probabilidad anterior mediante la función de distribución de la exponencial: -->
+<!-- ```{r} -->
+<!-- lambda <- 2 -->
+<!-- # Evaluamos la función de distribución de la exponencial -->
+<!-- 1-pexp(0.5, lambda) -->
+<!-- ``` -->
+<!-- 2.  Usando que $\tau_1$ no tiene memoria -->
+<!-- $$ -->
+<!-- \mathbb{P}(\tau_1>3|\tau_1>1)=\mathbb{P}(\tau_1>2)=e^{-2\cdot 2}= 0.0183. -->
+<!-- $$ -->
+<!-- Alternativamente, podemos usar *R* para calcular la probabilidad anterior. -->
+<!-- ```{r} -->
+<!-- lambda <- 2 -->
+<!-- 1 - pexp(2, lambda) -->
+<!-- ``` -->
+<!-- ::: -->
+<!-- Recordemos que una variable aleatoria continua $T$ tiene **distribución gamma**, en cuyo caso escribimos $T\sim \Gamma(k,\lambda)$, si toma valores positivos y tiene función de densidad -->
+<!-- $$ -->
+<!-- f(t)=\frac{\lambda^k}{\Gamma(k)} t^{k-1} e^{-\lambda t},\quad t>0, -->
+<!-- $$ -->
+<!-- donde $\Gamma(k)$ es la función Gamma, la cual viene dada por $\Gamma(k)=(k-1)!$ cuando $k$ es entero. -->
+<!-- La distribución gamma se obtiene cuando sumamos variables independientes con distribución exponencial. Concretamente, tenemos lo siguiente. -->
+<!-- ::: {#prp-sumExp} -->
+<!-- Supongamos que $\tau_1,\tau_2,\tau_3,\ldots$ son variables independientes con distribución ${\rm Exp}(\lambda)$. Entonces se verifica que -->
+<!-- $$ -->
+<!-- T_n=\tau_1+\tau_2+\ldots+\tau_n\sim \Gamma(n,\lambda). -->
+<!-- $$ -->
+<!-- ::: -->
+<!-- La anterior propiedad es muy útil para calcular probabilidades relativas a tiempos de llegada, ya que nos da la distribución del tiempo de llegada $T_n$ del n-ésimo cliente. -->
+<!-- ::: callout -->
+<!-- ### Ejemplo -->
+<!-- Volviendo al ejemplo anterior. Calcula: -->
+<!-- 1.  La probabilidad de que el cuarto email llegue pasadas las 10:00 am. -->
+<!-- 2.  La probabilidad de que el cuarto email llegue más de 3 horas después del segundo email si el segundo email llega después de las 9:00 am. -->
+<!-- **Solución:** -->
+<!-- 1.  Como $T_4=\tau_1+\tau_2+\tau_3+\tau_4\sim\Gamma(n=4,\lambda=2)$, tenemos -->
+<!-- $$ -->
+<!--  \mathbb{P}(T_4>2)=\int_2^\infty \frac{2^4 t^3 e^{-2t}}{3!}{\rm d}t=\frac{8}{3}\int_2^\infty t^3 e^{-2t}{\rm d}t=0.4435, -->
+<!-- $$ -->
+<!-- donde la anterior integral puede ser calculada a mano mediante integración por partes, o con ayuda del ordenador. -->
+<!-- Alternativamente, usando *R* tenemos. -->
+<!-- ```{r} -->
+<!-- n <- 4 -->
+<!-- lambda <- 2 -->
+<!-- # Evaluamos la función de distribución de la distribución gamma -->
+<!-- 1 - pgamma(2, n, lambda) -->
+<!-- ``` -->
+<!-- 2.  Como $\tau_3,\tau_4$ son independientes de $\tau_2,\tau_1$, por ser las $\tau_i$ independientes entre sí, tenemos que -->
+<!-- $$ -->
+<!-- \begin{aligned} -->
+<!-- \mathbb{P}(\tau_3+\tau_4>3|\tau_1+\tau_2>1)&=\mathbb{P}(\tau_3+\tau_4>3)\\ -->
+<!-- &=\int_3^\infty 4 t e^{-2t} {\rm d}t=0.0173, -->
+<!-- \end{aligned} -->
+<!-- $$ -->
+<!-- donde hemos usado que $\tau_3+\tau_4\sim \Gamma(n=2,\lambda=2)$. Además, la anterior integral puede ser calculada a mano mediante integración por partes, o con ayuda del ordenador. -->
+<!-- Alternativamente, usando *R* tenemos. -->
+<!-- ```{r} -->
+<!-- n <- 2 -->
+<!-- lambda <- 2 -->
+<!-- 1 - pgamma(3, n, lambda) -->
+<!-- ``` -->
+<!-- ::: -->
+<!-- ### Simulación de procesos de Poisson -->
+<!-- Simular procesos de Poisson es sencillo usando los tiempos entre llegadas. Para ello basta simular los tiempos entre llegadas como variables aleatorias exponenciales independientes y contabilizar el número de llegadas ocurridas. -->
+<!-- Veamos un ejemplo en *R*: -->
+<!-- ```{r, echo=TRUE, fig.cap="Simulación de la trayectoria de un proceso de Poisson", fig.align='center', out.width="70%"} -->
+<!-- # Valores para simulación -->
+<!-- lambda <- 2  # tasa (llegadas por unidad de tiempo) -->
+<!-- T <- 10      # Intervalo de tiempo en el que observamos el proceso -->
+<!-- # Simulación de los tiempos entre llegadas -->
+<!-- set.seed(123) -->
+<!-- tau <- NULL -->
+<!-- i <- 1 -->
+<!-- while(sum(tau) < T){ -->
+<!--     tau[i] <- rexp(n = 1, rate = lambda) -->
+<!--     i <- i+1 -->
+<!-- } -->
+<!-- # Calculamos los valores  del proceso de Poisson -->
+<!-- tiempos <- c(0,cumsum(tau)) -->
+<!-- N <- 0:length(tau) -->
+<!-- # Dibujamos la trayectoria -->
+<!-- plot(tiempos, N, type = "s", -->
+<!--      xlab = "Tiempo", ylab = "Llegadas", xlim=c(0, 10)) -->
+<!-- ``` -->
+<!-- ## Transformaciones de procesos de Poisson -->
+<!-- En esta sección vamos a ver dos tipos de transformaciones de procesos de Poisson, la superposición y la separación. -->
+<!-- ### Superposición de procesos de Poisson independientes -->
+<!-- Consideremos dos procesos de Poisson $(N^1_t)_{t\in[0,\infty)}$ y $(N^2_t)_{t\in[0,\infty)}$ independientes con tasas $\lambda_1$ y $\lambda_2$, respectivamente. Consideremos el proceso $(N_t)_{t\in[0,\infty)}$ definido como -->
+<!-- $$ -->
+<!-- N_t=N^1_t+N^2_t\quad\mbox{ para todo }t\in[0,\infty). -->
+<!-- $$ -->
+<!-- Dados $t,s\ge 0$, se tiene que los incrementos -->
+<!-- $$ -->
+<!-- N_{t+s}^1-N_{s}^1\sim {\rm Poisson}(\lambda_1 t),\quad N_{t+s}^2-N_{s}^2\sim {\rm Poisson}(\lambda_2 t), -->
+<!-- $$ -->
+<!-- y son variables aleatorias independientes. Por tanto, debido a la Proposición @prp-sumPoisson tenemos que -->
+<!-- $$ -->
+<!-- N_{t+s}-N_t=(N^1_{t+s}-N^1_{s})+(N^2_{t+s}-N^2_{s}) -->
+<!-- $$ sigue una distribución ${\rm Poisson}((\lambda_1+\lambda_2) t)$. Es más, $N_0=N^1_0+N^2_0=0$, y el proceso $N_t$ tiene incrementos independientes (por tenerlos $N^1$ y $N^2$). Dado que se verifican todas las condiciones de la definición de proceso de Poisson, podemos concluir que el proceso $(N_t)_{t\in[0,\infty)}$ es de Poisson con tasa $\lambda_1+\lambda_2$. -->
+<!-- En general, tendremos lo siguiente. -->
+<!-- ::: {#thm-superposicion} -->
+<!-- ### Superposición -->
+<!-- Sean $(N_t^1),(N_t^2),\ldots,(N_t^m)$ procesos de Poisson independientes con tasas $\lambda_1,\lambda_2,\ldots,\lambda_m$, respectivamente. Sea además -->
+<!-- $$ -->
+<!-- N_t=N_t^1+N_t^2+\ldots+N_t^m\quad\mbox{ para todo }t\in[0,\infty). -->
+<!-- $$ -->
+<!-- Entonces el proceso $(N_t)_{t\in[0,\infty)}$ es un proceso de Poisson con tasa $\lambda_1+\lambda_2+\ldots+\lambda_m$. -->
+<!-- ::: -->
+<!-- A continuación simulamos en *R* la superposición de dos procesos de Poisson independientes: -->
+<!-- ```{r, echo=TRUE, fig.cap="Superposición de dos procesos de Poisson", fig.align='center', out.width="70%"} -->
+<!-- # Valores para simulación de los procesos -->
+<!-- lambda1 <- 2  # tasa del primer proceso de Poisson -->
+<!-- lambda2 <- 0.5  # tasa del segundo proceso de Poisson -->
+<!-- T <- 10      # Intervalo de tiempo en el que observamos el proceso -->
+<!-- # Simulación de los tiempos entre llegadas -->
+<!-- set.seed(123) -->
+<!-- tau1 <- NULL -->
+<!-- tau2 <- NULL -->
+<!-- i <- 1 -->
+<!-- while(sum(tau1) < T){ -->
+<!--   tau1[i] <- rexp(n = 1, rate = lambda1) -->
+<!--   i <- i+1 -->
+<!-- } -->
+<!-- i <- 1 -->
+<!-- while(sum(tau2) < T){ -->
+<!--   tau2[i] <- rexp(n = 1, rate = lambda2) -->
+<!--   i <- i+1 -->
+<!-- } -->
+<!-- # Definimos los timpos y los valores correspondientes del proceso de Poisson 1 -->
+<!-- tiempos1 <- c(0,cumsum(tau1)) -->
+<!-- N1 <- 0:length(tau1) -->
+<!-- # Definimos los tiempos y los valores correspondientes del proceso de Poisson 2 -->
+<!-- tiempos2 <- c(0,cumsum(tau2)) -->
+<!-- N2 <- 0:length(tau2) -->
+<!-- # Definimos los tiempos y los valores correspondientes del proceso superposición -->
+<!-- tiempos <- union(tiempos1, tiempos2) -->
+<!-- tiempos <- sort(tiempos) -->
+<!-- N <- 0:(length(tiempos)-1) -->
+<!-- # Dibujamos la trayectoria del proceso 1 -->
+<!-- plot(tiempos1, N1, type = "s", -->
+<!--      xlab = "Tiempo", ylab = "Llegadas", xlim = c(0,10), ylim=c(0, max(N))) -->
+<!-- # Dibujamos la trayectoria del proceso 2 -->
+<!-- lines(tiempos2, N2, type = "s", col="blue") -->
+<!-- # Dibujamos la trayectoria del proceso superposición -->
+<!-- lines(tiempos, N, type = "s", col="red") -->
+<!-- # Añadimos una leyenda -->
+<!-- legend(0, 25, legend=c("Proceso 1", "Proceso 2", "Superposición"), -->
+<!--        col=c("black", "blue", "red"), lty=c(1, 1, 1)) -->
+<!-- ``` -->
+<!-- ### Separación de procesos de Poisson -->
+<!-- Imaginemos una cafetería en los Pirineos donde los clientes, de España y de Francia, van llegando de acuerdo a un proceso de Poisson $(N_t)_{t\in[0,\infty)}$ con tasa de 10 clientes por hora. Supongamos además que el 60% de los clientes son españoles y el 40% de los clientes son franceses. De este manera, los clientes españoles tendrán su propio proceso de conteo $(N_t^1)_{t\in[0,\infty)}$ y, de la misma manera, los clientes franceses tendrán otro proceso de conteo $(N_t^2)_{t\in[0,\infty)}$. Nos preguntamos qué tipo de procesos son $(N_t^1)_{t\in[0,\infty)}$ y $(N_t^2)_{t\in[0,\infty)}$. -->
+<!-- En general, un proceso de Poisson $(N_t)_{t\in[0,\infty)}$ puede ser separado en dos procesos $(N_t^1)_{t\in[0,\infty)}$ y $(N_t^2)_{t\in[0,\infty)}$ contando llegadas de "tipo 1" y "tipo 2", de acuerdo a una sucesión $Y_1,Y_2,\ldots$ de variables aleatorias independientes entre sí, e independientes del proceso $(N_t)_{t\in [0,\infty)}$, tal que -->
+<!-- $$\mathbb{P}(Y_i=1)=p\quad\mbox{ y }\quad\mathbb{P}(Y_i=2)=1-p.$$ -->
+<!-- Intuitivamente, para cada llegada $i$, podemos pensar en la variable aleatoria $Y_i$ como un lanzamiento de moneda (no equilibrada si $p\neq 1/2$) realizado al producirse dicha llegada, de modo que si se obtiene cara (valor 1) se clasifica la llegada como de tipo 1, y si se obtiene cruz (valor 2) se clasifica la clasifica como de tipo 2. -->
+<!-- De esta manera, si $T_n=\tau_1+\tau_2+\ldots+\tau_n$ es el tiempo transcurrido hasta la n-ésima llegada, entonces los procesos $(N_t^1)_{t\in[0,\infty)}$ y $(N_t^2)_{t\in[0,\infty)}$ contando las llegadas de tipo 1 y las llegadas de tipo 2 hasta tiempo $t$ vendrán respectivamente dados por -->
+<!-- $$ -->
+<!-- N_t^1=\#\{n\colon Y_n=1,\:T_n\le t\},\quad N_t^2=\#\{n\colon Y_n=2,\:T_n\le t\}, -->
+<!-- $$ {#eq-sepPoi} -->
+<!-- donde \# denota el cardinal de un conjunto. -->
+<!-- Tenemos el siguiente resultado. -->
+<!-- ::: {#thm-separacion} -->
+<!-- ### Separación -->
+<!-- Sea $(N_t)_{t\in[0,\infty)}$ un proceso de Poisson con tasa $\lambda$. Consideremos que cada llegada es de tipo 1 con probabilidad $p$ o de tipo 2 con probabilidad $1-p$, independientemente de las demás llegadas y de $(N_t)_{t\in[0,\infty)}$. Entonces, los procesos $(N_t^1)_{t\in[0,\infty)}$ y $(N_t^2)_{t\in[0,\infty)}$ contando las llegadas de tipo 1 y las llegadas de tipo 2, respectivamente, verifican: -->
+<!-- 1.  $(N_t^1)_{t\in[0,\infty)}$ es un proceso de Poisson con tasa $\lambda p$. -->
+<!-- 2.  $(N_t^2)_{t\in[0,\infty)}$ es un proceso de Poisson con tasa $\lambda (1-p)$. -->
+<!-- 3.  $(N_t^1)_{t\in[0,\infty)}$ y $(N_t^2)_{t\in[0,\infty)}$ son procesos de Poisson independientes. -->
+<!-- ::: -->
+<!-- Volvamos al ejemplo de la cafetería en los Pirineos. Dijimos que llegan una media de 10 clientes por hora, por lo que el correspondiente proceso de Poisson $(N_t)_{t\in [0,\infty)}$ tendrá tasa $\lambda=10$. Al ser el 60% de los clientes que llegan españoles y el 40% franceses, tendremos que los clientes españoles llegarán a la cafetería siguiendo un proceso de Poisson con tasa $10\cdot 0.6=6$, y los clientes franceses llegarán a la cafetería siguiendo un proceso de Poisson con tasa $10\cdot 0.4=4$. -->
+<!-- A continuación simulamos en *R* la separación del proceso de clientes en españoles y franceses: -->
+<!-- ```{r, echo=TRUE, fig.cap="Separación del proceso de Poisson", fig.align='center', out.width="70%"} -->
+<!-- # Valores para simulación de los procesos -->
+<!-- lambda <- 10  # tasa del proceso de Poisson -->
+<!-- p <- 0.6  # tasa del segundo proceso de Poisson -->
+<!-- T <- 10      # Intervalo de tiempo en el que observamos el proceso -->
+<!-- # Simulación de los tiempos entre llegadas y tipos de llegadas -->
+<!-- set.seed(123) -->
+<!-- tau <- NULL -->
+<!-- y <- NULL -->
+<!-- i <- 1 -->
+<!-- while(sum(tau) < T){ -->
+<!--   tau[i] <- rexp(n = 1, rate = lambda1) -->
+<!--   y[i]=sample(c(1, 2), size = 1) -->
+<!--   i <- i+1 -->
+<!-- } -->
+<!-- # Definimos los tiempos y los valores de N -->
+<!-- tiempos <- c(0,cumsum(tau)) -->
+<!-- N <- 0:length(tau) -->
+<!-- # Definimos los valores del proceso de Poisson 1 -->
+<!-- N1 <- NULL -->
+<!-- N1[y==1] <- 1 -->
+<!-- N1[y==2] <- 0 -->
+<!-- N1 <- c(0, cumsum(N1)) -->
+<!-- # Definimos los valores del proceso de Poisson 1 -->
+<!-- N2 <- NULL -->
+<!-- N2[y==2] <- 1 -->
+<!-- N2[y==1] <- 0 -->
+<!-- N2 <- c(0, cumsum(N2)) -->
+<!-- # Dibujamos la trayectoria del proceso 1 -->
+<!-- plot(tiempos, N1, type = "s", -->
+<!--      xlab = "Tiempo", ylab = "Llegadas", xlim = c(0, 10), ylim=c(0, max(N))) -->
+<!-- # Dibujamos la trayectoria del proceso 2 -->
+<!-- lines(tiempos, N2, type = "s", col="blue") -->
+<!-- # Dibujamos la trayectoria del proceso original -->
+<!-- lines(tiempos, N, type = "s", col="red") -->
+<!-- # Añadimos una leyenda -->
+<!-- legend(0, 18, legend=c("Españoles", "Franceses", "Totales"), -->
+<!--        col=c("black", "blue", "red"), lty=c(1, 1, 1)) -->
+<!-- ``` -->
+<!-- ## Procesos de renovación -->
+<!-- Hemos visto anteriormente que los procesos de Poisson son caracterizados como el proceso de conteo cuando los tiempos entre llegadas vienen dados por una sucesión $\tau_1,\tau_2,\tau_3,\ldots$ de variables independientes y exponenciales con la misma tasa $\lambda$. Una generalización de los procesos de Poisson son los procesos de renovación donde los tiempos entre llegadas son independientes e idénticamente distribuidos, pero no necesariamente siguen una distribución exponencial. Dicho concepto es definido formalmente como sigue. -->
+<!-- ::: {#def-renovacion} -->
+<!-- ### Proceso de renovación -->
+<!-- Sean $\tau_1,\tau_2,\tau_3,\ldots$ variables aleatorias no negativas (es decir, $\tau_n\ge 0$), independientes, e idénticamente distribuidas, de modo que $\mathbb{P}(\tau_n=0)<1$ para todo $n$. Llamamos **proceso de renovación** con tiempos entre llegadas $\tau_1,\tau_2,\tau_3,\ldots$ al proceso estocástico $(N_t)_{t\in[0,\infty)}$ verificando $N_0=0$ y -->
+<!-- $$ -->
+<!-- N_t=\max\{n\colon T_n\le t\}, -->
+<!-- $$ {#eq-conteo} -->
+<!-- donde $T_n=\tau_1+\tau_2+\ldots+\tau_n$. -->
+<!-- ::: -->
+<!-- Al igual que con los procesos de Poisson interpretamos $\tau_1,\tau_2,\tau_3,\ldots$ como los tiempos entre llegadas, por lo que $T_n=\tau_1+\tau_3+\ldots+\tau_n$ es el tiempo de la n-ésima llegada. La condición (@eq-conteo) implica que si $N_t=n$, entonces -->
+<!-- $$ -->
+<!-- T_{n}\le t < T_{n+1}. -->
+<!-- $$ -->
+<!-- ::: callout -->
+<!-- ### Ejemplo -->
+<!-- Imaginemos una máquina que funciona durante un tiempo $\alpha$ y, tras fallar, tarda un tiempo $\beta$ en ser reparada. Si la máquina falla y es reparada reiteradas veces, obtendremos variables aleatorias independientes $\alpha_1,\beta_1,\alpha_2,\beta_2,\alpha_3,\beta_3,\ldots$ con los correspondientes tiempos de fallo y reparación. El tiempo total de cada ciclo donde la máquina empieza a funcionar, falla y es reparada viene dado por $\tau_i=\alpha_i+\beta_i$. Las variables $\tau_1,\tau_2,\tau_3,\ldots$ son i.i.d.. Podemos, por tanto, considerar el proceso de renovación $(N_t)_{t\in [0,\infty)}$ contando el número total de ciclos hasta tiempo $t$. -->
+<!-- ::: -->
+<!-- Una importante propiedad de los procesos de renovación es la siguiente versión de la ley de los grandes números. -->
+<!-- ::: {#thm-grandesNum} -->
+<!-- ### Ley de los grandes números para procesos de renovación -->
+<!-- Sea $(N_t)_{t\in[0,\infty)}$ un proceso de renovación con tiempos entre llegadas $\tau_1,\tau_2,\tau_3,\ldots$. Si $\mathbb{E}(\tau_i)=\mu$, entonces con probabilidad 1 se verifica que -->
+<!-- $$ -->
+<!-- \frac{N_t}{t}\to \frac{1}{\mu}\quad\mbox{ cuando }t\to\infty. -->
+<!-- $$ -->
+<!-- ::: -->
+<!-- La interpretación del anterior resultado es sencilla. Si el tiempo medio entre llegadas (ciclos consecutivos) de un proceso de renovación es de $\mu$ horas, entonces en el largo plazo se producirán $1/\mu$ llegadas (ciclos) por hora. En el caso de un proceso de Poisson con tasa $\lambda$ se tendrá que -->
+<!-- $$ -->
+<!-- \frac{N_t}{t}\to \lambda\quad\mbox{ cuando }t\to\infty, -->
+<!-- $$ -->
+<!-- ya que los tiempos entre llegadas tienen media $1/\lambda$. -->
+<!-- La demostración del anterior resultado se basa en la ley fuerte de los grandes números la cual recordamos a continuación. -->
+<!-- ::: {#lem-leyFuerte} -->
+<!-- ### Ley fuerte de los grandes números -->
+<!-- Sean $\tau_1,\tau_2,\tau_3,\ldots$ variables aleatorias i.i.d. con $\mathbb{E}(\tau_i)=\mu$. Entonces con probabilidad 1 se verifica que -->
+<!-- $$ -->
+<!-- \frac{T_n}{n}\to \mu\quad\mbox{ cuando }n\to\infty, -->
+<!-- $$ -->
+<!-- donde $T_n=\tau_1+\tau_2+\ldots+\tau_n$ para cada $n\in\mathbb{N}$. -->
+<!-- ::: -->
+<!-- A continuación damos la demostración de la ley de los grandes números para procesos de renovación. -->
+<!-- **Demostración del Teorema @thm-grandesNum.** -->
+<!-- Para cada $n\in\mathbb{N}$, sea $T_n=\tau_1+\tau_2+\ldots+\tau_n$. Como las variables $\tau_1,\tau_2,\tau_3,\ldots$ son i.i.d. con media $\mu$, la ley fuerte de los grandes números nos dice que, con probabilidad 1, se verifica -->
+<!-- $$ -->
+<!-- \frac{T_n}{n}\to \mu\quad\mbox{ cuando }n\to\infty. -->
+<!-- $$ {#eq-grandesNum} -->
+<!-- Ahora, por definición de proceso de renovación tenemos que -->
+<!-- $$ -->
+<!-- T_{N_t}\le t < T_{N_t+1}. -->
+<!-- $$ -->
+<!-- Dividiendo entre $N_t$ tenemos que -->
+<!-- $$ -->
+<!-- \frac{T_{N_t}}{N_t}\le \frac{t}{N_t} < \frac{T_{N_t+1}}{N_t}. -->
+<!-- $$ -->
+<!-- De ahí se sigue que -->
+<!-- $$ -->
+<!-- \frac{T_{N_t}}{N_t}\le \frac{t}{N_t} < \frac{T_{N_t+1}}{N_t+1}\frac{N_t+1}{N_t}. -->
+<!-- $$ {#eq-des} -->
+<!-- Puesto que las trayectorias de $N_t$ son crecientes, dando infinitos saltos de longitud 1, tendremos que $\lim_{t\to \infty}N_t=\infty$. Como consecuencia de (@eq-grandesNum) se verifica, con probabilidad 1, que -->
+<!-- $$ -->
+<!-- \lim_{t\to \infty}\frac{T_{N_t}}{N_t}=\mu. -->
+<!-- $$ -->
+<!-- Por las misma razones también se cumplirá, con probabilidad 1, que -->
+<!-- $$ -->
+<!-- \lim_{t\to \infty} \frac{T_{N_t+1}}{N_t+1}\frac{N_t+1}{N_t}=\mu. -->
+<!-- $$ -->
+<!-- Finalmente, tomando límites en (@eq-des) cuando $t\to\infty$, y teniendo en cuenta lo anterior, llegamos a la conclusión deseada, ya que $t/N_t$ se encuentra, con probabilidad 1, entre dos sucesiones las cuales convergen a $\mu$. \hfill$\square$ -->
+<!-- Volvamos al ejemplo donde una máquina se estropea y es reparada reiteradas veces. Supongamos que, de media, la máquina tarda una hora en estropearse, y quince minutos en ser reparada. Supongamos, además, que cada tiempo de fallo $\alpha_i$ y cada tiempo de reparación $\beta_i$ siguen distribuciones exponenciales. De este modo, $\alpha_i\sim {\rm Exp}(1)$ y $\beta_i\sim {\rm Exp}(4)$. El proceso de renovación resultante puede ser simulado fácilmente en *R*. -->
+<!-- ```{r, echo=TRUE, fig.cap="Simulación del proceso de renovación donde una máquina se estropea y repara reiteradamente", fig.align='center', out.width="70%"} -->
+<!-- # Fijemos los valores de los parámetros -->
+<!-- lambda_1 <- 1  # tasa de fallo -->
+<!-- lambda_2 <- 4  # tasa de reparación -->
+<!-- T <- 10      # Intervalo de tiempo en el que observamos el proceso -->
+<!-- # Simulación de los tiempos entre llegadas -->
+<!-- set.seed(13) -->
+<!-- tau <- NULL -->
+<!-- i <- 1 -->
+<!-- while(sum(tau) < T){ -->
+<!--   alpha <- rexp(n = 1, rate = lambda_1) -->
+<!--   beta <- rexp(n = 1, rate = lambda_2) -->
+<!--   tau[i] <-  alpha + beta -->
+<!--   i <- i+1 -->
+<!-- } -->
+<!-- # Calculamos los valores del proceso de renovación -->
+<!-- tiempos <- c(0,cumsum(tau)) -->
+<!-- N <- 0:length(tau) -->
+<!-- # Dibujamos la trayectoria -->
+<!-- plot(tiempos, N, type = "s", -->
+<!--      xlab = "Tiempo", ylab = "Ciclos", xlim=c(0, 10)) -->
+<!-- ``` -->
+<!-- El tiempo medio de cada ciclo es $\mathbb{E}(\tau_i)=\mathbb{E}(\alpha_i)+\mathbb{E}(\beta_i)=1+1/4=5/4$. Por tanto, la ley de los grandes números para procesos de renovación nos dice que -->
+<!-- $$ -->
+<!-- \frac{N_t}{t}\to \frac{4}{5}\quad\mbox{ cuando }t\to\infty. -->
+<!-- $$ -->
+<!-- Vamos a comprobar dicho resultado simulando una trayectoria a un plazo elevado de tiempo (por ejemplo, $T=1000$), y dibujando la gráfica del cociente $N_t/t$. -->
+<!-- ```{r, echo=TRUE, fig.cap="El cociente entre el proceso de renovación y el tiempo se va aproximando a una constante, debido a la ley de los grandes números", fig.align='center', out.width="70%"} -->
+<!-- # Fijemos los valores de los parámetros -->
+<!-- lambda_1 <- 1  # tasa de fallo -->
+<!-- lambda_2 <- 4  # tasa de reparación -->
+<!-- T <- 1000      # Intervalo de tiempo en el que observamos el proceso -->
+<!-- # Simulación de los tiempos entre llegadas -->
+<!-- set.seed(13) -->
+<!-- tau <- NULL -->
+<!-- i <- 1 -->
+<!-- while(sum(tau) < T){ -->
+<!--   alpha <- rexp(n = 1, rate = lambda_1) -->
+<!--   beta <- rexp(n = 1, rate = lambda_2) -->
+<!--   tau[i] <-  alpha + beta -->
+<!--   i <- i+1 -->
+<!-- } -->
+<!-- tiempos <- c(0,cumsum(tau)) -->
+<!-- N <- 0:length(tau) -->
+<!-- cociente <- N / tiempos -->
+<!-- # Dibujamos la trayectoria -->
+<!-- plot(tiempos, cociente, type = "S", -->
+<!--      xlab = "Tiempo", ylab = "N_t/t", xlim=c(0, 1000)) -->
+<!-- # Dibujamos una línea horizontal a la altura de la inversa de la media -->
+<!-- abline(h=4/5, col="blue") -->
+<!-- ``` -->
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copiado");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copiado");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./Tema3.html" class="pagination-link" aria-label="Tema 3. Procesos de Poisson">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Tema 3. Procesos de Poisson</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
