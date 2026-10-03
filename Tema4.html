@@ -214,8 +214,22 @@ window.Quarto = {
    
   <ul>
   <li><a href="#introducción" id="toc-introducción" class="nav-link active" data-scroll-target="#introducción"><span class="header-section-number">5.1</span> Introducción</a></li>
-  <li><a href="#definición-de-serie-temporal.-gráficos" id="toc-definición-de-serie-temporal.-gráficos" class="nav-link" data-scroll-target="#definición-de-serie-temporal.-gráficos"><span class="header-section-number">5.2</span> Definición de serie temporal. Gráficos</a></li>
+  <li><a href="#definición-de-serie-temporal.-gráficos." id="toc-definición-de-serie-temporal.-gráficos." class="nav-link" data-scroll-target="#definición-de-serie-temporal.-gráficos."><span class="header-section-number">5.2</span> Definición de serie temporal. Gráficos.</a></li>
   <li><a href="#medidas-para-evaluación-de-predicciones" id="toc-medidas-para-evaluación-de-predicciones" class="nav-link" data-scroll-target="#medidas-para-evaluación-de-predicciones"><span class="header-section-number">5.3</span> Medidas para evaluación de predicciones</a></li>
+  <li><a href="#componentes-de-una-serie-temporal-y-esquemas-de-integración" id="toc-componentes-de-una-serie-temporal-y-esquemas-de-integración" class="nav-link" data-scroll-target="#componentes-de-una-serie-temporal-y-esquemas-de-integración"><span class="header-section-number">5.4</span> Componentes de una serie temporal y esquemas de integración</a></li>
+  <li><a href="#diferenciación-de-una-serie-temporal-y-medias-móviles" id="toc-diferenciación-de-una-serie-temporal-y-medias-móviles" class="nav-link" data-scroll-target="#diferenciación-de-una-serie-temporal-y-medias-móviles"><span class="header-section-number">5.5</span> Diferenciación de una serie temporal y medias móviles</a></li>
+  <li><a href="#descomposición-clásica-de-series-temporales" id="toc-descomposición-clásica-de-series-temporales" class="nav-link" data-scroll-target="#descomposición-clásica-de-series-temporales"><span class="header-section-number">5.6</span> Descomposición clásica de series temporales</a>
+  <ul class="collapse">
+  <li><a href="#método-de-la-diferencia-a-la-media-móvil" id="toc-método-de-la-diferencia-a-la-media-móvil" class="nav-link" data-scroll-target="#método-de-la-diferencia-a-la-media-móvil"><span class="header-section-number">5.6.1</span> Método de la diferencia a la media móvil</a></li>
+  <li><a href="#método-de-la-razón-a-la-media-móvil" id="toc-método-de-la-razón-a-la-media-móvil" class="nav-link" data-scroll-target="#método-de-la-razón-a-la-media-móvil"><span class="header-section-number">5.6.2</span> Método de la razón a la media móvil</a></li>
+  </ul></li>
+  <li><a href="#predicciones-con-análisis-clásico-y-limitaciones" id="toc-predicciones-con-análisis-clásico-y-limitaciones" class="nav-link" data-scroll-target="#predicciones-con-análisis-clásico-y-limitaciones"><span class="header-section-number">5.7</span> Predicciones con Análisis Clásico y limitaciones</a></li>
+  <li><a href="#la-descomposición-stl" id="toc-la-descomposición-stl" class="nav-link" data-scroll-target="#la-descomposición-stl"><span class="header-section-number">5.8</span> La descomposición STL</a>
+  <ul class="collapse">
+  <li><a href="#en-qué-consiste-el-método-loess" id="toc-en-qué-consiste-el-método-loess" class="nav-link" data-scroll-target="#en-qué-consiste-el-método-loess"><span class="header-section-number">5.8.1</span> ¿En qué consiste el método LOESS?</a></li>
+  <li><a href="#idea-básica-de-la-descomposición-stl" id="toc-idea-básica-de-la-descomposición-stl" class="nav-link" data-scroll-target="#idea-básica-de-la-descomposición-stl"><span class="header-section-number">5.8.2</span> Idea básica de la descomposición STL</a></li>
+  <li><a href="#ejemplo-la-serie-airpassengers" id="toc-ejemplo-la-serie-airpassengers" class="nav-link" data-scroll-target="#ejemplo-la-serie-airpassengers"><span class="header-section-number">5.8.3</span> Ejemplo: la serie <code>AirPassengers</code></a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -241,8 +255,6 @@ window.Quarto = {
 </header>
 
 
-<!-- El siguiento código permite renderizar un solo capitulo: -->
-<!-- quarto render capitulo1.qmd --to pdf -->
 <section id="introducción" class="level2" data-number="5.1">
 <h2 data-number="5.1" class="anchored" data-anchor-id="introducción"><span class="header-section-number">5.1</span> Introducción</h2>
 <p>El estudio de series temporales es fundamental para el proceso de predicción (Forecasting), que consiste en anticipar eventos futuros basándose en datos históricos y patrones identificables. Esta disciplina es esencial en diversos campos, desde la economía hasta la ingeniería, y su aplicación es vital para la toma de decisiones informadas en el ámbito empresarial y gubernamental.</p>
@@ -264,15 +276,16 @@ window.Quarto = {
 <li><p>Uso de las predicciones: Aplicar los resultados en la planificación y toma de decisiones, alineando las acciones con las expectativas futuras y los objetivos de la organización o empresa.</p></li>
 </ol>
 </section>
-<section id="definición-de-serie-temporal.-gráficos" class="level2" data-number="5.2">
-<h2 data-number="5.2" class="anchored" data-anchor-id="definición-de-serie-temporal.-gráficos"><span class="header-section-number">5.2</span> Definición de serie temporal. Gráficos</h2>
+<section id="definición-de-serie-temporal.-gráficos." class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="definición-de-serie-temporal.-gráficos."><span class="header-section-number">5.2</span> Definición de serie temporal. Gráficos.</h2>
 <p>Una de las técnica más importante para hacer inferencias sobre el futuro con base en lo ocurrido en el pasado, es el análisis de series de tiempo.</p>
 <p>Dada una serie temporal, nuestros objetivos principales serán: describir el comportamiento de la serie, investigar el mecanismo generador de la serie temporal y buscar posibles patrones temporales que permitan sobrepasar la incertidumbre del futuro.</p>
 <p>Se suele hablar del estudio clásico o descriptivo de las series temporales para referirse a la metodología que se ha venido empleando desde la segunda mitad del siglo XIX. A pesar de sus limitaciones, los métodos clásicos se siguen usando por su sencillez y simplificación. En la década de los 60 se plantearon métodos de previsión alternativos a los clásicos que suplen varias de sus limitaciones, como son los métodos de alisado exponencial, y a principios de los 70 aparece un nuevo enfoque, debido a los estadísticos Box y Jenkins, para los modelos univariantes de series temporales.</p>
-<div id="def-conteo" class="theorem definition">
-<p><span class="theorem-title"><strong>Definición 5.1 (Serie temporal)</strong></span> Llamamos <strong>serie temporal</strong> a un conjunto de mediciones de cierto fenómeno o experimento registradas secuencialmente en el tiempo. Estas observaciones suelen denotarse por:</p>
-<p><span class="math display">\[\left\{ x_{t_1},x_{t_2},...,x_{t_n}\right\} \quad \text{con }%
-\{t_1&lt;t_2&lt;...&lt;t_n\}=\mathbb{T}\subset \Bbb{R}\]</span> donde <span class="math inline">\(x_{t_i}\)</span> representa el valor, en el instante <span class="math inline">\(t_i\)</span>, de una variable aleatoria que evoluciona con el tiempo.</p>
+<div id="def-serieTemporal" class="theorem definition">
+<p><span class="theorem-title"><strong>Definición 5.1</strong></span> Llamamos <strong>serie temporal</strong> a un conjunto de mediciones de cierto fenómeno o experimento registradas secuencialmente en el tiempo. Estas observaciones suelen denotarse por: <span class="math display">\[
+\left\{ x_{t_1},x_{t_2},...,x_{t_n}\right\} \quad \text{con }%
+\{t_1&lt;t_2&lt;...&lt;t_n\}=\mathbb{T}\subset \Bbb{R}.
+\]</span> donde <span class="math inline">\(x_{t_i}\)</span> representa el valor, en el instante <span class="math inline">\(t_i\)</span>, de una variable aleatoria que evoluciona con el tiempo.</p>
 </div>
 <div class="callout callout-style-simple callout-none no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -289,13 +302,12 @@ window.Quarto = {
 </div>
 <p>En muchas áreas de conocimiento, las observaciones de interés son obtenidas en instantes sucesivos del tiempo. Por ejemplo, cada hora, cada día, datos mensuales, trimestrales, semestrales o bien registradas por algún aparato de medición en forma continua.</p>
 <ul>
-<li><p>De una manera sencilla, podemos decir que si <span class="math inline">\(\mathbb{T}\subset\Bbb{Z}\)</span> es un conjunto contable, se dice que la serie es de <strong>tiempo discreto</strong>, mientras que si <span class="math inline">\(T\subset\Bbb{R}\)</span> es un intervalo real, se dice que la serie es de <strong>tiempo continuo</strong>.</p></li>
-<li><p>Cuando <span class="math inline">\(t_{i+1}-t_i=k\)</span>, para todo <span class="math inline">\(i=1,...,n-1\)</span>, se dice que la serie es <strong>equiespaciada</strong>; en caso contrario será no equiespaciada.</p></li>
+<li><p>De una manera sencilla, podemos decir que si <span class="math inline">\(\mathbb{T}\subset\Bbb{Z}\)</span> es un conjunto contable, se dice que la serie es de <em>tiempo discreto</em>, mientras que si <span class="math inline">\(T\subset\Bbb{R}\)</span> es un intervalo real, se dice que la serie es de <em>tiempo continuo</em>.</p></li>
+<li><p>Cuando <span class="math inline">\(t_{i+1}-t_i=k\)</span>, para todo <span class="math inline">\(i=1,...,n-1\)</span>, se dice que la serie es <em>equiespaciada</em>; en caso contrario será no equiespaciada.</p></li>
 </ul>
-<p>En adelante, trabajaremos por comodidad con series de tiempo equiespaciadas. Por tanto, se denotarán de la siguiente forma:</p>
-<p><span class="math display">\[\left\{ x_{t_1},x_{t_2},...,x_{t_n}\right\} =\left\{ x_1,x_2,...,x_n\right\}.\]</span></p>
+<p>En adelante, trabajaremos por comodidad con series de tiempo equiespaciadas. Por tanto, se denotarán de la siguiente forma: <span class="math display">\[\left\{ x_{t_1},x_{t_2},...,x_{t_n}\right\} =\left\{ x_1,x_2,...,x_n\right\}. \]</span></p>
 <p>El primer paso en el análisis de cualquier serie de tiempo consiste en representarla gráficamente (<strong>gráfico temporal</strong>). En la representación gráfica de las series temporales se utilizan los ejes cartesianos. En el eje de abscisas se representa el tiempo <span class="math inline">\(t,\)</span> y en el eje de ordenadas, los valores de la magnitud observada <span class="math inline">\(x_t\)</span>. Se obtiene así una nube de puntos <span class="math inline">\((t,x_t)\)</span> que, unidos por segmentos, proporcionan una visión dinámica de la evolución de la variable a lo largo del tiempo.</p>
-<p>Veamos algunos ejemplos de series de datos incluidos en <em>R</em>. La primera, LakeHuron, contiene las medidas anuales del nivel del lago Huron (en pies), en el tramo 1875-1972. Observamos una tendencia decreciente que parece estabilizarse en el tramo final. La segunda serie de datos, AirPassengers, contiene el los viajeros mensuales en aerolíneas internacionales, en el tramo 1949-1960. Observamos un patrón periódico que se repite a lo largo de la serie, así como tendencia creciente. La tercera, EuStockMarkets, contiene los precios diarios al cierre de 4 índices stock europeos (DAX, SMI, CAC y FTSE), en el tramo 1991-1998. Observamos que las cuatro series presentan un patrón de comportamiento similar, con tendencia creciente y picos de crecimiento en los mismos tramos temporales.</p>
+<p>Veamos algunos ejemplos de series de datos incluidos en R. La primera, LakeHuron, contiene las medidas anuales del nivel del lago Huron (en pies), en el tramo 1875-1972. Observamos una tendencia decreciente que parece estabilizarse en el tramo final. La segunda serie de datos, AirPassengers, contiene el los viajeros mensuales en aerolíneas internacionales, en el tramo 1949-1960. Observamos un patrón periódico que se repite a lo largo de la serie, así como tendencia creciente. La tercera, EuStockMarkets, contiene los precios diarios al cierre de 4 índices stock europeos (DAX, SMI, CAC y FTSE), en el tramo 1991-1998. Observamos que las cuatro series presentan un patrón de comportamiento similar, con tendencia creciente y picos de crecimiento en los mismos tramos temporales.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ts.plot</span>(LakeHuron, </span>
@@ -329,581 +341,644 @@ window.Quarto = {
 </div>
 </div>
 <p>El gráfico de la serie permitirá:</p>
-<ol type="a">
-<li><p><strong>Detectar outliers (datos atípicos):</strong> se refiere a puntos de la serie que se escapan de lo “normal”. Un outlier puede corresponderse con un error de medición, o bien con un valor real del fenómeno, el cual a su vez puede tener o no influencia destacada en el modelo propuesto. Conviene identificar los outliers para determinar si deben eliminarse, reemplazarse por otro valor, o bien mantenerlos en el análisis.</p></li>
-<li><p><strong>Detectar estacionalidad:</strong> la variación estacional representa un movimiento periódico de la serie de tiempo. Cada estación puede corresponder con un trimestre, un mes, un día, etc.</p></li>
-<li><p><strong>Detectar tendencias:</strong> la tendencia representa el comportamiento predominante de la serie una vez eliminada la estacionalidad. Esta puede ser definida vagamente como la curva maestra que muestra el cambio de la media a lo largo del tiempo.</p></li>
-</ol>
+<p><em>a) Detectar outliers (datos atípicos):</em> se refiere a puntos de la serie que se escapan de lo “normal”. Un outlier puede corresponderse con un error de medición, o bien con un valor real del fenómeno, el cual a su vez puede tener o no influencia destacada en el modelo propuesto. Conviene identificar los outliers para determinar si deben eliminarse, reemplazarse por otro valor, o bien mantenerlos en el análisis.</p>
+<p><em>b) Detectar estacionalidad:</em> la variación estacional representa un movimiento periódico de la serie de tiempo. Cada estación puede corresponder con un trimestre, un mes, un día, etc.</p>
+<p><em>c) Detectar tendencias:</em> la tendencia representa el comportamiento predominante de la serie una vez eliminada la estacionalidad. Esta puede ser definida vagamente como la curva maestra que muestra el cambio de la media a lo largo del tiempo.</p>
 </section>
 <section id="medidas-para-evaluación-de-predicciones" class="level2" data-number="5.3">
 <h2 data-number="5.3" class="anchored" data-anchor-id="medidas-para-evaluación-de-predicciones"><span class="header-section-number">5.3</span> Medidas para evaluación de predicciones</h2>
 <p>En esta sección introduciremos conceptos y alguna notación referidos al contexto de predicción con series temporales.</p>
 <p>En primer lugar, debemos destacar que para que tenga sentido la realización de predicciones se supondrá que los datos recopilados a lo largo del tiempo se han tomado siempre en las mismas magnitudes y que la serie presenta cierta estabilidad en la estructura del fenómeno estudiado.</p>
-<p>En el análisis clásico, las predicciones futuras se realizan teniendo en cuenta únicamente el valor de la serie para instantes pasados. Si diponemos de <span class="math inline">\(T\)</span> observaciones de la serie en estudio, la información disponible viene dada por:</p>
-<p><span class="math display">\[x_1,x_2,...,x_T. \]</span></p>
-<p>Dada esta información, la <strong>predicción</strong> de la variable en estudio en el instante siguiente <span class="math inline">\(T+1\)</span> se denotará por: [ <em>{T+1} ] y en un instante posterior cualquiera</em> <span class="math inline">\(T+m\)</span> será: [ ]</p>
-<p>Así, el vendrá dado por la diferencia entre el valor observado de la serie y la predicción: [ e_{T+1}=x_{T+1}-_{T+1} ]</p>
+<p>En el análisis clásico, las predicciones futuras se realizan teniendo en cuenta únicamente el valor de la serie para instantes pasados. Si diponemos de <span class="math inline">\(T\)</span> observaciones de la serie en estudio, la información disponible viene dada por: <span class="math display">\[x_1,x_2,...,x_T. \]</span> Dada esta información, la <strong>predicción</strong> de la variable en estudio en el instante siguiente <span class="math inline">\(T+1\)</span> se denotará por: <span class="math display">\[\hat{x}_{T+1|T}. \]</span> y en un instante posterior cualquiera <span class="math inline">\(T+m\)</span>, con <span class="math inline">\(m&gt;0\)</span>, será: <span class="math display">\[\hat{x}_{T+m|T}. \]</span></p>
+<p>Así, el <strong>error de predicción</strong> vendrá dado por la diferencia entre el valor observado de la serie y la predicción: <span class="math display">\[e_{T+m|T}=x_{T+m|T}-\hat{x}_{T+m|T}.\]</span></p>
 <p>Comentar que, al igual que sucede en muchos procesos de inferencia, se pueden realizar predicciones puntuales y predicciones por intervalos de confianza para las observaciones futuras. En la mayoría de los casos, nos limitaremos a proporcionar estimaciones puntuales.</p>
 <p>Para poder comparar diversos procedimientos de predicción, es decir, para responder a la pregunta ¿qué método es mejor para predecir esta serie?, necesitamos disponer de algún criterio que nos permita evaluar las predicciones realizadas.</p>
 <p>Como primer paso, podemos comentar la existencia de algunos métodos extremadamente básicos, denominados métodos ingenuos, que sirven de referencia en la comparación de predicciones. Es decir, las predicciones que se obtienen con cualquier procedimiento suelen compararse con las predicciones que se obtendrían con algún método ingenuo. Si el método ingenuo proporciona mejores predicciones (menores errores de predicción), esto será indicativo de que el método usado no es el adecuado y conviene probar con otro.</p>
 <p>Dos ejemplos de métodos ingenuos que se utilizan como referencia son:</p>
-<p>Como segunda opción para medir la capacidad predictiva de un modelo, se suelen calcular las siguientes medidas. Si se dispone de <span class="math inline">\(T\)</span> observaciones y se han realizado predicciones desde el instante 1, las medidas son:</p>
-<p>Evidentemente, cuanto menores sean estas medidas mayor será la capacidad predictiva del modelo. Conviene indicar la existencia de otras medidas para evaluar predicciones, además de las vistas aquí.</p>
+<ul>
+<li><p><em>Método ingenuo I</em>: La predicción para el próximo instante es igual a la observación actual (último valor observado). <span class="math display">\[
+\hat{x}_{t+1|t}=x_t.
+\]</span></p></li>
+<li><p><em>Método ingenuo II</em>: La predicción para el próximo instante es igual a la observación actual más el último incremento observado. <span class="math display">\[
+\hat{x}_{t+1|t}=x_t+(x_t-x_{t-1}).
+\]</span></p></li>
+</ul>
+<p>Como segunda opción para medir la capacidad predictiva de un modelo, se suelen calcular las siguientes medidas. Si se dispone de <span class="math inline">\(N\)</span> observaciones <span class="math display">\[
+x_{T+m|T},\qquad m=1,2,\ldots,N
+\]</span> y se han realizado predicciones desde el instante <span class="math inline">\(T\)</span>, <span class="math display">\[
+\hat{x}_{T+m|T},\qquad m=1,2,\ldots,N,
+\]</span> con errores <span class="math display">\[
+e_{T+m|T}=x_{T+m|T}-\hat{x}_{T+m|T},\qquad m=1,2,\ldots,N,
+\]</span> las medidas son:</p>
+<ul>
+<li><p><em>RMSE (la raíz cuadrada del error cuadrático medio):</em><br>
+<span class="math display">\[
+RMSE=\sqrt{\frac{\sum\limits_{m=1}^N e_{T+m|T}^2}{N}},
+\]</span></p></li>
+<li><p><em>MAE (el error absoluto medio):</em><br>
+<span class="math display">\[
+MAE=\frac{\sum\limits_{m=1}^T\left| e_{T+m|T}\right| }{N}
+\]</span></p></li>
+</ul>
+<p>Ambas medidas se expresan en las unidades de la variable. El RMSE penaliza especialmente los errores de gran magnitud por el uso de cuadrados.</p>
+<p>Valores menores indican mejor precisión según la medida elegida cuando se comparan los mismos datos, escala y horizontes. Para comparar los métodos de predicción deben utilizarse predicciones genuinas sobre observaciones no usadas para calcularlas.</p>
+<p>Conviene indicar la existencia de otras medidas para evaluar predicciones, además de las vistas aquí.</p>
 <p>Por último destacaremos que para que un modelo predictivo sea adecuado no basta con que los errores de predicción sean pequeños (valores pequeños de RMSE y de MAE), sino que además pretendemos describir completamente el comportamiento sistemático de la serie (la parte determinista), de manera que la parte que queda sin describir (los errores de predicción) deberían ser un ruido blanco.</p>
-<!-- ## Procesos de conteo -->
-<!-- En este capítulo vamos a ver un tipo de procesos estocásticos que son utilizados para contar la ocurrencia en el tiempo o el espacio de cierto evento aleatorio. Se trata de los procesos de Poisson y, más en general, los procesos de conteo. Este tipo de procesos pueden usarse para contar las llegadas de clientes a una tienda, apariciones de defectos en una línea de producción, las solicitudes individuales a un servidor de internet, el paso de coches por un tramo de carretera, las llegadas de emails a la bandeja de entrada, las ocurrencias de cierto tipo de delito en una gran ciudad, etc. -->
-<!-- <div> -->
-<!-- ### Proceso de conteo -->
-<!-- Un proceso estocástico en tiempo continuo $(N_t)_{t\in [0,\infty)}$ se dice que es un **proceso de conteo** si se verifica: -->
-<!-- 1.  $N_t\ge 0$. -->
-<!-- 2.  $N_t$ toma valores enteros. -->
-<!-- 3.  Si $s<t$ entonces $N_s\le N_t$. -->
-<!-- </div> -->
-<!-- En particular, son procesos estocásticos de tiempo continuo y estado discreto. El valor $N_t$ se interpreta como el número de veces que ocurre el evento aleatorio en estudio durante el intervalo de tiempo $[0,t]$. En particular, si $s<t$, entonces $N_t-N_s$ representa el número de veces que ocurre el evento aleatorio durante el intervalo de tiempo $(s,t]$. Para fijar ideas, vamos a considerar que estamos contando las llegadas de clientes a un establecimiento. Por ejemplo, si $N_1=4$ tendremos que han llegado 4 clientes durante el intervalo de tiempo $[0,1]$. Si $N_2-N_1=3$, tendremos que han llegado 3 clientes durante el intervalo de tiempo $(1,2]$. El tiempo podría medirse por ejemplo en horas. -->
-<!-- ```{r, echo=FALSE, fig.cap="Trayectoria de un proceso de conteo. En cada tiempo $t$, $N_t$ representa el número de llegadas ocurridas en el intervalo [0,t]", fig.align='center', out.width="70%"} -->
-<!-- # Fijemos los valores de los parámetros -->
-<!-- lambda <- 2  # tasa (llegadas por unidad de tiempo) -->
-<!-- T <- 10      # Intervalo de tiempo en el que observamos el proceso -->
-<!-- # Simulación de los tiempos entre llegadas -->
-<!-- set.seed(123) -->
-<!-- t <- NULL -->
-<!-- i <- 1 -->
-<!-- while(sum(t) < T){ -->
-<!--     t[i] <- rexp(n = 1, rate = lambda) -->
-<!--     i <- i+1 -->
-<!-- } -->
-<!-- tiempos <- c(0,cumsum(t)) -->
-<!-- N <- 0:length(t) -->
-<!-- # Dibujamos la trayectoria -->
-<!-- plot(tiempos, N, type = "s",  -->
-<!--      xlab = "Tiempo", ylab = "Llegadas") -->
-<!-- ``` -->
-<!-- ::: {#def-incIndependientes} -->
-<!-- Un proceso estocástico $(X_t)_{t\in[0,\infty)}$ se dice que tiene **incrementos independientes** si para toda sucesión de tiempos $0\le t_1<t_2<\ldots< t_n$ las variables aleatorias -->
-<!-- $$ -->
-<!-- X_{t_2}-X_{t_1},\quad  -->
-<!-- X_{t_3}-X_{t_2},\quad -->
-<!-- \ldots,\quad -->
-<!-- X_{t_n}-X_{t_{n-1}},\quad -->
-<!-- $$ -->
-<!-- son independientes. -->
-<!-- ::: -->
-<!-- Un ejemplo de proceso con incrementos independientes es el movimiento Browniano. Para un proceso de conteo $(N_t)_{t\in [0,\infty)}$ con incrementos independientes contando las llegadas de clientes (o cualquier otro evento aleatorio), se tendrá que los números de llegadas en intervalos disjuntos -->
-<!-- $$ -->
-<!-- (t_1,t_2],\quad (t_2,t_3],\quad \ldots,\quad (t_{n-1},t_n] -->
-<!-- $$ -->
-<!-- son independientes. -->
-<!-- Supongamos que queremos calcular la probabilidad de que haya 2 llegadas en el intervalo $(1,2]$ y 3 llegadas en el intervalo $(2,3]$. Como los intervalos $(1,2]$ y $(2,3]$ son disjuntos, tendremos -->
-<!-- $$ -->
-<!-- \mathbb{P}\Big(\mbox{ 2 llegadas en }(1,2]\mbox{ y 3 llegadas en }(2,3]\Big)= -->
-<!-- \mathbb{P}\Big(\mbox{ 2 llegadas en }(1,2]\Big)\cdot\mathbb{P}\Big(\mbox{ 2 llegadas en }(2,3]\Big). -->
-<!-- $$ -->
-<!-- ## Proceso de Poisson -->
-<!-- El proceso de conteo más usado es el proceso de Poisson. En esta sección veremos su definición y principales propiedades. Antes de introducir este concepto, necesitamos recordar la distribución de Poisson. -->
-<!-- ### Distribución de Poisson -->
-<!-- ::: {#def-distPoisson} -->
-<!-- Una variable aleatoria discreta $X$ se dice que tiene distribución de **Poisson** de parámetro $\lambda>0$ si toma valores en $\{0,1,2,3,\ldots\}$ y tiene función puntual de probabilidad -->
-<!-- $$ -->
-<!-- \mathbb{P}(X=k)=\frac{\lambda^k e^{-\lambda}}{k!}\quad\mbox{ para todo }k\in\{0,1,2,\ldots\}. -->
-<!-- $$ -->
-<!-- En ese caso escribimos $X\sim{\rm Poisson}(\lambda)$. -->
-<!-- ::: -->
-<!-- Algunas propiedades de la distribución de Poisson que conviene recordar son las siguientes. -->
-<!-- ::: {#prp-distPoisson} -->
-<!-- Supongamos que $X\sim{\rm Poisson}(\lambda)$. Entonces $\mathbb{E}(X)=\lambda$ y ${\rm Var}(X)=\lambda$. -->
-<!-- ::: -->
-<!-- La suma de variables Poisson independientes es Poisson. Más concretamente, tenemos lo siguiente. -->
-<!-- ::: {#prp-sumPoisson} -->
-<!-- Supongamos que $X_1,X_2,\ldots,..,X_n$ son variables aleatorias independientes con $X_i\sim{\rm Poisson}(\lambda_i)$. Entonces $$ -->
-<!-- X_1+X_2+\ldots+X_n\sim{\rm Poisson}(\lambda_1+\lambda_2+\ldots+\lambda_n). -->
-<!-- $$ -->
-<!-- ::: -->
-<!-- Las variables Poisson pueden ser interpretadas como el límite en distribución de variables aleatorias binomiales. Más específicamente tenemos lo siguiente. -->
-<!-- ::: {#prp-limitBin} -->
-<!-- Consideremos una sucesión de variables aleatorias $Y_1,Y_2,\ldots$, donde $Y_n\sim{\rm Binomial}(n,p_n)$ con $p_n=\lambda/n$ para cierto $\lambda>0$. Entonces la función puntual de probabilidad de $Y_n$ converge a la función puntual de probabilidad de una variable ${\rm Poisson}(\lambda)$, es decir, -->
-<!-- $$ -->
-<!-- \lim_{n\to\infty}\mathbb{P}(Y_n=k)=\frac{\lambda^k e^{-\lambda}}{k!}\quad\mbox{ para todo }k\in\{0,1,2,\ldots\}. -->
-<!-- $$ -->
-<!-- ::: -->
-<!-- **Demostración.** -->
-<!-- Fijado $k\in\{0,1,2,\ldots\}$, como $Y_n\sim{\rm Binomial}(n,p_n)$, tenemos -->
-<!-- $$ -->
-<!-- \begin{aligned} -->
-<!-- \mathbb{P}(Y_n=k)&=\binom{n}{k} p_n^k (1-p_n)^{n-k}\\ -->
-<!-- &=\frac{n!}{(n-k)!k!} \left(\frac{\lambda}{n}\right)^k \left(1-\frac{\lambda}{n}\right)^{n-k}\\ -->
-<!-- &=\frac{n!}{(n-k)!k!} \left(\frac{\lambda}{n}\right)^k \left(1-\frac{\lambda}{n}\right)^{n}\left(1-\frac{\lambda}{n}\right)^{-k}\\ -->
-<!-- &=\frac{n!}{(n-k)! n^k}\frac{\lambda^k}{k!} \left(1-\frac{\lambda}{n}\right)^{n}\left(1-\frac{\lambda}{n}\right)^{-k}. -->
-<!-- \end{aligned} -->
-<!-- $$ {#eq-Poisson} -->
-<!-- Por otro lado, observamos que -->
-<!-- $$ -->
-<!-- \lim_{n\to\infty}\left(1-\frac{\lambda}{n}\right)^{n}=e^{-\lambda}, -->
-<!-- $$ -->
-<!-- $$ -->
-<!-- \lim_{n\to\infty}\left(1-\frac{\lambda}{n}\right)^{-k}=1, -->
-<!-- $$ -->
-<!-- $$ -->
-<!-- \begin{aligned} -->
-<!-- \lim_{n\to\infty}\frac{n!}{(n-k)! n^k}&=\lim_{n\to\infty}\left(\frac{n}{n}\cdot\frac{n-1}{n}\cdot\frac{n-2}{n}\cdot\ldots \cdot\frac{n-(k-1)}{n}\right)\\ -->
-<!-- &=\lim_{n\to\infty}\left(1\cdot\left(1-\frac{1}{n}\right)\cdot\left(1-\frac{2}{n}\right)\cdot\ldots \cdot\left(1-\frac{k-1}{n}\right)\right)=1, -->
-<!-- \end{aligned} -->
-<!-- $$ -->
-<!-- donde para calcular el último límite hemos usado que tenemos un número constante $k$ de factores que convergen a $1$. -->
-<!-- Tomando límites cuando $n\to\infty$ en @eq-Poisson teniendo en cuenta las anteriores igualdades, obtenemos el resultado deseado.\hfill$\square$ -->
-<!-- ### Definición de proceso de Poisson -->
-<!-- El proceso de Poisson se usa para contar la ocurrencia de un evento aleatorio cuyas observaciones se dan en el tiempo con una frecuencia promedio constante $\lambda$. Por ejemplo, supongamos que mediante la observación se llega a la conclusión de que a un establecimiento llegan, de media, 5 clientes por hora. Puesto que las llegadas son aleatorias, cada hora llegará un número de clientes que no tiene por qué ser exactamente igual a 5; sin embargo, dicha cifra se verificará en promedio al avanzar el tiempo. -->
-<!-- ::: {#def-Poisson} -->
-<!-- ### Proceso de Poisson -->
-<!-- Un proceso de conteo $(N_t)_{t\in [0,\infty)}$ se dice que es un \textbf{proceso de Poisson} con tasa $\lambda>0$ si se verifican las siguientes condiciones: -->
-<!-- 1.  $N_0=0$, -->
-<!-- 2.  $N_t$ tiene incrementos independientes, -->
-<!-- 3.  Para cada $t,s\ge 0$ se verifica que $N_{t+s}-N_s\sim {\rm Poisson}(\lambda t)$. -->
-<!-- ::: -->
-<!-- Para justificar la definición anterior pensemos en los clientes que llegan al establecimiento. Supongamos que llegan de media $\lambda$ clientes por hora. Sea $N_t$ el número de clientes que han llegado a la tienda tras $t$ horas. Queremos encontrar qué distribución debería seguir la variable aleatoria $N_t$. -->
-<!-- Para simplificar el problema, vamos a suponer en primer lugar que, dado $n\in\mathbb{N}$, los clientes van llegando en instantes de tiempo equiespaciados -->
-<!-- $$ -->
-<!-- 0<\frac{t}{n}<\frac{2t}{n}<\frac{3t}{n}<\ldots< t, -->
-<!-- $$ -->
-<!-- de forma que al final de cada intervalo $\left(\frac{kt}{n},\frac{(k+1)t}{n}\right]$ podrá llegar un solo cliente con probabilidad $p$, o no llegará ninguno con probabilidad $1-p$. Además, consideramos que la llegada o no de un cliente en cada intervalo ocurre de forma independiente de lo que haya pasado en los intervalos anteriores. -->
-<!-- Bajo estos supuestos, tenemos que el número total $N_t$ de clientes llegados en el intervalo de tiempo $[0,t]$ sigue una distribución ${\rm Binomial}(n,p)$. En particular, como llegan de media $\lambda$ clientes por hora, tendremos que -->
-<!-- $$ -->
-<!-- \lambda t=\mathbb{E}(N_t)=n p. -->
-<!-- $$ -->
-<!-- Necesariamente, se tiene que verificar que $p=\lambda t/n$. De esta manera obtenemos la probabilidad de llegada de un cliente en cada intervalo, la cual depende del número de subdivisiones $n$ en el que dividimos el intervalo de tiempo. -->
-<!-- Para pasar a tiempo continuo, tomemos límites cuando $n\to\infty$. De este modo, como consecuencia de la Proposición @prp-limitBin, obtenemos que -->
-<!-- $$ -->
-<!-- \mathbb{P}(N_t=k)=\frac{(t\lambda)^k e^{-\lambda t}}{k!},\quad k\in\{0,1,2,\ldots\}. -->
-<!-- $$ -->
-<!-- Concluimos que $N_t$ sigue una distribución ${\rm Poisson}(\lambda t)$, lo cual justifica el punto 3 de la definición de Proceso de Poisson. -->
-<!-- Es lógico considerar que los clientes que llegan en dos intervalos de tiempo disjuntos sean independientes, por lo que el proceso de conteo correspondiente debería tener incrementos independientes. Por lo cual, la condición 2 de la definición anterior es natural. -->
-<!-- Como hemos observado arriba tenemos que $\mathbb{E}(N_t)=\lambda t$, lo cual es también consecuencia de la condición 3. En particular, la tasa $\lambda$ de un proceso de Poisson nos informa del número medio de llegadas por unidad de tiempo. -->
-<!-- ::: callout -->
-<!-- ### Ejemplo -->
-<!-- A una gasolinera llegan de media 10 coches por hora. Supongamos que la llegada de coches a la gasolinera sigue un proceso de Poisson. Calcula: -->
-<!-- 1.  Probabilidad de que lleguen 2 coches entre las 9:00 y las 9:20. -->
-<!-- 2.  Probabilidad de que lleguen 3 coches entre las 9:00 y las 9:20 y 7 -->
-<!-- coches entre 10:20 y las 11:00. -->
-<!-- **Solución:** Consideramos el proceso $(N_t)_{t\ge 0}$ de conteo de coches tras $t$ horas. Como llegan una media de 10 coches por hora, tendremos que $\lambda=10$. -->
-<!-- 1.  Sea $X=\mbox{``Núm. de coches entre las 9:00 y las 9:20''}$. Debido a la condición 3 de la definición de proceso de Poisson, tenemos que $X\sim {\rm Poisson}(10/3)$ ya que entre las 9:00 y las 9:20 ha pasado 1/3 de hora. Por tanto, -->
-<!-- $$ -->
-<!-- \mathbb{P}(X=2)=\frac{e^{-10/3}\cdot (10/3)^2}{2!}=0.1982. -->
-<!-- $$ -->
-<!-- Alternativamente, podemos usar el siguiente código en *R* para calcular el resultado anterior mediante la función puntual de probabilidad de la Poisson: -->
-<!-- ```{r} -->
-<!-- t <- 1/3 -->
-<!-- lambda <- 10 -->
-<!-- # Evaluamos la función puntual de probabilidad de la Poisson -->
-<!-- dpois(2, t*lambda) -->
-<!-- ``` -->
-<!-- 2.  Sea $Y=\mbox{``Núm. de coches entre las 10:20 y las 11:00''}$. Tenemos que $Y\sim {\rm Poisson}(20/3)$ y, además, $X,Y$ son independientes. Entonces, -->
-<!-- ```{=tex} -->
-<!-- \begin{align*} -->
-<!-- \mathbb{P}(X=3,Y=7)&=\mathbb{P}(X=3)\mathbb{P}(Y=7)\\ -->
-<!-- &=\frac{e^{-10/3}\cdot (10/3)^3}{3!} \frac{e^{-20/3}\cdot (20/3)^7}{7!}=0.0325. -->
-<!-- \end{align*} -->
-<!-- ``` -->
-<!-- Alternativamente, podemos usar el siguiente código de *R* para calcular el resultado anterior: -->
-<!-- ```{r} -->
-<!-- t <- 1/3 -->
-<!-- s <- 2/3 -->
-<!-- lambda <- 10 -->
-<!-- # Evaluamos la función puntual de probabilidad de la Poisson -->
-<!-- dpois(3, t*lambda)*dpois(7, s*lambda) -->
-<!-- ``` -->
-<!-- ::: -->
-<!-- ## Tiempos de ocurrencia (llegada) en un Proceso de Poisson -->
-<!-- Hemos visto que los procesos de Poisson surgen de manera natural cuando se trata de contar las llegadas de clientes a un establecimiento. En esta sección vamos a estudiar qué distribución de probabilidad sigue el tiempo aleatorio que pasa entre la llegada de dos clientes consecutivos. -->
-<!-- ### Distribución exponencial -->
-<!-- Recordemos que una variable aleatoria continua $\tau$ tiene distribución exponencial de parámetro $\lambda>0$, en cuyo caso escribimos $\tau\sim {\rm Exp}(\lambda)$, si toma valores reales positivos y tiene función de densidad -->
-<!-- $$ -->
-<!-- f(t)=\lambda e^{-\lambda t},\quad t>0. -->
-<!-- $$ -->
-<!-- Recordemos además que si $\tau\sim{\rm Exp}(\lambda)$, entonces la función de distribución de $\tau$ es $F(t)=1-e^{-\lambda t}$. -->
-<!-- En particular, -->
-<!-- $$ -->
-<!-- \mathbb{P}(\tau>t)=1-F(t)=e^{-\lambda t}. -->
-<!-- $$ -->
-<!-- Las variables exponenciales suelen interpretarse como el tiempo de espera para la observación de un evento aleatorio. Por ejemplo, la llegada del primer cliente a una tienda, el tiempo de fallo de un sistema, el tiempo de quiebra de una entidad financiera, tiempo en el que una acción alcanza un determinado nivel, etc. -->
-<!-- ::: {#prp-espExp} -->
-<!-- Si $\tau\sim{\rm Exp}(\lambda)$, entonces -->
-<!-- $$ -->
-<!-- \mathbb{E}(\tau)=\frac{1}{\lambda},\quad {\rm Var}(\tau)=\frac{1}{\lambda^2}. -->
-<!-- $$ -->
-<!-- ::: -->
-<!-- Si pensamos en la llegada del primer cliente a un establecimiento, la proposición anterior nos dice que el tiempo medio que esperaremos en observar llegar dicho cliente será $1/\lambda$. -->
-<!-- Por otro lado, tendremos que $\mathbb{P}(\tau\le t)$ es la probabilidad que el primer cliente llegue en algún instante del intervalo de tiempo $[0,t]$. Por tanto, $\mathbb{P}(\tau>t)$ es la probabilidad de que ningún cliente llegue durante el intervalo de tiempo $[0,t]$. -->
-<!-- Una importante propiedad de las variables exponenciales es que no tienen memoria, es decir, tenemos lo siguiente. -->
-<!-- <div> -->
-<!-- ### Falta de memoria -->
-<!-- Si $\tau\sim {\rm Exp}(\lambda)$, entonces -->
-<!-- $$ -->
-<!-- \mathbb{P}(\tau>s)=\mathbb{P}(\tau>t+s|\tau>t) -->
-<!-- $$ para todo $t,s>0$. -->
-<!-- </div> -->
-<!-- La anterior propiedad, conocida como **falta de memoria** de la distribución exponencial, quiere decir que la probabilidad de que en el intervalo de tiempo $[0,s]$ no haya ninguna llegada, es igual a la probabilidad de que en el intervalo de tiempo $[t,t+s]$ de igual longitud no haya ninguna llegada si en el intervalo de tiempo previo $[0,t]$ no ha habido llegadas, es decir, -->
-<!-- $$ -->
-<!-- \mathbb{P}\left(\text{no hay llegadas en }[0,s]\right)= -->
-<!-- \mathbb{P}\left(\text{no hay llegadas en }[t,t+s]|\text{no hay llegadas en }[0,t] \right). -->
-<!-- $$ -->
-<!-- Por ejemplo, si en 30 minutos no ha llegado ningún cliente a la tienda, la probabilidad de esperar 10 minutos más y no ver ningún cliente es la misma que si no hubiéramos esperado los 30 minutos iniciales. -->
-<!-- ### Modelización de tiempos de llegada y entre llegadas consecutivas -->
-<!-- El siguiente resultado, para el cual no damos la demostración, caracteriza a los procesos de Poisson en términos de tiempos de espera exponenciales. -->
-<!-- ::: {#thm-espExp} -->
-<!-- ### Caracterización proceso de Poisson -->
-<!-- Un proceso estocástico $(N_{t})_{t\in[0,\infty)}$ es un proceso de Poisson con tasa $\lambda$ si y sólo si existe una sucesión $\tau_1,\tau_2,\tau_3,\ldots$ de variables aleatorias independientes con distribución ${\rm Exp}(\lambda)$ tal que -->
-<!-- $$ -->
-<!-- N_t=\max\{n\colon \tau_1+\tau_2+\ldots+\tau_n\le t\}. -->
-<!-- $$ {#eq-tiemposEsp} -->
-<!-- ::: -->
-<!-- Podemos pensar en $\tau_i$ como el tiempo de espera entre las llegadas, es decir, $\tau_1$ es el tiempo transcurrido hasta la primera llegada, $\tau_2$ es el tiempo trascurrido entre la primera y la segunda llegada, $\tau_3$ es el tiempo entre la segunda y la tercera llegada, etc. De esta manera, $T_n=\tau_1+\tau_2+\ldots+\tau_n$ es el tiempo transcurrido hasta la n-ésima llegada. En particular, la condición (@eq-tiemposEsp) puede ser reescrita como -->
-<!-- $$ -->
-<!-- N_t=\max\{n\colon T_n\le t\}. -->
-<!-- $$ -->
-<!-- Si, por ejemplo, $N_t=4$, la condición anterior nos dice que -->
-<!-- $$ -->
-<!-- T_4 \le t < T_5. -->
-<!-- $$ -->
-<!-- En términos de llegadas, tenemos que en el instante $t$ habrán llegado los cuatro primeros clientes, pero no el quinto. -->
-<!-- Recordemos que $\lambda$ era el promedio de llegadas por unidad de tiempo. Por otro lado, como $\mathbb{E}(\tau)=1/\lambda$, tendremos que esperar de media $1/\lambda$ unidades de tiempo entre cada dos llegadas sucesivas. -->
-<!-- ::: callout -->
-<!-- ### Ejemplo -->
-<!-- A la bandeja de entrada de mi email llegan de media 2 emails por hora (o un email cada media hora). Supongamos que abro el correo a las 8:00 am. Calcula: -->
-<!-- 1.  La probabilidad de que el primer email llegue más tarde de las 8:30. -->
-<!-- 2.  La probabilidad de que el primer email llegue más tarde de las 11:00 si no ha llegado ningún correo hasta las 9:00. -->
-<!-- **Solución:** Consideremos los tiempos $\tau_1,\tau_2,\tau_3,\ldots$ entre llegadas de emails, medidos en horas. -->
-<!-- 1.  Tenemos que $\tau_1\sim {\rm Exp}(2)$, luego -->
-<!-- $$ -->
-<!-- \mathbb{P}(\tau_1>0.5)=e^{-2\cdot 0.5}=0.3679. -->
-<!-- $$ -->
-<!-- Alternativamente, podemos usar *R* para calcular la probabilidad anterior mediante la función de distribución de la exponencial: -->
-<!-- ```{r} -->
-<!-- lambda <- 2 -->
-<!-- # Evaluamos la función de distribución de la exponencial -->
-<!-- 1-pexp(0.5, lambda) -->
-<!-- ``` -->
-<!-- 2.  Usando que $\tau_1$ no tiene memoria -->
-<!-- $$ -->
-<!-- \mathbb{P}(\tau_1>3|\tau_1>1)=\mathbb{P}(\tau_1>2)=e^{-2\cdot 2}= 0.0183. -->
-<!-- $$ -->
-<!-- Alternativamente, podemos usar *R* para calcular la probabilidad anterior. -->
-<!-- ```{r} -->
-<!-- lambda <- 2 -->
-<!-- 1 - pexp(2, lambda) -->
-<!-- ``` -->
-<!-- ::: -->
-<!-- Recordemos que una variable aleatoria continua $T$ tiene **distribución gamma**, en cuyo caso escribimos $T\sim \Gamma(k,\lambda)$, si toma valores positivos y tiene función de densidad -->
-<!-- $$ -->
-<!-- f(t)=\frac{\lambda^k}{\Gamma(k)} t^{k-1} e^{-\lambda t},\quad t>0, -->
-<!-- $$ -->
-<!-- donde $\Gamma(k)$ es la función Gamma, la cual viene dada por $\Gamma(k)=(k-1)!$ cuando $k$ es entero. -->
-<!-- La distribución gamma se obtiene cuando sumamos variables independientes con distribución exponencial. Concretamente, tenemos lo siguiente. -->
-<!-- ::: {#prp-sumExp} -->
-<!-- Supongamos que $\tau_1,\tau_2,\tau_3,\ldots$ son variables independientes con distribución ${\rm Exp}(\lambda)$. Entonces se verifica que -->
-<!-- $$ -->
-<!-- T_n=\tau_1+\tau_2+\ldots+\tau_n\sim \Gamma(n,\lambda). -->
-<!-- $$ -->
-<!-- ::: -->
-<!-- La anterior propiedad es muy útil para calcular probabilidades relativas a tiempos de llegada, ya que nos da la distribución del tiempo de llegada $T_n$ del n-ésimo cliente. -->
-<!-- ::: callout -->
-<!-- ### Ejemplo -->
-<!-- Volviendo al ejemplo anterior. Calcula: -->
-<!-- 1.  La probabilidad de que el cuarto email llegue pasadas las 10:00 am. -->
-<!-- 2.  La probabilidad de que el cuarto email llegue más de 3 horas después del segundo email si el segundo email llega después de las 9:00 am. -->
-<!-- **Solución:** -->
-<!-- 1.  Como $T_4=\tau_1+\tau_2+\tau_3+\tau_4\sim\Gamma(n=4,\lambda=2)$, tenemos -->
-<!-- $$ -->
-<!--  \mathbb{P}(T_4>2)=\int_2^\infty \frac{2^4 t^3 e^{-2t}}{3!}{\rm d}t=\frac{8}{3}\int_2^\infty t^3 e^{-2t}{\rm d}t=0.4435, -->
-<!-- $$ -->
-<!-- donde la anterior integral puede ser calculada a mano mediante integración por partes, o con ayuda del ordenador. -->
-<!-- Alternativamente, usando *R* tenemos. -->
-<!-- ```{r} -->
-<!-- n <- 4 -->
-<!-- lambda <- 2 -->
-<!-- # Evaluamos la función de distribución de la distribución gamma -->
-<!-- 1 - pgamma(2, n, lambda) -->
-<!-- ``` -->
-<!-- 2.  Como $\tau_3,\tau_4$ son independientes de $\tau_2,\tau_1$, por ser las $\tau_i$ independientes entre sí, tenemos que -->
-<!-- $$ -->
-<!-- \begin{aligned} -->
-<!-- \mathbb{P}(\tau_3+\tau_4>3|\tau_1+\tau_2>1)&=\mathbb{P}(\tau_3+\tau_4>3)\\ -->
-<!-- &=\int_3^\infty 4 t e^{-2t} {\rm d}t=0.0173, -->
-<!-- \end{aligned} -->
-<!-- $$ -->
-<!-- donde hemos usado que $\tau_3+\tau_4\sim \Gamma(n=2,\lambda=2)$. Además, la anterior integral puede ser calculada a mano mediante integración por partes, o con ayuda del ordenador. -->
-<!-- Alternativamente, usando *R* tenemos. -->
-<!-- ```{r} -->
-<!-- n <- 2 -->
-<!-- lambda <- 2 -->
-<!-- 1 - pgamma(3, n, lambda) -->
-<!-- ``` -->
-<!-- ::: -->
-<!-- ### Simulación de procesos de Poisson -->
-<!-- Simular procesos de Poisson es sencillo usando los tiempos entre llegadas. Para ello basta simular los tiempos entre llegadas como variables aleatorias exponenciales independientes y contabilizar el número de llegadas ocurridas. -->
-<!-- Veamos un ejemplo en *R*: -->
-<!-- ```{r, echo=TRUE, fig.cap="Simulación de la trayectoria de un proceso de Poisson", fig.align='center', out.width="70%"} -->
-<!-- # Valores para simulación -->
-<!-- lambda <- 2  # tasa (llegadas por unidad de tiempo) -->
-<!-- T <- 10      # Intervalo de tiempo en el que observamos el proceso -->
-<!-- # Simulación de los tiempos entre llegadas -->
-<!-- set.seed(123) -->
-<!-- tau <- NULL -->
-<!-- i <- 1 -->
-<!-- while(sum(tau) < T){ -->
-<!--     tau[i] <- rexp(n = 1, rate = lambda) -->
-<!--     i <- i+1 -->
-<!-- } -->
-<!-- # Calculamos los valores  del proceso de Poisson -->
-<!-- tiempos <- c(0,cumsum(tau)) -->
-<!-- N <- 0:length(tau) -->
-<!-- # Dibujamos la trayectoria -->
-<!-- plot(tiempos, N, type = "s", -->
-<!--      xlab = "Tiempo", ylab = "Llegadas", xlim=c(0, 10)) -->
-<!-- ``` -->
-<!-- ## Transformaciones de procesos de Poisson -->
-<!-- En esta sección vamos a ver dos tipos de transformaciones de procesos de Poisson, la superposición y la separación. -->
-<!-- ### Superposición de procesos de Poisson independientes -->
-<!-- Consideremos dos procesos de Poisson $(N^1_t)_{t\in[0,\infty)}$ y $(N^2_t)_{t\in[0,\infty)}$ independientes con tasas $\lambda_1$ y $\lambda_2$, respectivamente. Consideremos el proceso $(N_t)_{t\in[0,\infty)}$ definido como -->
-<!-- $$ -->
-<!-- N_t=N^1_t+N^2_t\quad\mbox{ para todo }t\in[0,\infty). -->
-<!-- $$ -->
-<!-- Dados $t,s\ge 0$, se tiene que los incrementos -->
-<!-- $$ -->
-<!-- N_{t+s}^1-N_{s}^1\sim {\rm Poisson}(\lambda_1 t),\quad N_{t+s}^2-N_{s}^2\sim {\rm Poisson}(\lambda_2 t), -->
-<!-- $$ -->
-<!-- y son variables aleatorias independientes. Por tanto, debido a la Proposición @prp-sumPoisson tenemos que -->
-<!-- $$ -->
-<!-- N_{t+s}-N_t=(N^1_{t+s}-N^1_{s})+(N^2_{t+s}-N^2_{s}) -->
-<!-- $$ sigue una distribución ${\rm Poisson}((\lambda_1+\lambda_2) t)$. Es más, $N_0=N^1_0+N^2_0=0$, y el proceso $N_t$ tiene incrementos independientes (por tenerlos $N^1$ y $N^2$). Dado que se verifican todas las condiciones de la definición de proceso de Poisson, podemos concluir que el proceso $(N_t)_{t\in[0,\infty)}$ es de Poisson con tasa $\lambda_1+\lambda_2$. -->
-<!-- En general, tendremos lo siguiente. -->
-<!-- ::: {#thm-superposicion} -->
-<!-- ### Superposición -->
-<!-- Sean $(N_t^1),(N_t^2),\ldots,(N_t^m)$ procesos de Poisson independientes con tasas $\lambda_1,\lambda_2,\ldots,\lambda_m$, respectivamente. Sea además -->
-<!-- $$ -->
-<!-- N_t=N_t^1+N_t^2+\ldots+N_t^m\quad\mbox{ para todo }t\in[0,\infty). -->
-<!-- $$ -->
-<!-- Entonces el proceso $(N_t)_{t\in[0,\infty)}$ es un proceso de Poisson con tasa $\lambda_1+\lambda_2+\ldots+\lambda_m$. -->
-<!-- ::: -->
-<!-- A continuación simulamos en *R* la superposición de dos procesos de Poisson independientes: -->
-<!-- ```{r, echo=TRUE, fig.cap="Superposición de dos procesos de Poisson", fig.align='center', out.width="70%"} -->
-<!-- # Valores para simulación de los procesos -->
-<!-- lambda1 <- 2  # tasa del primer proceso de Poisson -->
-<!-- lambda2 <- 0.5  # tasa del segundo proceso de Poisson -->
-<!-- T <- 10      # Intervalo de tiempo en el que observamos el proceso -->
-<!-- # Simulación de los tiempos entre llegadas -->
-<!-- set.seed(123) -->
-<!-- tau1 <- NULL -->
-<!-- tau2 <- NULL -->
-<!-- i <- 1 -->
-<!-- while(sum(tau1) < T){ -->
-<!--   tau1[i] <- rexp(n = 1, rate = lambda1) -->
-<!--   i <- i+1 -->
-<!-- } -->
-<!-- i <- 1 -->
-<!-- while(sum(tau2) < T){ -->
-<!--   tau2[i] <- rexp(n = 1, rate = lambda2) -->
-<!--   i <- i+1 -->
-<!-- } -->
-<!-- # Definimos los timpos y los valores correspondientes del proceso de Poisson 1 -->
-<!-- tiempos1 <- c(0,cumsum(tau1)) -->
-<!-- N1 <- 0:length(tau1) -->
-<!-- # Definimos los tiempos y los valores correspondientes del proceso de Poisson 2 -->
-<!-- tiempos2 <- c(0,cumsum(tau2)) -->
-<!-- N2 <- 0:length(tau2) -->
-<!-- # Definimos los tiempos y los valores correspondientes del proceso superposición -->
-<!-- tiempos <- union(tiempos1, tiempos2) -->
-<!-- tiempos <- sort(tiempos) -->
-<!-- N <- 0:(length(tiempos)-1) -->
-<!-- # Dibujamos la trayectoria del proceso 1 -->
-<!-- plot(tiempos1, N1, type = "s", -->
-<!--      xlab = "Tiempo", ylab = "Llegadas", xlim = c(0,10), ylim=c(0, max(N))) -->
-<!-- # Dibujamos la trayectoria del proceso 2 -->
-<!-- lines(tiempos2, N2, type = "s", col="blue") -->
-<!-- # Dibujamos la trayectoria del proceso superposición -->
-<!-- lines(tiempos, N, type = "s", col="red") -->
-<!-- # Añadimos una leyenda -->
-<!-- legend(0, 25, legend=c("Proceso 1", "Proceso 2", "Superposición"), -->
-<!--        col=c("black", "blue", "red"), lty=c(1, 1, 1)) -->
-<!-- ``` -->
-<!-- ### Separación de procesos de Poisson -->
-<!-- Imaginemos una cafetería en los Pirineos donde los clientes, de España y de Francia, van llegando de acuerdo a un proceso de Poisson $(N_t)_{t\in[0,\infty)}$ con tasa de 10 clientes por hora. Supongamos además que el 60% de los clientes son españoles y el 40% de los clientes son franceses. De este manera, los clientes españoles tendrán su propio proceso de conteo $(N_t^1)_{t\in[0,\infty)}$ y, de la misma manera, los clientes franceses tendrán otro proceso de conteo $(N_t^2)_{t\in[0,\infty)}$. Nos preguntamos qué tipo de procesos son $(N_t^1)_{t\in[0,\infty)}$ y $(N_t^2)_{t\in[0,\infty)}$. -->
-<!-- En general, un proceso de Poisson $(N_t)_{t\in[0,\infty)}$ puede ser separado en dos procesos $(N_t^1)_{t\in[0,\infty)}$ y $(N_t^2)_{t\in[0,\infty)}$ contando llegadas de "tipo 1" y "tipo 2", de acuerdo a una sucesión $Y_1,Y_2,\ldots$ de variables aleatorias independientes entre sí, e independientes del proceso $(N_t)_{t\in [0,\infty)}$, tal que -->
-<!-- $$\mathbb{P}(Y_i=1)=p\quad\mbox{ y }\quad\mathbb{P}(Y_i=2)=1-p.$$ -->
-<!-- Intuitivamente, para cada llegada $i$, podemos pensar en la variable aleatoria $Y_i$ como un lanzamiento de moneda (no equilibrada si $p\neq 1/2$) realizado al producirse dicha llegada, de modo que si se obtiene cara (valor 1) se clasifica la llegada como de tipo 1, y si se obtiene cruz (valor 2) se clasifica la clasifica como de tipo 2. -->
-<!-- De esta manera, si $T_n=\tau_1+\tau_2+\ldots+\tau_n$ es el tiempo transcurrido hasta la n-ésima llegada, entonces los procesos $(N_t^1)_{t\in[0,\infty)}$ y $(N_t^2)_{t\in[0,\infty)}$ contando las llegadas de tipo 1 y las llegadas de tipo 2 hasta tiempo $t$ vendrán respectivamente dados por -->
-<!-- $$ -->
-<!-- N_t^1=\#\{n\colon Y_n=1,\:T_n\le t\},\quad N_t^2=\#\{n\colon Y_n=2,\:T_n\le t\}, -->
-<!-- $$ {#eq-sepPoi} -->
-<!-- donde \# denota el cardinal de un conjunto. -->
-<!-- Tenemos el siguiente resultado. -->
-<!-- ::: {#thm-separacion} -->
-<!-- ### Separación -->
-<!-- Sea $(N_t)_{t\in[0,\infty)}$ un proceso de Poisson con tasa $\lambda$. Consideremos que cada llegada es de tipo 1 con probabilidad $p$ o de tipo 2 con probabilidad $1-p$, independientemente de las demás llegadas y de $(N_t)_{t\in[0,\infty)}$. Entonces, los procesos $(N_t^1)_{t\in[0,\infty)}$ y $(N_t^2)_{t\in[0,\infty)}$ contando las llegadas de tipo 1 y las llegadas de tipo 2, respectivamente, verifican: -->
-<!-- 1.  $(N_t^1)_{t\in[0,\infty)}$ es un proceso de Poisson con tasa $\lambda p$. -->
-<!-- 2.  $(N_t^2)_{t\in[0,\infty)}$ es un proceso de Poisson con tasa $\lambda (1-p)$. -->
-<!-- 3.  $(N_t^1)_{t\in[0,\infty)}$ y $(N_t^2)_{t\in[0,\infty)}$ son procesos de Poisson independientes. -->
-<!-- ::: -->
-<!-- Volvamos al ejemplo de la cafetería en los Pirineos. Dijimos que llegan una media de 10 clientes por hora, por lo que el correspondiente proceso de Poisson $(N_t)_{t\in [0,\infty)}$ tendrá tasa $\lambda=10$. Al ser el 60% de los clientes que llegan españoles y el 40% franceses, tendremos que los clientes españoles llegarán a la cafetería siguiendo un proceso de Poisson con tasa $10\cdot 0.6=6$, y los clientes franceses llegarán a la cafetería siguiendo un proceso de Poisson con tasa $10\cdot 0.4=4$. -->
-<!-- A continuación simulamos en *R* la separación del proceso de clientes en españoles y franceses: -->
-<!-- ```{r, echo=TRUE, fig.cap="Separación del proceso de Poisson", fig.align='center', out.width="70%"} -->
-<!-- # Valores para simulación de los procesos -->
-<!-- lambda <- 10  # tasa del proceso de Poisson -->
-<!-- p <- 0.6  # tasa del segundo proceso de Poisson -->
-<!-- T <- 10      # Intervalo de tiempo en el que observamos el proceso -->
-<!-- # Simulación de los tiempos entre llegadas y tipos de llegadas -->
-<!-- set.seed(123) -->
-<!-- tau <- NULL -->
-<!-- y <- NULL -->
-<!-- i <- 1 -->
-<!-- while(sum(tau) < T){ -->
-<!--   tau[i] <- rexp(n = 1, rate = lambda1) -->
-<!--   y[i]=sample(c(1, 2), size = 1) -->
-<!--   i <- i+1 -->
-<!-- } -->
-<!-- # Definimos los tiempos y los valores de N -->
-<!-- tiempos <- c(0,cumsum(tau)) -->
-<!-- N <- 0:length(tau) -->
-<!-- # Definimos los valores del proceso de Poisson 1 -->
-<!-- N1 <- NULL -->
-<!-- N1[y==1] <- 1 -->
-<!-- N1[y==2] <- 0 -->
-<!-- N1 <- c(0, cumsum(N1)) -->
-<!-- # Definimos los valores del proceso de Poisson 1 -->
-<!-- N2 <- NULL -->
-<!-- N2[y==2] <- 1 -->
-<!-- N2[y==1] <- 0 -->
-<!-- N2 <- c(0, cumsum(N2)) -->
-<!-- # Dibujamos la trayectoria del proceso 1 -->
-<!-- plot(tiempos, N1, type = "s", -->
-<!--      xlab = "Tiempo", ylab = "Llegadas", xlim = c(0, 10), ylim=c(0, max(N))) -->
-<!-- # Dibujamos la trayectoria del proceso 2 -->
-<!-- lines(tiempos, N2, type = "s", col="blue") -->
-<!-- # Dibujamos la trayectoria del proceso original -->
-<!-- lines(tiempos, N, type = "s", col="red") -->
-<!-- # Añadimos una leyenda -->
-<!-- legend(0, 18, legend=c("Españoles", "Franceses", "Totales"), -->
-<!--        col=c("black", "blue", "red"), lty=c(1, 1, 1)) -->
-<!-- ``` -->
-<!-- ## Procesos de renovación -->
-<!-- Hemos visto anteriormente que los procesos de Poisson son caracterizados como el proceso de conteo cuando los tiempos entre llegadas vienen dados por una sucesión $\tau_1,\tau_2,\tau_3,\ldots$ de variables independientes y exponenciales con la misma tasa $\lambda$. Una generalización de los procesos de Poisson son los procesos de renovación donde los tiempos entre llegadas son independientes e idénticamente distribuidos, pero no necesariamente siguen una distribución exponencial. Dicho concepto es definido formalmente como sigue. -->
-<!-- ::: {#def-renovacion} -->
-<!-- ### Proceso de renovación -->
-<!-- Sean $\tau_1,\tau_2,\tau_3,\ldots$ variables aleatorias no negativas (es decir, $\tau_n\ge 0$), independientes, e idénticamente distribuidas, de modo que $\mathbb{P}(\tau_n=0)<1$ para todo $n$. Llamamos **proceso de renovación** con tiempos entre llegadas $\tau_1,\tau_2,\tau_3,\ldots$ al proceso estocástico $(N_t)_{t\in[0,\infty)}$ verificando $N_0=0$ y -->
-<!-- $$ -->
-<!-- N_t=\max\{n\colon T_n\le t\}, -->
-<!-- $$ {#eq-conteo} -->
-<!-- donde $T_n=\tau_1+\tau_2+\ldots+\tau_n$. -->
-<!-- ::: -->
-<!-- Al igual que con los procesos de Poisson interpretamos $\tau_1,\tau_2,\tau_3,\ldots$ como los tiempos entre llegadas, por lo que $T_n=\tau_1+\tau_3+\ldots+\tau_n$ es el tiempo de la n-ésima llegada. La condición (@eq-conteo) implica que si $N_t=n$, entonces -->
-<!-- $$ -->
-<!-- T_{n}\le t < T_{n+1}. -->
-<!-- $$ -->
-<!-- ::: callout -->
-<!-- ### Ejemplo -->
-<!-- Imaginemos una máquina que funciona durante un tiempo $\alpha$ y, tras fallar, tarda un tiempo $\beta$ en ser reparada. Si la máquina falla y es reparada reiteradas veces, obtendremos variables aleatorias independientes $\alpha_1,\beta_1,\alpha_2,\beta_2,\alpha_3,\beta_3,\ldots$ con los correspondientes tiempos de fallo y reparación. El tiempo total de cada ciclo donde la máquina empieza a funcionar, falla y es reparada viene dado por $\tau_i=\alpha_i+\beta_i$. Las variables $\tau_1,\tau_2,\tau_3,\ldots$ son i.i.d.. Podemos, por tanto, considerar el proceso de renovación $(N_t)_{t\in [0,\infty)}$ contando el número total de ciclos hasta tiempo $t$. -->
-<!-- ::: -->
-<!-- Una importante propiedad de los procesos de renovación es la siguiente versión de la ley de los grandes números. -->
-<!-- ::: {#thm-grandesNum} -->
-<!-- ### Ley de los grandes números para procesos de renovación -->
-<!-- Sea $(N_t)_{t\in[0,\infty)}$ un proceso de renovación con tiempos entre llegadas $\tau_1,\tau_2,\tau_3,\ldots$. Si $\mathbb{E}(\tau_i)=\mu$, entonces con probabilidad 1 se verifica que -->
-<!-- $$ -->
-<!-- \frac{N_t}{t}\to \frac{1}{\mu}\quad\mbox{ cuando }t\to\infty. -->
-<!-- $$ -->
-<!-- ::: -->
-<!-- La interpretación del anterior resultado es sencilla. Si el tiempo medio entre llegadas (ciclos consecutivos) de un proceso de renovación es de $\mu$ horas, entonces en el largo plazo se producirán $1/\mu$ llegadas (ciclos) por hora. En el caso de un proceso de Poisson con tasa $\lambda$ se tendrá que -->
-<!-- $$ -->
-<!-- \frac{N_t}{t}\to \lambda\quad\mbox{ cuando }t\to\infty, -->
-<!-- $$ -->
-<!-- ya que los tiempos entre llegadas tienen media $1/\lambda$. -->
-<!-- La demostración del anterior resultado se basa en la ley fuerte de los grandes números la cual recordamos a continuación. -->
-<!-- ::: {#lem-leyFuerte} -->
-<!-- ### Ley fuerte de los grandes números -->
-<!-- Sean $\tau_1,\tau_2,\tau_3,\ldots$ variables aleatorias i.i.d. con $\mathbb{E}(\tau_i)=\mu$. Entonces con probabilidad 1 se verifica que -->
-<!-- $$ -->
-<!-- \frac{T_n}{n}\to \mu\quad\mbox{ cuando }n\to\infty, -->
-<!-- $$ -->
-<!-- donde $T_n=\tau_1+\tau_2+\ldots+\tau_n$ para cada $n\in\mathbb{N}$. -->
-<!-- ::: -->
-<!-- A continuación damos la demostración de la ley de los grandes números para procesos de renovación. -->
-<!-- **Demostración del Teorema @thm-grandesNum.** -->
-<!-- Para cada $n\in\mathbb{N}$, sea $T_n=\tau_1+\tau_2+\ldots+\tau_n$. Como las variables $\tau_1,\tau_2,\tau_3,\ldots$ son i.i.d. con media $\mu$, la ley fuerte de los grandes números nos dice que, con probabilidad 1, se verifica -->
-<!-- $$ -->
-<!-- \frac{T_n}{n}\to \mu\quad\mbox{ cuando }n\to\infty. -->
-<!-- $$ {#eq-grandesNum} -->
-<!-- Ahora, por definición de proceso de renovación tenemos que -->
-<!-- $$ -->
-<!-- T_{N_t}\le t < T_{N_t+1}. -->
-<!-- $$ -->
-<!-- Dividiendo entre $N_t$ tenemos que -->
-<!-- $$ -->
-<!-- \frac{T_{N_t}}{N_t}\le \frac{t}{N_t} < \frac{T_{N_t+1}}{N_t}. -->
-<!-- $$ -->
-<!-- De ahí se sigue que -->
-<!-- $$ -->
-<!-- \frac{T_{N_t}}{N_t}\le \frac{t}{N_t} < \frac{T_{N_t+1}}{N_t+1}\frac{N_t+1}{N_t}. -->
-<!-- $$ {#eq-des} -->
-<!-- Puesto que las trayectorias de $N_t$ son crecientes, dando infinitos saltos de longitud 1, tendremos que $\lim_{t\to \infty}N_t=\infty$. Como consecuencia de (@eq-grandesNum) se verifica, con probabilidad 1, que -->
-<!-- $$ -->
-<!-- \lim_{t\to \infty}\frac{T_{N_t}}{N_t}=\mu. -->
-<!-- $$ -->
-<!-- Por las misma razones también se cumplirá, con probabilidad 1, que -->
-<!-- $$ -->
-<!-- \lim_{t\to \infty} \frac{T_{N_t+1}}{N_t+1}\frac{N_t+1}{N_t}=\mu. -->
-<!-- $$ -->
-<!-- Finalmente, tomando límites en (@eq-des) cuando $t\to\infty$, y teniendo en cuenta lo anterior, llegamos a la conclusión deseada, ya que $t/N_t$ se encuentra, con probabilidad 1, entre dos sucesiones las cuales convergen a $\mu$. \hfill$\square$ -->
-<!-- Volvamos al ejemplo donde una máquina se estropea y es reparada reiteradas veces. Supongamos que, de media, la máquina tarda una hora en estropearse, y quince minutos en ser reparada. Supongamos, además, que cada tiempo de fallo $\alpha_i$ y cada tiempo de reparación $\beta_i$ siguen distribuciones exponenciales. De este modo, $\alpha_i\sim {\rm Exp}(1)$ y $\beta_i\sim {\rm Exp}(4)$. El proceso de renovación resultante puede ser simulado fácilmente en *R*. -->
-<!-- ```{r, echo=TRUE, fig.cap="Simulación del proceso de renovación donde una máquina se estropea y repara reiteradamente", fig.align='center', out.width="70%"} -->
-<!-- # Fijemos los valores de los parámetros -->
-<!-- lambda_1 <- 1  # tasa de fallo -->
-<!-- lambda_2 <- 4  # tasa de reparación -->
-<!-- T <- 10      # Intervalo de tiempo en el que observamos el proceso -->
-<!-- # Simulación de los tiempos entre llegadas -->
-<!-- set.seed(13) -->
-<!-- tau <- NULL -->
-<!-- i <- 1 -->
-<!-- while(sum(tau) < T){ -->
-<!--   alpha <- rexp(n = 1, rate = lambda_1) -->
-<!--   beta <- rexp(n = 1, rate = lambda_2) -->
-<!--   tau[i] <-  alpha + beta -->
-<!--   i <- i+1 -->
-<!-- } -->
-<!-- # Calculamos los valores del proceso de renovación -->
-<!-- tiempos <- c(0,cumsum(tau)) -->
-<!-- N <- 0:length(tau) -->
-<!-- # Dibujamos la trayectoria -->
-<!-- plot(tiempos, N, type = "s", -->
-<!--      xlab = "Tiempo", ylab = "Ciclos", xlim=c(0, 10)) -->
-<!-- ``` -->
-<!-- El tiempo medio de cada ciclo es $\mathbb{E}(\tau_i)=\mathbb{E}(\alpha_i)+\mathbb{E}(\beta_i)=1+1/4=5/4$. Por tanto, la ley de los grandes números para procesos de renovación nos dice que -->
-<!-- $$ -->
-<!-- \frac{N_t}{t}\to \frac{4}{5}\quad\mbox{ cuando }t\to\infty. -->
-<!-- $$ -->
-<!-- Vamos a comprobar dicho resultado simulando una trayectoria a un plazo elevado de tiempo (por ejemplo, $T=1000$), y dibujando la gráfica del cociente $N_t/t$. -->
-<!-- ```{r, echo=TRUE, fig.cap="El cociente entre el proceso de renovación y el tiempo se va aproximando a una constante, debido a la ley de los grandes números", fig.align='center', out.width="70%"} -->
-<!-- # Fijemos los valores de los parámetros -->
-<!-- lambda_1 <- 1  # tasa de fallo -->
-<!-- lambda_2 <- 4  # tasa de reparación -->
-<!-- T <- 1000      # Intervalo de tiempo en el que observamos el proceso -->
-<!-- # Simulación de los tiempos entre llegadas -->
-<!-- set.seed(13) -->
-<!-- tau <- NULL -->
-<!-- i <- 1 -->
-<!-- while(sum(tau) < T){ -->
-<!--   alpha <- rexp(n = 1, rate = lambda_1) -->
-<!--   beta <- rexp(n = 1, rate = lambda_2) -->
-<!--   tau[i] <-  alpha + beta -->
-<!--   i <- i+1 -->
-<!-- } -->
-<!-- tiempos <- c(0,cumsum(tau)) -->
-<!-- N <- 0:length(tau) -->
-<!-- cociente <- N / tiempos -->
-<!-- # Dibujamos la trayectoria -->
-<!-- plot(tiempos, cociente, type = "S", -->
-<!--      xlab = "Tiempo", ylab = "N_t/t", xlim=c(0, 1000)) -->
-<!-- # Dibujamos una línea horizontal a la altura de la inversa de la media -->
-<!-- abline(h=4/5, col="blue") -->
-<!-- ``` -->
+</section>
+<section id="componentes-de-una-serie-temporal-y-esquemas-de-integración" class="level2" data-number="5.4">
+<h2 data-number="5.4" class="anchored" data-anchor-id="componentes-de-una-serie-temporal-y-esquemas-de-integración"><span class="header-section-number">5.4</span> Componentes de una serie temporal y esquemas de integración</h2>
+<p>El principal fin del estudio de series temporales es realizar predicciones. Un punto muy importante a tener en cuenta en este contexto es la cantidad de información contenida en una serie temporal.</p>
+<p>Por ejemplo, podemos considerar la serie temporal correspondiente a la hora de salida del sol (medida todos los días durante 10 años). Con la serie de observaciones pasadas podemos realizar una buena predicción para días futuros, es decir, la serie contiene mucha información relevante para predecir el futuro. Consideremos por otra parte la serie temporal correspondiente al número premiado del sorteo de la lotería (medida todos los sábados durante 20 años). En este caso las observaciones pasadas no nos permiten realizar una buena predicción del fenómeno en el futuro, es decir, la serie contiene poca información relevante para predecir el futuro.</p>
+<p>Podríamos decir que la primera serie es prácticamente determinista mientras que la segunda es totalmente aleatoria. En general, las series de tiempo contienen una parte determinista (permiten realizar predicciones) y otra parte aleatoria (perturbación impredecible).</p>
+<p>En el <strong>Análisis Clásico</strong> se supone que una serie temporal, <span class="math inline">\(\{x_t\}_{t=1,...,n},\)</span> se puede descomponer en todas o algunas de las siguientes componentes:</p>
+<ul>
+<li><p>Componente de Tendencia <span class="math inline">\((T_t)\)</span></p></li>
+<li><p>Componente de Ciclo <span class="math inline">\((C_t)\)</span></p></li>
+<li><p>Componente de Estacionalidad <span class="math inline">\((S_t)\)</span></p></li>
+<li><p>Componente Irregular <span class="math inline">\((I_t)\)</span></p></li>
+</ul>
+<p>Veamos a continuación el significado de cada una de las componentes, aunque resulta complicado dar una definición exacta de cada una de ellas.</p>
+<ul>
+<li><p><em>a)</em> <strong>Componente de Tendencia (Trend):</strong> Es la componente que describe movimientos persistentes del nivel de la serie, es decir, la curva maestra de evolución del fenómeno en estudio. Las variaciones de la tendencia de una serie pueden deberse a diversos motivos.</p></li>
+<li><p><em>b)</em> <strong>Componente de Ciclo (Cycle):</strong> El factor cíclico refleja movimientos oscilatorios por encima y por debajo de la tendencia a largo plazo. La duración de un ciclo se suele medir desde un pico al siguiente pico de la serie suavizada (o desde un valle al siguiente valle). Se entiende que el periodo de cada ciclo es siempre superior al año. A veces se confunde con la componente estacional. La diferencia principal es que las fluctuaciones de los ciclos no tienen frecuencia fija, y suelen asociarse a aspectos económicos, mientras que las fluctuaciones de la componente estacional tienen frecuencia fija y se asocian con aspectos del calendario.</p></li>
+</ul>
+<p><em>Observación:</em> En general, las componentes de tendencia y ciclo son muy difíciles de separar, de manera que se suelen fusionar en una única componente denominada Tendencia-Ciclo. En adelante, nosotros trabajaremos con ambas componentes fusionadas y usaremos la notación <span class="math inline">\(T_t\)</span> y hablaremos de Tendencia para referirnos a la componente Tendencia-Ciclo.</p>
+<ul>
+<li><em>c)</em> <strong>Componente de Estacionalidad (Seasonal):</strong> La componente estacional recoge el comportamiento periódico (repetitivo) de la serie. Las razones de la estacionalidad suelen ser de tipo físico-natural (tiempo meteorológico, ciclos biológicos, etc) y de tipo institucional (vacaciones, horarios comerciales, etc.). Es decir, aparece debido al efecto del calendario.</li>
+</ul>
+<p>En general, la estacionalidad se refiere a las oscilaciones de una serie temporal que se completan dentro de un año y que se repiten en años sucesivos. Por tanto, el periodo de esta componente suele ser menor o igual a un año. Por ejemplo, si disponemos de datos mensuales podemos tener estacionalidad con periodo 12 meses (un año), si disponemos de datos trimestrales podemos tener estacionalidad con periodo 4 trimestres (un año). Si disponemos de datos diarios, podemos tener estacionalidad con periodo 7 días (una semana), si disponemos de datos cada hora, podemos tener estacionalidad con periodo 24 horas (un día), etc. El <strong>periodo</strong> de la componente estacional hace referencia al número de datos que conforman la parte repetitiva de la serie.</p>
+<p><strong>En Análisis Clásico, se supone que la que componente estacional (patrón periódico) se repite de forma fija a lo largo de toda la serie</strong>. Por tanto, si el periodo es <span class="math inline">\(L\)</span>, diremos que la componente estacional tiene <span class="math inline">\(L\)</span> <strong>estaciones</strong> que podemos denotar por <span class="math inline">\(\{h_1, h_2, ..., h_L \}\)</span> y buscamos estimar un valor correspondiente a cada estación.</p>
+<p>Por ejemplo, si se trata de datos mensuales, probablemente observaremos en la serie temporal un patrón repetitivo cada año (cada 12 datos). Tendremos entonces que el periodo es <span class="math inline">\(L=12\)</span>, cada mes del año sería una estación (<span class="math inline">\(h_1=enero\)</span>, <span class="math inline">\(h_2=febrero\)</span>, …<span class="math inline">\(h_{12}=diciembre\)</span>) y por tanto estimaremos un valor que se repetirá para todos los eneros, un valor que se repetirá para todos los febreros, …, un valor que se repetirá para todos los diciembres. Si se trata de datos diarios (por ejemplo, ingresos por ventas de unos grandes almacenes), observaremos en la serie temporal un patrón repetitivo cada semana (cada 7 datos). Tendremos entonces que el periodo es <span class="math inline">\(L=7\)</span>, cada día sería una estación (<span class="math inline">\(h_1=lunes\)</span>, <span class="math inline">\(h_2=martes\)</span>,…, <span class="math inline">\(h_7=domingo\)</span>) y por tanto estimaremos un valor que se repetirá para todos los lunes, un valor que se repetirá para todos los martes, …, un valor que se repetirá para todos los domingos.</p>
+<ul>
+<li><em>d)</em> <strong>Componente Irregular (Reminder):</strong> Esta componente viene dada por las variaciones de la serie que no están recogidas en las demás componentes. La idea es que recoja la perturbación aleatoria pura de la serie, es decir, la parte impredecible de la serie. Lo ideal es que se corresponda con un <em>ruido blanco</em>, de manera que toda la parte determinista de la serie quede recogida en las componentes Tendencia-Ciclo y Estacional.</li>
+</ul>
+<p>Como ya hemos indicado, en el análisis clásico se supone que el valor que toma la serie <span class="math inline">\(\{x_t\}_t\)</span> en cada instante se puede expresar como una función del valor correspondientes a sus componentes en dicho instante: <span class="math display">\[x_t=f\left( T_t,S_t,I_t\right) ,\]</span> donde <span class="math inline">\(T_t\)</span> representa la Tendencia-Ciclo. Conviene señalar que en una serie temporal no tienen por qué estar presentes todas las componentes.</p>
+<p>Los esquemas más utilizados para describir la forma en que las componentes se integran para dar lugar a la serie son el esquema <em>aditivo</em> y el <em>multiplicativo</em>.</p>
+<ul>
+<li><p><strong>Esquema aditivo:</strong> Según este esquema, el valor de la serie en cualquier instante se obtiene como <em>suma</em> de los valores correspondientes a sus componentes en dicho instante: <span class="math display">\[
+\boxed{x_t=T_t+S_t+I_t}
+\]</span></p></li>
+<li><p><strong>Esquema multiplicativo:</strong> Según este esquema, el valor de la serie en cualquier instante se obtiene como <em>producto</em> de los valores correspondientes a sus componentes en dicho instante: <span class="math display">\[
+\boxed{x_t=T_t\times S_t\times I_t}
+\]</span></p></li>
+</ul>
+<p>Cuando todos los factores son positivos, es posible transformar el esquema multiblicativo en aditivo tomando logaritmos naturales <span class="math display">\[
+\log x_t=\log T_t + \log S_t + \log I_t.
+\]</span></p>
+<p>Aunque por su sencillez los esquemas más utilizados son los dos anteriores, también suelen utilizarse los esquemas mixtos, donde algunas componentes se integran de forma multiplicativa y otras de forma aditiva. Un ejemplo de <strong>esquema mixto</strong> sería: <span class="math display">\[x_t=T_t\times S_t+I_t\]</span></p>
+<p><strong>¿Esquema aditivo o multiplicativo?</strong> Para determinar si las componentes de la serie se combinan de forma aditiva o multiplicativa, se pueden usar varias herramientas:</p>
+<ol type="1">
+<li><p>Inspección visual: En un esquema aditivo, la representación gráfica de la serie mostrará una componente estacional aproximadamente estable en todo momento, independientemente de los valores que tome la tendencia (nivel de la serie). Sin embargo, en un esquema multiplicativo, la componente estacional se amplifica cuando la serie se mueve en niveles más altos.</p></li>
+<li><p>Gráfico de desviaciones típicas frente a medias: Este gráfico consiste en calcular, para cada tramo periódico (por ejemplo, un año), tanto la desviación típica como la media de los valores de la serie. En un esquema aditivo, las desviaciones típicas se mantienen aproximadamente constantes sea cual sea el valor de la media, mientras que en el esquema multiplicativo, las desviaciones típicas aumentan cuando crece la media.</p></li>
+</ol>
+<p>A continuación mostramos un ejemplo de esquema multiplicativo (figura de la izquierda) y un esquema aditivo (figura de la derecha).</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ts.plot</span>(AirPassengers, <span class="at">lwd =</span> <span class="fl">1.5</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ts.plot</span>(<span class="fu">log</span>(AirPassengers), <span class="at">lwd =</span> <span class="fl">1.5</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Tema4_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="diferenciación-de-una-serie-temporal-y-medias-móviles" class="level2" data-number="5.5">
+<h2 data-number="5.5" class="anchored" data-anchor-id="diferenciación-de-una-serie-temporal-y-medias-móviles"><span class="header-section-number">5.5</span> Diferenciación de una serie temporal y medias móviles</h2>
+<p>La representación gráfica de la serie temporal nos puede ayudar a decidir el tipo de tendencia de la serie, pero a veces no es tan sencillo. Un método que permite determinar el tipo de tendencia de una serie y a su vez eliminarla consiste en <em>tomar diferencias</em>.</p>
+<p><strong>Diferenciación de una serie</strong></p>
+<div id="def-diferenciaPrimerOrden" class="theorem definition">
+<p><span class="theorem-title"><strong>Definición 5.2</strong></span> Dada una serie temporal <span class="math inline">\(\{x_t\}_{t=1,...,n}\)</span> , se define su <strong>diferencia de primer orden</strong> como la serie que resulta de restar a cada observación, la observación anterior: <span class="math display">\[
+\Delta x_t=x_t-x_{t-1}
+\]</span></p>
+</div>
+<p>De manera análoga, se puede definir la <em>diferencia de orden 2</em> de la serie como: <span class="math display">\[\Delta ^2x_t=\Delta \left( x_t-x_{t-1}\right) =\left( x_t-x_{t-1}\right)
+-\left( x_{t-1}-x_{t-2}\right) =x_t-2x_{t-1}+x_{t-2}\]</span> así como la <em>diferencia de orden</em> <span class="math inline">\(k\)</span>, en general.</p>
+<div class="callout callout-style-simple callout-none no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">None</span>Observación
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Al tomar diferencias de orden uno, la serie resultante tiene un dato menos (se pierde el primer dato). Si se toman diferencias de orden dos, la serie resultante tiene dos datos menos (se pierden los dos primeros). En general, al tomar diferencias de orden <span class="math inline">\(k\)</span>, la serie resultante tiene <span class="math inline">\(k\)</span> datos menos (se pierden los <span class="math inline">\(k\)</span> primeros datos).</p>
+</div>
+</div>
+<ul>
+<li><strong>Si la tendencia es de tipo lineal</strong>, <span class="math display">\[
+x_t=T_t+I_t=b_0+b_1\cdot t + I_t.
+\]</span> ésta se puede eliminar tomando diferencias de orden uno: <span class="math display">\[
+\begin{aligned}
+x_t &amp;=b_0+b_1\cdot t+ I_t\\
+&amp;\Rightarrow \Delta x_t=x_t-x_{t-1}=\left( b_0+b_1\cdot t+I
+_t\right) -\left( b_0+b_1\cdot (t-1)+I_{t-1}\right)  \\
+&amp;\Rightarrow \Delta x_t=b_1+\left( I_t- I_{t-1}\right)
+=b_1+\tilde{I}_t
+\end{aligned}
+\]</span> es decir, la serie obtenida al tomar diferencias de orden uno es una constante (<span class="math inline">\(b_1\)</span>) más una componente irregular (<span class="math inline">\(\tilde{I}_t\)</span>).</li>
+</ul>
+<p>Lo ideal es que <span class="math inline">\(\tilde{I}_t\)</span> sea un ruido blanco gaussiano.</p>
+<ul>
+<li>En general, <strong>si la tendencia es de tipo polinómico</strong> de orden <span class="math inline">\(k\)</span>, ésta se puede eliminar tomando diferencias de orden <span class="math inline">\(k.\)</span></li>
+</ul>
+<p>Veamos un ejemplo del efecto de tomar diferencias de orden 1 sobre la serie de precios del índice DAX y sobre la serie de pasajeros:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>DAX_index <span class="ot">&lt;-</span> EuStockMarkets[ , <span class="dv">1</span>]</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>))</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ts.plot</span>(DAX_index)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ts.plot</span>(<span class="fu">diff</span>(DAX_index, <span class="at">differences =</span> <span class="dv">1</span>))</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ts.plot</span>(AirPassengers)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ts.plot</span>(<span class="fu">diff</span>(AirPassengers, <span class="at">differences =</span> <span class="dv">1</span>))</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Tema4_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li><strong>Si la tendencia es de tipo exponencial</strong>, <span class="math display">\[
+x_t=T_t\cdot I_t=e^{b_0+b_1\cdot t} \cdot I_t,
+\]</span> ésta se puede eliminar tomando diferencias en el logaritmo de la serie: <span class="math display">\[
+\begin{aligned}
+x_t &amp;=e^{b_0+b_1\cdot t}\cdot I_t \Rightarrow \log
+x_t=b_0+b_1\cdot t+ \log I_t \\
+&amp;\Rightarrow \Delta \log (x_t)=\log (x_t)-\log (x_{t-1})=b_1+\widetilde{%
+I}_t.
+\end{aligned}
+\]</span> De nuevo, lo ideal es que <span class="math inline">\(\tilde{I}_t\)</span> sea un ruido blanco gaussiano.</li>
+</ul>
+<p>Por otra parte, la diferencia de logaritmos coincide con el logaritmo del cociente, así que: <span class="math display">\[
+\Rightarrow \Delta \log (x_t)=\log (x_t)-\log (x_{t-1})=\log \left( \frac{x_t}{%
+x_{t-1}}\right)
+\]</span> y usando el desarrollo de Taylor para el logaritmo se tiene que: <span class="math display">\[
+\Delta \log (x_t)=\log \left( \frac{x_t}{x_{t-1}}\right) \simeq \frac{%
+x_t-x_{t-1}}{x_{t-1}}\quad \text{(Tasa de variación relativa)}
+\]</span></p>
+<p>Por tanto, si la tendencia es de tipo exponencial, las tasas de variación relativa oscilarán alrededor de un valor constante.</p>
+<p><strong>Medias Móviles</strong></p>
+<p>Otro método para ayudar a identificar la tendencia de una serie (análisis descriptivo de la serie), son las <strong>medias móviles</strong>, aunque también puede usarse para realizar predicciones y para eliminar la componente estacional de una serie.</p>
+<p>Este método consiste en realizar, para cada instante de tiempo <span class="math inline">\(t\)</span>, la media de unas cuantas observaciones. Necesitamos determinar cuántas observaciones se usarán para el cálculo de la media móvil (longitud u orden de la media móvil).</p>
+<p>Las medias móviles eliminan las irregularidades de la serie observada, es decir, se produce un suavizado de la serie eliminando o atenuando el efecto de la componente irregular, consiguiendo así identificar la trayectoria que sigue la tendencia. Además, cuanto mayor sea el orden de la media móvil, más se suaviza la serie. El problema de determinar el orden de la media móvil no es tan inmediato porque, si es demasiado pequeño, puede que no elimine las irregularidades, y si es demasiado grande, podemos perder información sobre cambios de la serie (en el caso extremo tendríamos siempre una tendencia constante).</p>
+<p>Un aspecto importante de este método frente al ajuste de la tendencia por mínimos cuadrados es que en este caso el análisis de la tendencia se realiza desde un enfoque local, es decir, la trayectoria de la tendencia se obtiene localmente utilizando algunas observaciones de la serie (no todas). En este sentido, este método permitirá obtener mejores predicciones a corto plazo que si ajustamos la tendencia por mínimos cuadrados. Por contra, no dispondremos de un modelo matemático que nos permita describir la serie y realizar predicciones a largo plazo.</p>
+<p>Podemos distinguir dos tipos: medias móviles centradas y medias móviles asimétricas.</p>
+<p>Las <strong>medias móviles centradas</strong> revisten mayor interés, se suelen utilizar para describir la tendencia de la serie de forma más flexible y adecuada que usando mínimos cuadrados.</p>
+<div id="def-mediaMovilImpar" class="theorem definition">
+<p><span class="theorem-title"><strong>Definición 5.3</strong></span> Dada una serie temporal <span class="math inline">\(\{x_t\}_{t=1,...,n}\)</span>, se define su <strong>media móvil centrada de orden</strong> <span class="math inline">\((2p+1)\)</span> como la serie obtenida mediante la siguiente expresión: <span class="math display">\[
+MM(2p+1)_t=\frac{x_{t-p}+x_{t-p+1}+...+x_t+...+x_{t+p-1}+x_{t+p}}{2p+1}
+\]</span> es decir, en cada instante <span class="math inline">\(t\)</span>, se calcula la media usando las <span class="math inline">\(p\)</span> observaciones anteriores, las <span class="math inline">\(p\)</span> observaciones posteriores y la propia observación en el instante <span class="math inline">\(t.\)</span></p>
+</div>
+<p>Si el orden de la media móvil es par, entonces debemos realizar dos veces medias móviles para conseguir que sea centrada.</p>
+<div id="def-mediaMovilPar" class="theorem definition">
+<p><span class="theorem-title"><strong>Definición 5.4</strong></span> Dada una serie temporal <span class="math inline">\(\{x_t\}_{t=1,...,n}\)</span>, se define su <strong>media móvil centrada de orden</strong> <span class="math inline">\((2p)\)</span> como la serie obtenida mediante la siguiente expresión: <span class="math display">\[
+MM(2p)_t=\frac{MM(2p)_{t-0.5}+MM(2p)_{t+0.5}}2
+\]</span> donde: <span class="math display">\[
+MM(2p)_{t-0.5}=\frac{x_{t-p}+...+x_{t-1}+x_t+...+x_{t+p-1}}{2p}
+\]</span> y <span class="math display">\[
+MM(2p)_{t+0.5}=\frac{x_{t-p+1}+...+x_t+x_{t+1}+...+x_{t+p}}{2p}
+\]</span></p>
+</div>
+<div class="callout callout-style-simple callout-none no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">None</span>Observación
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>La serie obtenida por médias móviles centradas (ya sea de orden impar <span class="math inline">\(2p+1\)</span> o de orden par <span class="math inline">\(2p\)</span>) pierde los <span class="math inline">\(p\)</span> primeros valores y los <span class="math inline">\(p\)</span> últimos. Es decir, la serie suavizada tendrá <span class="math inline">\(2p\)</span> datos menos que la original, así que no conviene tomar el orden de la media móvil demasiado alto porque se perderían muchos datos.</p>
+</div>
+</div>
+<p>La siguiente figura muestra cómo aumenta el suavizado de una serie (eliminación de las irregularidades) conforme aumentamos el orden de la media móvil (en negro, la serie original; en azul, medias móviles de orden 5; en verde, medias móviles de orden 8; en rojo, medias móviles de orden 12):</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(forecast)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ts.plot</span>(AirPassengers, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(<span class="fu">ma</span>(AirPassengers, <span class="at">order =</span> <span class="dv">5</span>), </span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">lwd =</span> <span class="fl">1.5</span>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(<span class="fu">ma</span>(AirPassengers, <span class="at">order =</span> <span class="dv">8</span>, <span class="at">centre =</span> <span class="cn">TRUE</span>), </span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">col =</span> <span class="st">"green"</span>, <span class="at">lwd =</span> <span class="fl">1.5</span>)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(<span class="fu">ma</span>(AirPassengers, <span class="at">order =</span> <span class="dv">12</span>), </span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">lwd =</span> <span class="fl">1.5</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Tema4_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="def-mediaMovilAsimetrica" class="theorem definition">
+<p><span class="theorem-title"><strong>Definición 5.5</strong></span> Dada una serie temporal <span class="math inline">\(\{x_t\}_{t=1,...,n}\)</span>, la <strong>media móvil asimétrica de orden</strong> <span class="math inline">\(p\)</span> se define de la siguiente forma: <span class="math display">\[
+MMA(p)_t=\frac{x_{t-p+1}+...+x_{t-1}+x_t}p
+\]</span> es decir, consiste en realizar la media aritmética de las <span class="math inline">\(p\)</span> últimas observaciones de la serie.</p>
+</div>
+<p>Esta variante de las medias móviles se puede usar para realizar predicciones en un modelo con tendencia aproximadamente constante localmente. Suele ser más adecuado para las predicciones a corto plazo que un ajuste por mínimos cuadrados, debido a su enfoque local para la estimación de la tendencia. Es decir, si disponemos de las observaciones hasta el instante <span class="math inline">\(T\)</span>, la predicción para el instante siguiente viene dada por la media de las <span class="math inline">\(p\)</span> últimas observaciones: <span class="math display">\[\widehat{x}_{T+1}=\frac{x_{T-p+1}+...+x_{T-1}+x_T}p\]</span></p>
+<p>En esta expresión se aprecia que todas las observaciones que intervienen en la media tienen el mismo peso. En el tema siguiente veremos que los métodos de alisado exponencial suelen dar mejores resultados porque se les da más peso a las observaciones más recientes que a las más antiguas.</p>
+</section>
+<section id="descomposición-clásica-de-series-temporales" class="level2" data-number="5.6">
+<h2 data-number="5.6" class="anchored" data-anchor-id="descomposición-clásica-de-series-temporales"><span class="header-section-number">5.6</span> Descomposición clásica de series temporales</h2>
+<p>El objetivo de esta sección es mostrar las técnicas clásicas para descomponer una serie temporal en sus 3 componentes fundamentales (Tendencia-Ciclo, Estacional e Irregular). Para ello, es necesario determinar previamente si el esquema de integración de dichas componentes se considera aditivo, o multiplicativo.</p>
+<p>Comenzaremos con el <strong>enfoque clásico</strong> para extraer las componentes en un esquema aditivo, conocido como el método de la diferencia a la media móvil.</p>
+<section id="método-de-la-diferencia-a-la-media-móvil" class="level3" data-number="5.6.1">
+<h3 data-number="5.6.1" class="anchored" data-anchor-id="método-de-la-diferencia-a-la-media-móvil"><span class="header-section-number">5.6.1</span> Método de la diferencia a la media móvil</h3>
+<p>El método de la diferencia a la media móvil es el método que se usa para desestacionalizar una serie que presenta un esquema aditivo: <span class="math display">\[x_t=T_t+S_t+I_t \]</span></p>
+<p>Consideremos una serie temporal con el esquema anterior, presentando componente estacional, y llamemos <span class="math inline">\(L\)</span> al periodo de la componente estacional. En muchas ocasiones <span class="math inline">\(L\)</span> será un número par, por ejemplo <span class="math inline">\(L=12\)</span> para datos mensuales, <span class="math inline">\(L=4\,\)</span>para datos trimestrales, etc.</p>
+<p>La idea fundamental para intentar eliminar la componentes estacional consiste en tomar medias móviles de orden <span class="math inline">\(L\,\)</span>(periodo de la componente estacional). Realizamos los siguientes pasos:</p>
+<ol type="1">
+<li><em>Calcular la media móvil centrada de orden</em> <span class="math inline">\(L\)</span> <em>para la serie y determinar la componente Tendencia-Ciclo</em>.</li>
+</ol>
+<p>Calculando la media móvil centrada de orden <span class="math inline">\(L\)</span>, donde <span class="math inline">\(L\)</span> representa el periodo de la componente estacional, se consigue eliminar en gran parte el efecto de la componente estacional así como de la componente irregular.</p>
+<p>Por tanto, la serie obtenida por medias móviles servirá como estimación de la componente Tendencia-Ciclo (<span class="math inline">\(T_t\)</span>): <span class="math display">\[
+T_t = MM(L)_t
+\]</span></p>
+<p>Recordar que si <span class="math inline">\(L\)</span> es par, la media móvil centrada se obtiene realizando el promedio de dos series de medias móviles. Además, si <span class="math inline">\(L\)</span> es par, la serie obtenida por medias móviles tiene <span class="math inline">\(L\)</span> datos menos que la serie original. Por ejemplo, si la serie original se refiere a datos mensuales, tendremos un dato menos por cada mes. Y si <span class="math inline">\(L\)</span> es impar, la serie obtenida por medias móviles tiene <span class="math inline">\(L-1\)</span> datos menos que la serie original.</p>
+<ol start="2" type="1">
+<li><em>Obtener los índices brutos de variación estacional (IBVE).</em></li>
+</ol>
+<p>Como el esquema es aditivo: <span class="math display">\[
+x_t=T_t+S_t+I_t
+\]</span> una estimación de las componentes Estacional e Irregular conjuntamente viene dada por: <span class="math display">\[
+\widehat{S_t+I_t}=x_t-T_t=x_t-MM(L)_t
+\]</span> es decir, hay que restar a la serie original la serie obtenida mediante medias móviles de orden <span class="math inline">\(L\)</span> (de ahí el nombre de método de la diferencia a la media móvil).</p>
+<p>Cada uno de los valores obtenidos mediante la diferencia anterior se denomina índice bruto de variación estacional en el instante <span class="math inline">\(t:\)</span>% <span class="math display">\[
+(IBVE)_t=\widehat{S_t+I_t}=x_t-MM(L)_t
+\]</span> donde el calificativo de “bruto” se debe a que el índice estacional está contaminado por la componente irregular.</p>
+<ol start="3" type="1">
+<li><em>Obtener los índices de variación estacional no normalizados (IVENN).</em></li>
+</ol>
+<p>Con el fin de eliminar la componente irregular de los índices anteriores, calcularemos la media de los índices para cada estación. Si disponemos de información correspondiente a <span class="math inline">\(K\)</span> periodos completos y un total de <span class="math inline">\(N\)</span> observaciones, entonces se cumple que: <span class="math display">\[
+N=L\cdot K
+\]</span> Por ejemplo, pensemos en datos mensuales y un total de 5 años completos, es decir, <span class="math inline">\(12*5=60\)</span> datos. Como ya hemos indicado, al realizar medias móviles se pierden <span class="math inline">\(L\)</span> datos (uno por cada estación, si <span class="math inline">\(L\)</span> es par), de manera que para cada estación dispondríamos de exactamente <span class="math inline">\(K-1\)</span> datos (en lugar de <span class="math inline">\(K\)</span>).</p>
+<p>Llamaremos índice de variación estacional no normalizado al promedio de los <em>IBVE</em> para cada estación <span class="math inline">\(h\)</span>: <span class="math display">\[
+(IVENN)_h=\frac{\sum_{\{t:h(t)=h\}}(IBVE)_t}{K-1}\quad h=h_1,h_2,...,h_L
+\]</span> donde <span class="math inline">\(\{t:h(t)=h\}\)</span> denota el conjunto de instantes de tiempo que se corresponden con la estación <span class="math inline">\(h\)</span>. Si <span class="math inline">\(K\)</span> no es muy pequeño, con el promedio conseguimos atenuar enormemente el efecto de la componente irregular, de manera que estos nuevos índices contienen información de la componente estacional pero no de la componente irregular.</p>
+<p>Podemos poner una expresión más general para obtener los índices de variación estacional no normalizados, que contemple la posibilidad de que la serie tenga periodos incompletos o bien que <span class="math inline">\(L\)</span> sea impar, en cuyo caso, el número de datos <span class="math inline">\((IBVE)_t\)</span> disponible para cada estación puede ser diferente. Denotemos por <span class="math inline">\(K_h\)</span> al número de datos <span class="math inline">\((IBVE)_t\)</span> disponible para cada estación <span class="math inline">\(h\)</span>, entonces:</p>
+<p><span class="math display">\[
+(IVENN)_h=\frac{\sum_{\{t:h(t)=h\}}(IBVE)_t}{K_h}\quad h=h_1,h_2,...,h_L
+\]</span></p>
+<ol start="4" type="1">
+<li><em>Obtener los índices de variación estacional normalizados (IVE) y determinar la componente Estacional</em></li>
+</ol>
+<p>Si una serie no tiene componente estacional, en un modelo aditivo se tendría que <span class="math inline">\(S_t\equiv 0.\)</span> Por otra parte, es razonable suponer que la componente estacional no debe afectar al nivel de la serie, de manera que en el modelo aditivo la media de la componente estacional debería ser 0.</p>
+<p>Por tanto, definimos los índices de variación estacional normalizados para cada estación <span class="math inline">\(h\)</span> como: <span class="math display">\[
+(IVE)_h=(IVENN)_h-\frac{\sum_{h \in \{h_1,...,h_L \}}(IVENN)_h}L
+\]</span> aunque existen otras forma de normalizar los índices de variación estacional.</p>
+<p>Estos índices suponen una <strong>estimación de la componente estacional</strong> de la serie para cada estación <span class="math inline">\(h.\)</span> Es decir, en este paso determinamos la componente estacional para cada instante de tiempo <span class="math inline">\(t\)</span>, haciéndola coincidir con el índice de variación estacional para la estación, <span class="math inline">\(h(t)\)</span>, correspondiente al instante <span class="math inline">\(t\)</span>: <span class="math display">\[
+S_t=(IVE)_{h(t)}
+\]</span></p>
+<ol start="5" type="1">
+<li><em>Desestacionalizar la serie.</em></li>
+</ol>
+<p>En el modelo aditivo, la desestacionalización de la serie se consigue restando a la serie original los índices de variación estacional: <span class="math display">\[
+D_t=x_t-S_t=x_t-(IVE)_{h(t)}\quad \mbox{(serie
+desestacionalizada)}.
+\]</span></p>
+<p>En algunos softwares como SPSS, una vez desestacionalizada la serie, se extrae una nueva componente Tendencia-Ciclo, suavizando la serie desestacionalizada. Por ejemplo, aplicando dos veces medias móviles de orden 3. Pero no es el caso del sofware R, así que esta etapa podría obviarse.</p>
+<ol start="6" type="1">
+<li><em>Determinar la componente Irregular.</em></li>
+</ol>
+<p>Una vez extraidas la componente Estacional (<span class="math inline">\(S_t\)</span>) y la Tendencia-Ciclo (<span class="math inline">\(T_t\)</span>), la componente Irregular (<span class="math inline">\(I_t\)</span>) se obtiene de forma inmediata mediante:</p>
+<p><span class="math display">\[
+I_t = x_t - T_t - S_t
+\]</span></p>
+<p>La situación ideal sería que dicha componente irregular se comportara como un ruido blanco gaussiano.</p>
+<p>A continuación, mostramos el <strong>enfoque clásico</strong> para extraer las componentes de una serie temporal si el esquema es multiplicativo.</p>
+</section>
+<section id="método-de-la-razón-a-la-media-móvil" class="level3" data-number="5.6.2">
+<h3 data-number="5.6.2" class="anchored" data-anchor-id="método-de-la-razón-a-la-media-móvil"><span class="header-section-number">5.6.2</span> Método de la razón a la media móvil</h3>
+<p>El método de la razón a la media móvil es el método que se usa para desestacionalizar una serie que presenta un esquema multiplicativo:</p>
+<p><span class="math display">\[x_t=T_t\times S_t\times I_t \]</span></p>
+<p>Los pasos para desestacionalizar la serie y extraer las componentes son similares al caso aditivo, pero realizando cocientes en lugar de diferencias:</p>
+<ol type="1">
+<li><em>Calcular la media móvil centrada de orden</em> <span class="math inline">\(L\)</span> <em>para la serie y determinar la componente Tendencia-Ciclo</em>.</li>
+</ol>
+<p><span class="math display">\[
+T_t=MM(L)_t
+\]</span></p>
+<ol start="2" type="1">
+<li><em>Obtener los índices brutos de variación estacional (IBVE).</em></li>
+</ol>
+<p>Como el esquema es multiplicativo, una estimación de las componentes Estacional e Irregular conjuntamente viene dada por: <span class="math display">\[
+\widehat{S_t\times I_t}=\frac{x_t}{\widehat{T}_t}=\frac{x_t}{MM(L)_t}
+\]</span> es decir, dividir la serie original entre la serie obtenida mediante medias móviles de orden <span class="math inline">\(L\)</span> (de ahí el nombre de método de la razón a la media móvil).</p>
+<p>Cada uno de los valores obtenidos mediante el cociente anterior se denomina índice bruto de variación estacional en el instante <span class="math inline">\(t:\)</span>% <span class="math display">\[
+(IBVE)_t=\widehat{S_t\times I_t}=\frac{x_t}{MM(L)_t}.
+\]</span></p>
+<ol start="3" type="1">
+<li><em>Obtener los índices de variación estacional no normalizados (IVENN).</em></li>
+</ol>
+<p>Llamaremos índice de variación estacional no normalizado al promedio de los <em>IBVE</em> para cada estación <span class="math inline">\(h\)</span>. Denotemos por <span class="math inline">\(K_h\)</span> al número de datos <span class="math inline">\((IBVE)_t\)</span> disponible para cada estación <span class="math inline">\(h\)</span>, entonces:</p>
+<p><span class="math display">\[
+(IVENN)_h=\frac{\sum_{\{t:h(t)=h\}}(IBVE)_t}{K_h}\quad h=h_1,h_2,...,h_L
+\]</span></p>
+<ol start="4" type="1">
+<li><em>Obtener los índices de variación estacional normalizados (IVE) y determinar la componente Estacional</em></li>
+</ol>
+<p>Si una serie no tiene componente estacional, en un modelo multiplicativo se tendría que <span class="math inline">\(S_t\equiv 1.\)</span> Por otra parte, es razonable suponer que la componente estacional no debe afectar al nivel de la serie, de manera que en el modelo multiplicativo la media de la componente estacional debería ser 1.</p>
+<p>Sin embargo, los índices calculados en el apartado anterior pueden no tener media uno. Por tanto, definimos los índices de variación estacional normalizados para cada estación <span class="math inline">\(h\)</span> como:</p>
+<p><span class="math display">\[
+(IVE)_h=\frac{(IVENN)_h}{\frac{\sum_{h \in \{h_1,...,h_L \}}(IVENN)_h}L}
+\]</span> los cuales suponen una <strong>estimación de la componente estacional</strong> de la serie para cada estación <span class="math inline">\(h.\)</span> Es decir, en este paso determinamos la componente estacional para cada instante de tiempo <span class="math inline">\(t\)</span>, haciéndola coincidir con el índice de variación estacional para la estación, <span class="math inline">\(h(t)\)</span>, correspondiente al instante <span class="math inline">\(t\)</span>: <span class="math display">\[
+S_t=(IVE)_{h(t)}
+\]</span></p>
+<ol start="5" type="1">
+<li><em>Desestacionalizar la serie.</em></li>
+</ol>
+<p>En el modelo multiplicativo, la desestacionalización de la serie se consigue dividiendo la serie por los índices de variación estacional: <span class="math display">\[
+D_t=\frac{x_t}{(IVE)_{h(t)}}
+\]</span></p>
+<p>En algunos softwares como SPSS, una vez desestacionalizada la serie, se extrae una nueva componente Tendencia-Ciclo, suavizando la serie desestacionalizada. Por ejemplo, aplicando dos veces medias móviles de orden 3. Pero no es el caso del sofware R, así que esta etapa podría obviarse.</p>
+<ol start="6" type="1">
+<li><em>Determinar la componente Irregular.</em></li>
+</ol>
+<p>Una vez extraidas la componente Estacional <span class="math inline">\(S_t\)</span>, y la Tendencia <span class="math inline">\(T_t\)</span>, la componente Irregular o restante se obtiene de forma inmediata mediante:</p>
+<p><span class="math display">\[
+I_t = \frac{x_t}{T_t \times S_t}.
+\]</span></p>
+<p>La situación ideal sería que dicha componente irregular fuera un ruido gaussiano de media 1, o bien como la exponencial de un ruido gaussiano de modo que la media sea 1.</p>
+<p>A modo de ejemplo, a continuación mostramos una serie temporal y las componentes que resultan con la <strong>descomposición clásica</strong>:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">decompose</span>(AirPassengers, <span class="at">type =</span> <span class="st">"multiplicative"</span>))</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Tema4_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>Nota:</strong> Podemos comprobar que la componente estacional se mantiene estable a lo largo del tiempo. Es decir, todos los meses de enero toman el mismo valor, independientemente del año. Lo mismo sucede con los febreros, marzos, …, diciembres. Esta situación es característica para la descomposición clásica.</p>
+</section>
+</section>
+<section id="predicciones-con-análisis-clásico-y-limitaciones" class="level2" data-number="5.7">
+<h2 data-number="5.7" class="anchored" data-anchor-id="predicciones-con-análisis-clásico-y-limitaciones"><span class="header-section-number">5.7</span> Predicciones con Análisis Clásico y limitaciones</h2>
+<p>En el enfoque clásico, la forma de realizar predicciones se basa en la descomposición de la serie en sus componentes fundamentales (tendencia, estacionalidad e irregular). Extraídas las componentes, se predice cada una de ellas y la predicción de la serie original se obtiene combinando dichas predicciones según se trate de un esquema aditivo o multiplicativo.</p>
+<p>Supongamos que hemos obtenido las componentes <span class="math inline">\(T_t,S_t,I_t\)</span> para unos tiempos <span class="math inline">\(1,2,\ldots,T\)</span>. Se trata de predecir las componente para tiempos futuros <span class="math display">\[
+\hat{T}_{T+m|T},\hat{S}_{T+m|T},\hat{I}_{T+m|T},\qquad m=1,2,\ldots
+\]</span> <strong>¿Cómo realizar predicciones de la componente irregular</strong> <span class="math inline">\(I_t\)</span>?</p>
+<p>Como se trata de la parte aleatoria de la serie, las predicciones de la componente irregular valdrán cero en el esquema aditivo y uno en el multiplicativo.</p>
+<p>Es decir, para todo instante <span class="math inline">\(t\)</span>, tendremos que la predicción de la componente irregular en dicho instante es: <span class="math display">\[\hat{I}_{T+m|T}=0\quad (\mbox{esquema aditivo}), \quad \hat{I}_{T+m|T}=1\quad (\mbox{esquema multiplicativo})\]</span> Al tratarse de una estimación puntual, la idea es asignar a la componente irregular su valor esperado.</p>
+<p><strong>¿Cómo realizar predicciones de la Componente Estacional</strong> <span class="math inline">\(S_t\)</span>?</p>
+<p>Bastará con repetir el valor obtenido para cada estación. Por ejemplo, si tenemos datos mensuales y la componente estacional extraída asigna un valor de 50 a los eneros, entonces la predicción de la componente estacional será siempre de 50 para los futuros eneros. De la misma forma se realizaría la predicción para el resto de meses, pues el enfoque clásico considera componente estacional estable.</p>
+<p>Si la serie original tiene perido <span class="math inline">\(L\)</span> y disponemos de observaciones hasta el instante <span class="math inline">\(T\)</span>, entonces la predicción de la componente estacional en el instante T+m es:</p>
+<p><span class="math display">\[\hat{S}_{T+m|T}={S}_{T+m-L|T}\quad m=1,2,...,L\]</span> donde <span class="math inline">\(S_{T+m-L}\)</span> representa el valor de la componente estacional en el instante <span class="math inline">\(T+m-L\)</span>, es decir, el valor del <em>IVE</em> en la estación que corresponde a dicho instante.</p>
+<p><strong>¿Cómo realizar predicciones de la componente Tendencia-ciclo</strong> <span class="math inline">\(T_t\)</span>?</p>
+<p>La componente tendencia puede modelizarse con cualquier método para series sin estacionalidad. Por ejemplo, realizando un ajuste por mínimos cuadrados usando como predictor (predictores) el tiempo o potencias del mismo. El modelo obtenido para la tendencia usando mínimos cuadrados es adecuado para representar el comportamiento de la serie y captar los aspectos más permanentes del fenómeno estudiado (predicciones a medio o largo plazo). Sin embargo, no es aconsejable para las predicciones a corto plazo.</p>
+<p>Por ejemplo, si la Tendencia es lineal respecto al tiempo: <span class="math display">\[T_t=b_0+b_1\cdot t,\]</span> podemos estimar la ecuación de dicha recta usando regresión lineal simple. Por tanto, en este caso las predicciones de la tendencia en cualquier instante <span class="math inline">\(t\)</span>, se obtendrán mediante:</p>
+<p><span class="math display">\[\hat{T}_{T+m|T}=\hat{b}_0+\hat{b}_1\cdot (T+m).\]</span></p>
+<p>Y si la Tendencia es polinómica: <span class="math display">\[T_t=b_0+b_1\cdot t+b_2\cdot t^2 + \ldots+b_k\cdot t^k,\]</span> las predicciones se obtendrán mediante:</p>
+<p><span class="math display">\[\hat{T}_{T+m|T}=\hat{b}_0+\hat{b}_1\cdot (T+m)+\hat{b}_2\cdot (T+m)^2+...+\hat{b}_k\cdot (T+m)^k.\]</span> En ese caso podemos estimar los coeficientes del modelo usando regresión lineal múltiple.</p>
+<p>Obsérvese que se trata de un <em>enfoque global</em> del análisis de la tendencia, el cual permite obtener un modelo matemático que modeliza la tendencia de la serie usando todas las observaciones de la serie, y además todas con el mismo peso.</p>
+<p>Los procedimientos adecuados para obtener la tendendia desde un <em>enfoque local</em> que permita realizar predicciones adecuadas a corto plazo son, por ejemplo, el método de las medias móviles asimétricas o los métodos de alisado exponencial, que veremos en un tema posterior.</p>
+<p><strong>¿Cómo realizar predicciones de la serie original?</strong></p>
+<p>Si disponemos de <span class="math inline">\(T\)</span> observaciones de la serie y queremos realizar predicciones para los <span class="math inline">\(L\)</span> instantes siguientes (<span class="math inline">\(L\)</span> es el periodo), en el caso de esquema aditivo tendremos: <span class="math display">\[\hat{x}_{T+m|T}=\hat{T}_{T+m|T}+\hat{S}_{T+m|T}\quad m=1,2,...,L.\]</span></p>
+<p>y en el caso de esquema multiplicativo tendremos: <span class="math display">\[\widehat{x}_{T+m|T}=\widehat{T}_{T+m|T}\times \widehat{S}_{T+m|T}\quad
+m=1,2,...,L.\]</span></p>
+<p><strong>Limitaciones del Análisis Clásico</strong></p>
+<p>El análisis clásico de series temporales tiene dos usos principalmente:</p>
+<ul>
+<li><p><em>Describir el comportamiento de la serie temporal</em> (análisis descriptivo), haciendo uso por ejemplo de la descomposición de la serie en las componentes Tendencia, Estacionalidad e Irregular.</p></li>
+<li><p><em>Realizar predicciones a medio o largo plazo</em>.</p></li>
+</ul>
+<p>Como método descriptivo sigue siendo interesante su uso gracias a la sencillez de los métodos expuestos. Del mismo modo, cuando sólo nos interesa estudiar el comportamiento futuro de la serie a largo plazo, es decir, estudiar cómo evolucionaría la serie a grandes rasgos, también interesa emplear un análisis clásico.</p>
+<p>Sin embargo, el enfoque global de los método clásicos impide realizar predicciones adecuadas a corto plazo, siendo ésta la principal limitación de un análisis clásico. Además, los métodos clásicos proporcionan demasiada rigidez al modelo, perdiendo en ocasiones información relevante.</p>
+<p>Para suplir las carencias del método clásico, se propusieron nuevos métodos como la descomposición STL, que veremos a continuación, o los métodos de alisado exponencial, que veremos en un tema posterior.</p>
+</section>
+<section id="la-descomposición-stl" class="level2" data-number="5.8">
+<h2 data-number="5.8" class="anchored" data-anchor-id="la-descomposición-stl"><span class="header-section-number">5.8</span> La descomposición STL</h2>
+<p>El método STL (<em>Seasonal-Trend decomposition using LOESS</em>) es una técnica de descomposición de series temporales que permite separar una serie en tres componentes: tendencia-ciclo, estacionalidad y componente irregular o residuo. Fue propuesto por Cleveland, Cleveland, McRae y Terpenning (1990):</p>
+<p>Cleveland, R. B., Cleveland, W. S., McRae, J. E., &amp; Terpenning, I. J. (1990). <em>STL: A seasonal-trend decomposition procedure based on loess</em>. Journal of Official Statistics, 6(1), 3–73.</p>
+<p>Al igual que la descomposición clásica, STL parte de una descomposición aditiva de la forma</p>
+<p><span class="math display">\[
+x_t=T_t+S_t+R_t,
+\]</span></p>
+<p>donde <span class="math inline">\(T_t\)</span> representa la tendencia-ciclo, <span class="math inline">\(S_t\)</span> la componente estacional y <span class="math inline">\(R_t\)</span> la componente irregular o residuo.</p>
+<p>Una de las principales diferencias respecto a la descomposición clásica es que STL permite que el patrón estacional cambie gradualmente a lo largo del tiempo. En la descomposición clásica, por el contrario, se supone que el patrón estacional se mantiene constante: por ejemplo, el efecto correspondiente a enero es el mismo todos los años.</p>
+<p>Además, mientras que la descomposición clásica se basa fundamentalmente en medias móviles para estimar la tendencia y en promedios para estimar los efectos estacionales, STL utiliza repetidamente suavizados locales de tipo LOESS. Esto hace que el método sea más flexible.</p>
+<p><strong>Importante:</strong> STL realiza una descomposición aditiva. Si la amplitud de las oscilaciones estacionales aumenta aproximadamente en proporción al nivel de la serie, puede ser conveniente aplicar previamente una transformación logarítmica. Por ejemplo, un modelo multiplicativo</p>
+<p><span class="math display">\[
+x_t=T_tS_tE_t
+\]</span></p>
+<p>se transforma, siempre que <span class="math inline">\(x_t&gt;0\)</span>, en</p>
+<p><span class="math display">\[
+\log(x_t)=\log(T_t)+\log(S_t)+\log(E_t),
+\]</span></p>
+<p>que tiene estructura aditiva en escala logarítmica.</p>
+<section id="en-qué-consiste-el-método-loess" class="level3" data-number="5.8.1">
+<h3 data-number="5.8.1" class="anchored" data-anchor-id="en-qué-consiste-el-método-loess"><span class="header-section-number">5.8.1</span> ¿En qué consiste el método LOESS?</h3>
+<p>LOESS es un método de suavizado basado en regresiones locales. Supongamos que observamos una serie temporal <span class="math inline">\(x_t\)</span> en los instantes <span class="math inline">\(t_1,\ldots,t_n\)</span>. Para estimar el valor suavizado en un instante <span class="math inline">\(t_i\)</span>, LOESS utiliza principalmente las observaciones correspondientes a instantes próximos a <span class="math inline">\(t_i\)</span>.</p>
+<p>El procedimiento puede resumirse de la siguiente forma:</p>
+<ol type="1">
+<li><p>Se selecciona un conjunto de observaciones próximas al punto en el que queremos realizar la estimación.</p></li>
+<li><p>A las observaciones seleccionadas se les asignan pesos que dependen de su distancia al punto considerado: las observaciones más próximas reciben un peso mayor que las más alejadas.</p></li>
+<li><p>Con esas observaciones se ajusta un polinomio de bajo grado, normalmente lineal o cuadrático, mediante regresión ponderada.</p></li>
+<li><p>El valor del polinomio ajustado en <span class="math inline">\(t_i\)</span> proporciona el valor suavizado <span class="math inline">\(\widehat{x}_i\)</span>.</p></li>
+<li><p>El proceso se repite para todos los instantes de la serie.</p></li>
+</ol>
+<p>De esta forma se obtiene una curva suavizada sin imponer una única función global para toda la serie.</p>
+<p>La cantidad de observaciones utilizadas en cada ajuste local está controlada por el parámetro de suavizado denominado <code>span</code>. Para valores de <code>span</code> menores o iguales que 1, puede interpretarse aproximadamente como la proporción de observaciones utilizadas en cada regresión local.</p>
+<p>Por ejemplo, si tenemos 100 observaciones y utilizamos</p>
+<p><span class="math display">\[
+\texttt{span}=0.5,
+\]</span></p>
+<p>cada ajuste local utiliza aproximadamente las 50 observaciones más próximas al punto considerado. En puntos situados en la zona central de una serie regularmente espaciada, esto supondrá aproximadamente 25 observaciones anteriores y 25 posteriores.</p>
+<p>En general:</p>
+<ul>
+<li>valores pequeños de <code>span</code> producen un ajuste más local y flexible;</li>
+<li>valores grandes de <code>span</code> producen una curva más suave.</li>
+</ul>
+<p>Por tanto, LOESS resulta útil para detectar patrones y tendencias no lineales sin especificar previamente una forma funcional para ellos.</p>
+<p>A continuación mostramos un ejemplo utilizando el conjunto de datos <code>economics</code> del paquete <code>ggplot2</code>. Consideraremos la variable <code>uempmed</code>, que representa la duración mediana del desempleo, medida en semanas.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>datos <span class="ot">&lt;-</span> economics</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>datos<span class="sc">$</span>index <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(datos)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>loess10 <span class="ot">&lt;-</span> <span class="fu">loess</span>(uempmed <span class="sc">~</span> index, <span class="at">data =</span> datos, <span class="at">span =</span> <span class="fl">0.10</span>)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>loess30 <span class="ot">&lt;-</span> <span class="fu">loess</span>(uempmed <span class="sc">~</span> index, <span class="at">data =</span> datos, <span class="at">span =</span> <span class="fl">0.30</span>)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>loess50 <span class="ot">&lt;-</span> <span class="fu">loess</span>(uempmed <span class="sc">~</span> index, <span class="at">data =</span> datos, <span class="at">span =</span> <span class="fl">0.50</span>)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(datos<span class="sc">$</span>date, datos<span class="sc">$</span>uempmed, <span class="at">type =</span> <span class="st">"l"</span>,</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">"Suavizado LOESS"</span>,</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Fecha"</span>,</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">"Duración mediana del desempleo (semanas)"</span>,</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>     <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(datos<span class="sc">$</span>date, <span class="fu">predict</span>(loess10), <span class="at">col =</span> <span class="st">"blue"</span>,  <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(datos<span class="sc">$</span>date, <span class="fu">predict</span>(loess30), <span class="at">col =</span> <span class="st">"green"</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(datos<span class="sc">$</span>date, <span class="fu">predict</span>(loess50), <span class="at">col =</span> <span class="st">"red"</span>,   <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topleft"</span>,</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>       <span class="at">legend =</span> <span class="fu">c</span>(<span class="st">"Serie original"</span>, <span class="st">"span = 0.10"</span>,</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>                  <span class="st">"span = 0.30"</span>, <span class="st">"span = 0.50"</span>),</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>       <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"black"</span>, <span class="st">"blue"</span>, <span class="st">"green"</span>, <span class="st">"red"</span>),</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>       <span class="at">lty =</span> <span class="dv">1</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Tema4_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Se observa que con <code>span = 0.10</code> el ajuste sigue con mayor detalle las variaciones locales de la serie. Al aumentar el valor de <code>span</code>, la curva se hace progresivamente más suave.</p>
+<p>Puede utilizarse también <code>span = 1</code>. En ese caso intervienen todas las observaciones en cada ajuste local, aunque siguen recibiendo pesos diferentes dependiendo de su distancia al punto considerado. Por tanto, incluso en este caso LOESS no debe confundirse con el ajuste de un único polinomio global a toda la serie.</p>
+</section>
+<section id="idea-básica-de-la-descomposición-stl" class="level3" data-number="5.8.2">
+<h3 data-number="5.8.2" class="anchored" data-anchor-id="idea-básica-de-la-descomposición-stl"><span class="header-section-number">5.8.2</span> Idea básica de la descomposición STL</h3>
+<p>STL obtiene las componentes estacional y de tendencia mediante un proceso iterativo.</p>
+<p>Podemos describir cada iteración mediante las siguientes etapas.</p>
+<p><strong>1) Eliminar provisionalmente la tendencia</strong></p>
+<p>A partir de la estimación actual de la tendencia <span class="math inline">\(T_t\)</span>, se calcula</p>
+<p><span class="math display">\[
+x_t-T_t.
+\]</span></p>
+<p>De este modo se obtiene una serie de la que se ha eliminado, aproximadamente, la tendencia.</p>
+<p><strong>2) Formar las subseries estacionales</strong></p>
+<p>Supongamos que la serie tiene periodo estacional <span class="math inline">\(L\)</span>. La serie sin tendencia se divide entonces en <span class="math inline">\(L\)</span> subseries.</p>
+<p>Por ejemplo, si tenemos datos mensuales, <span class="math inline">\(L=12\)</span>, y se forman doce subseries:</p>
+<p><span class="math display">\[
+\begin{array}{c}
+\text{todos los eneros},\\
+\text{todos los febreros},\\
+\vdots\\
+\text{todos los diciembres}.
+\end{array}
+\]</span></p>
+<p>La finalidad es estudiar cómo evoluciona a lo largo de los años el efecto correspondiente a cada mes.</p>
+<p><strong>3) Suavizar las subseries estacionales</strong></p>
+<p>Cada una de estas subseries se suaviza mediante LOESS. Así se obtiene una primera estimación del comportamiento estacional.</p>
+<p>En la función <code>stl()</code> de R, la flexibilidad de este suavizado se controla mediante el parámetro <code>s.window</code>.</p>
+<p>Por ejemplo,</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>s.window <span class="ot">=</span> <span class="dv">7</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>significa que el suavizado estacional utiliza una ventana relativamente local de cada subserie estacional. En una serie mensual, cada subserie contiene una observación por año, por lo que el valor 7 corresponde aproximadamente a utilizar siete observaciones consecutivas de cada mes.</p>
+<p>Valores relativamente pequeños de <code>s.window</code> permiten que el patrón estacional cambie con mayor rapidez. Valores mayores producen una componente estacional más suave y estable.</p>
+<p>Si se utiliza</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>s.window <span class="ot">=</span> <span class="st">"periodic"</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>se fuerza a que el patrón estacional sea constante a lo largo del tiempo. En este caso, por ejemplo, el efecto de enero será el mismo todos los años.</p>
+<p>En <code>stl()</code>, cuando <code>s.window</code> es numérico debe ser impar y, de acuerdo con la implementación de R, al menos igual a 7.</p>
+<!-- Internamente, STL realiza además una corrección de baja frecuencia sobre la estimación estacional. Su finalidad es evitar que movimientos lentos que deberían pertenecer a la tendencia queden incorporados a la componente estacional. No necesitamos entrar aquí en los detalles técnicos de este paso. -->
+<p><strong>4) Desestacionalizar la serie</strong></p>
+<p>Una vez obtenida una nueva estimación de <span class="math inline">\(S_t\)</span>, se calcula la serie desestacionalizada:</p>
+<p><span class="math display">\[
+x_t-S_t.
+\]</span></p>
+<p><strong>5) Estimar nuevamente la tendencia</strong></p>
+<p>Sobre la serie desestacionalizada se aplica otro suavizado LOESS para obtener una nueva estimación de la tendencia-ciclo:</p>
+<p><span class="math display">\[
+T_t.
+\]</span></p>
+<p>La suavidad de esta componente se controla mediante el parámetro <code>t.window</code>. Un valor pequeño permite que la tendencia cambie más rápidamente, mientras que un valor grande produce una tendencia más suave.</p>
+<p>En la función <code>stl()</code> no es necesario especificar <code>t.window</code>: si se omite, R selecciona automáticamente un valor a partir del periodo de la serie y del valor de <code>s.window</code>.</p>
+<p><strong>6) Repetir el procedimiento</strong></p>
+<p>Con la nueva estimación de <span class="math inline">\(T_t\)</span> se vuelve a calcular</p>
+<p><span class="math display">\[
+x_t-T_t
+\]</span></p>
+<p>y se repite el proceso de estimación de la componente estacional y de la tendencia.</p>
+<p>Estas iteraciones permiten que ambas componentes se vayan ajustando mutuamente. En la práctica son suficientes pocas iteraciones.</p>
+<p><strong>7) Obtener la componente irregular</strong></p>
+<p>Finalmente, una vez estimadas la tendencia y la estacionalidad, la componente irregular o residuo se obtiene como</p>
+<p><span class="math display">\[
+R_t=x_t-T_t-S_t.
+\]</span></p>
+<p>Por tanto, la descomposición resultante satisface</p>
+<p><span class="math display">\[
+x_t=T_t+S_t+R_t.
+\]</span></p>
+<p><strong>Nota:</strong> STL dispone también de una versión robusta frente a observaciones atípicas. En R puede utilizarse mediante la opción</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>robust <span class="ot">=</span> <span class="cn">TRUE</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>que reduce la influencia de observaciones extremas en la estimación de las componentes.</p>
+</section>
+<section id="ejemplo-la-serie-airpassengers" class="level3" data-number="5.8.3">
+<h3 data-number="5.8.3" class="anchored" data-anchor-id="ejemplo-la-serie-airpassengers"><span class="header-section-number">5.8.3</span> Ejemplo: la serie <code>AirPassengers</code></h3>
+<p>Veamos como ejemplo la descomposición STL de la serie <code>AirPassengers</code> incluida en R.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>serie_pasajeros <span class="ot">&lt;-</span> AirPassengers</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ts.plot</span>(serie_pasajeros, <span class="at">lwd =</span> <span class="dv">2</span>,</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">ylab =</span> <span class="st">"Número de pasajeros"</span>,</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">main =</span> <span class="st">"AirPassengers"</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Tema4_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>En la serie original se observa que las oscilaciones estacionales tienden a aumentar a medida que aumenta el nivel de la serie. Esto sugiere que una descomposición aditiva sobre la escala original no es la opción más adecuada.</p>
+<p>Por ello aplicamos una transformación logarítmica:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>serie_aditiva <span class="ot">&lt;-</span> <span class="fu">log</span>(serie_pasajeros)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ts.plot</span>(serie_aditiva, <span class="at">lwd =</span> <span class="dv">2</span>,</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">ylab =</span> <span class="st">"log(Número de pasajeros)"</span>,</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">main =</span> <span class="st">"AirPassengers en escala logarítmica"</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Tema4_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>En la escala logarítmica las oscilaciones presentan una amplitud más estable, por lo que resulta más razonable utilizar una descomposición aditiva.</p>
+<p>Realizamos ahora la descomposición STL. Fijamos</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>s.window <span class="ot">=</span> <span class="dv">7</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>para permitir que el patrón estacional pueda cambiar gradualmente a lo largo del tiempo:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>modelo_STL <span class="ot">&lt;-</span> <span class="fu">stl</span>(serie_aditiva, <span class="at">s.window =</span> <span class="dv">7</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(modelo_STL)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Tema4_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>El resultado proporciona las tres componentes:</p>
+<p><span class="math display">\[
+\log(x_t)=T_t+S_t+R_t.
+\]</span></p>
+<p>Obsérvese que la componente estacional puede variar a lo largo del tiempo. Esta es una diferencia importante respecto a la descomposición clásica, en la que se supone que el patrón estacional se repite exactamente de un periodo a otro.</p>
+<p>Si queremos imponer una estacionalidad completamente estable, podemos utilizar:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>modelo_STL_periodico <span class="ot">&lt;-</span> <span class="fu">stl</span>(serie_aditiva,</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>                            <span class="at">s.window =</span> <span class="st">"periodic"</span>)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(modelo_STL_periodico)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Tema4_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>En este segundo caso, la componente estacional mantiene el mismo patrón todos los años.</p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
