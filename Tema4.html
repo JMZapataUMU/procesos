@@ -226,9 +226,7 @@ window.Quarto = {
   <li><a href="#predicciones-con-análisis-clásico-y-limitaciones" id="toc-predicciones-con-análisis-clásico-y-limitaciones" class="nav-link" data-scroll-target="#predicciones-con-análisis-clásico-y-limitaciones"><span class="header-section-number">5.7</span> Predicciones con Análisis Clásico y limitaciones</a></li>
   <li><a href="#la-descomposición-stl" id="toc-la-descomposición-stl" class="nav-link" data-scroll-target="#la-descomposición-stl"><span class="header-section-number">5.8</span> La descomposición STL</a>
   <ul class="collapse">
-  <li><a href="#en-qué-consiste-el-método-loess" id="toc-en-qué-consiste-el-método-loess" class="nav-link" data-scroll-target="#en-qué-consiste-el-método-loess"><span class="header-section-number">5.8.1</span> ¿En qué consiste el método LOESS?</a></li>
-  <li><a href="#idea-básica-de-la-descomposición-stl" id="toc-idea-básica-de-la-descomposición-stl" class="nav-link" data-scroll-target="#idea-básica-de-la-descomposición-stl"><span class="header-section-number">5.8.2</span> Idea básica de la descomposición STL</a></li>
-  <li><a href="#ejemplo-la-serie-airpassengers" id="toc-ejemplo-la-serie-airpassengers" class="nav-link" data-scroll-target="#ejemplo-la-serie-airpassengers"><span class="header-section-number">5.8.3</span> Ejemplo: la serie <code>AirPassengers</code></a></li>
+  <li><a href="#idea-básica-de-la-descomposición-stl" id="toc-idea-básica-de-la-descomposición-stl" class="nav-link" data-scroll-target="#idea-básica-de-la-descomposición-stl"><span class="header-section-number">5.8.1</span> Idea básica de la descomposición STL</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -350,7 +348,7 @@ window.Quarto = {
 <p>En esta sección introduciremos conceptos y alguna notación referidos al contexto de predicción con series temporales.</p>
 <p>En primer lugar, debemos destacar que para que tenga sentido la realización de predicciones se supondrá que los datos recopilados a lo largo del tiempo se han tomado siempre en las mismas magnitudes y que la serie presenta cierta estabilidad en la estructura del fenómeno estudiado.</p>
 <p>En el análisis clásico, las predicciones futuras se realizan teniendo en cuenta únicamente el valor de la serie para instantes pasados. Si diponemos de <span class="math inline">\(T\)</span> observaciones de la serie en estudio, la información disponible viene dada por: <span class="math display">\[x_1,x_2,...,x_T. \]</span> Dada esta información, la <strong>predicción</strong> de la variable en estudio en el instante siguiente <span class="math inline">\(T+1\)</span> se denotará por: <span class="math display">\[\hat{x}_{T+1|T}. \]</span> y en un instante posterior cualquiera <span class="math inline">\(T+m\)</span>, con <span class="math inline">\(m&gt;0\)</span>, será: <span class="math display">\[\hat{x}_{T+m|T}. \]</span></p>
-<p>Así, el <strong>error de predicción</strong> vendrá dado por la diferencia entre el valor observado de la serie y la predicción: <span class="math display">\[e_{T+m|T}=x_{T+m|T}-\hat{x}_{T+m|T}.\]</span></p>
+<p>Así, el <strong>error de predicción</strong> vendrá dado por la diferencia entre el valor observado de la serie y la predicción: <span class="math display">\[e_{m}=x_{T+m|T}-\hat{x}_{T+m|T}.\]</span></p>
 <p>Comentar que, al igual que sucede en muchos procesos de inferencia, se pueden realizar predicciones puntuales y predicciones por intervalos de confianza para las observaciones futuras. En la mayoría de los casos, nos limitaremos a proporcionar estimaciones puntuales.</p>
 <p>Para poder comparar diversos procedimientos de predicción, es decir, para responder a la pregunta ¿qué método es mejor para predecir esta serie?, necesitamos disponer de algún criterio que nos permita evaluar las predicciones realizadas.</p>
 <p>Como primer paso, podemos comentar la existencia de algunos métodos extremadamente básicos, denominados métodos ingenuos, que sirven de referencia en la comparación de predicciones. Es decir, las predicciones que se obtienen con cualquier procedimiento suelen compararse con las predicciones que se obtendrían con algún método ingenuo. Si el método ingenuo proporciona mejores predicciones (menores errores de predicción), esto será indicativo de que el método usado no es el adecuado y conviene probar con otro.</p>
@@ -368,16 +366,16 @@ x_{T+m|T},\qquad m=1,2,\ldots,N
 \]</span> y se han realizado predicciones desde el instante <span class="math inline">\(T\)</span>, <span class="math display">\[
 \hat{x}_{T+m|T},\qquad m=1,2,\ldots,N,
 \]</span> con errores <span class="math display">\[
-e_{T+m|T}=x_{T+m|T}-\hat{x}_{T+m|T},\qquad m=1,2,\ldots,N,
+e_{m}=x_{T+m|T}-\hat{x}_{T+m|T},\qquad m=1,2,\ldots,N,
 \]</span> las medidas son:</p>
 <ul>
 <li><p><em>RMSE (la raíz cuadrada del error cuadrático medio):</em><br>
 <span class="math display">\[
-RMSE=\sqrt{\frac{\sum\limits_{m=1}^N e_{T+m|T}^2}{N}},
+RMSE=\sqrt{\frac{\sum\limits_{m=1}^N e_{m}^2}{N}},
 \]</span></p></li>
 <li><p><em>MAE (el error absoluto medio):</em><br>
 <span class="math display">\[
-MAE=\frac{\sum\limits_{m=1}^N\left| e_{T+m|T}\right| }{N}
+MAE=\frac{\sum\limits_{m=1}^N\left| e_{m}\right| }{N}
 \]</span></p></li>
 </ul>
 <p>Ambas medidas se expresan en las unidades de la variable. El RMSE penaliza especialmente los errores de gran magnitud por el uso de cuadrados.</p>
@@ -754,74 +752,26 @@ m=1,2,...,L.\]</span></p>
 </section>
 <section id="la-descomposición-stl" class="level2" data-number="5.8">
 <h2 data-number="5.8" class="anchored" data-anchor-id="la-descomposición-stl"><span class="header-section-number">5.8</span> La descomposición STL</h2>
-<p>El método STL (<em>Seasonal-Trend decomposition using LOESS</em>) es una técnica de descomposición de series temporales que permite separar una serie en tres componentes: tendencia-ciclo, estacionalidad y componente irregular o residuo. Fue propuesto por Cleveland, Cleveland, McRae y Terpenning (1990):</p>
-<p>Cleveland, R. B., Cleveland, W. S., McRae, J. E., &amp; Terpenning, I. J. (1990). <em>STL: A seasonal-trend decomposition procedure based on loess</em>. Journal of Official Statistics, 6(1), 3–73.</p>
-<p>Al igual que la descomposición clásica, STL parte de una descomposición aditiva de la forma</p>
-<p><span class="math display">\[
-x_t=T_t+S_t+I_t,
-\]</span></p>
-<p>donde <span class="math inline">\(T_t\)</span> representa la tendencia-ciclo, <span class="math inline">\(S_t\)</span> la componente estacional y <span class="math inline">\(I_t\)</span> la componente irregular o residuo.</p>
-<p>Una de las principales diferencias respecto a la descomposición clásica es que STL permite que el patrón estacional cambie gradualmente a lo largo del tiempo. En la descomposición clásica, por el contrario, se supone que el patrón estacional se mantiene constante: por ejemplo, el efecto correspondiente a enero es el mismo todos los años.</p>
-<p>Además, mientras que la descomposición clásica se basa fundamentalmente en medias móviles para estimar la tendencia y en promedios para estimar los efectos estacionales, STL utiliza repetidamente suavizados locales de tipo LOESS. Esto hace que el método sea más flexible.</p>
-<p><strong>Importante:</strong> STL realiza una descomposición aditiva. Si la amplitud de las oscilaciones estacionales aumenta aproximadamente en proporción al nivel de la serie, puede ser conveniente aplicar previamente una transformación logarítmica. Por ejemplo, un modelo multiplicativo</p>
-<p><span class="math display">\[
-x_t=T_tS_tE_t
-\]</span></p>
-<p>se transforma, siempre que <span class="math inline">\(x_t&gt;0\)</span>, en</p>
-<p><span class="math display">\[
-\log(x_t)=\log(T_t)+\log(S_t)+\log(E_t),
-\]</span></p>
-<p>que tiene estructura aditiva en escala logarítmica.</p>
-<section id="en-qué-consiste-el-método-loess" class="level3" data-number="5.8.1">
-<h3 data-number="5.8.1" class="anchored" data-anchor-id="en-qué-consiste-el-método-loess"><span class="header-section-number">5.8.1</span> ¿En qué consiste el método LOESS?</h3>
-<p>LOESS es un método de suavizado basado en regresiones locales. Supongamos que observamos una serie temporal <span class="math inline">\(x_t\)</span> en los instantes <span class="math inline">\(t_1,\ldots,t_n\)</span>. Para estimar el valor suavizado en un instante <span class="math inline">\(t_i\)</span>, LOESS utiliza principalmente las observaciones correspondientes a instantes próximos a <span class="math inline">\(t_i\)</span>.</p>
-<p>El procedimiento puede resumirse de la siguiente forma:</p>
-<ol type="1">
-<li><p>Se selecciona un conjunto de observaciones próximas al punto en el que queremos realizar la estimación.</p></li>
-<li><p>A las observaciones seleccionadas se les asignan pesos que dependen de su distancia al punto considerado: las observaciones más próximas reciben un peso mayor que las más alejadas.</p></li>
-<li><p>Con esas observaciones se ajusta un polinomio de bajo grado, normalmente lineal o cuadrático, mediante regresión ponderada.</p></li>
-<li><p>El valor del polinomio ajustado en <span class="math inline">\(t_i\)</span> proporciona el valor suavizado <span class="math inline">\(\widehat{x}_i\)</span>.</p></li>
-<li><p>El proceso se repite para todos los instantes de la serie.</p></li>
-</ol>
-<p>De esta forma se obtiene una curva suavizada sin imponer una única función global para toda la serie.</p>
-<p>La cantidad de observaciones utilizadas en cada ajuste local está controlada por el parámetro de suavizado denominado <code>span</code>. Para valores de <code>span</code> menores o iguales que 1, puede interpretarse aproximadamente como la proporción de observaciones utilizadas en cada regresión local.</p>
-<p>Por ejemplo, si tenemos 100 observaciones y utilizamos</p>
-<p><span class="math display">\[
-\texttt{span}=0.5,
-\]</span></p>
-<p>cada ajuste local utiliza aproximadamente las 50 observaciones más próximas al punto considerado. En puntos situados en la zona central de una serie regularmente espaciada, esto supondrá aproximadamente 25 observaciones anteriores y 25 posteriores.</p>
-<p>En general:</p>
-<ul>
-<li>valores pequeños de <code>span</code> producen un ajuste más local y flexible;</li>
-<li>valores grandes de <code>span</code> producen una curva más suave.</li>
-</ul>
-<p>Por tanto, LOESS resulta útil para detectar patrones y tendencias no lineales sin especificar previamente una forma funcional para ellos.</p>
-<p>A continuación mostramos un ejemplo utilizando el conjunto de datos <code>economics</code> del paquete <code>ggplot2</code>. Consideraremos la variable <code>uempmed</code>, que representa la duración mediana del desempleo, medida en semanas.</p>
+<p>El método STL (Seasonal and Trend decomposition using LOESS) es una técnica alternativa a la descomposición clásica utilizada para descomponer una serie temporal en sus componentes básicas: tendencia, estacionalidad e irregular. Se basa en el suavizado de datos mediante LOESS (locally estimated scatterplot smoothing), que permite la obtención de las componentes de forma más versátil y flexible. Se trata de un método más reciente que la descomposición clásica, desarrollado en el siguiente artículo: Cleveland, R. B., Cleveland, W. S., McRae, J. E., &amp; Terpenning, I. J. (1990). STL: A seasonal-trend decomposition procedure based on loess. Journal of Official Statistics, 6(1), 3–33.</p>
+<p>Mientras que la descomposición clásica considera que la componente estacional es completamente estable, la descomposición STL permite que la componente estacional varíe a lo largo del tiempo. La diferencia fundamental radica en el proceso de desestacionalización de la serie: mientras que el enfoque clásico usa medias móviles, el STL usa el suavizado local LOESS.</p>
+<p><strong>Importante:</strong> El método STL considera que las componentes de la serie se combinan siguiendo un <strong>esquema aditivo</strong>. En el caso de esquema multiplicativo, primero debe realizarse una transformación logarítmica para convertirlo en esquema aditivo.</p>
+<p><strong>¿En qué consiste el método LOESS?</strong></p>
+<p>LOESS realiza regresiones locales a lo largo de los datos. En cada punto <span class="math inline">\(x_i\)</span> de la serie, se ajusta un polinomio (generalmente de primer o segundo grado) utilizando solo los datos cercanos a ese punto. Los puntos cercanos se definen por una ventana de vecindad, cuyo tamaño está determinado por un parámetro de suavizado. Este parámetro puede ser una proporción del total de puntos (ancho de banda o bandwidth). Los puntos dentro de la ventana de vecindad se ponderan de acuerdo con su distancia al punto <span class="math inline">\(x_i\)</span>. Los puntos más cercanos tienen mayor peso en la estimación del polinomio local que los puntos más lejanos. Para cada punto <span class="math inline">\(x_i\)</span> de la serie, se calcula un valor ajustado <span class="math inline">\(\hat{x_i}\)</span> mediante la regresión local ponderada. Este proceso se repite para cada punto de la serie, resultando en una curva suavizada.</p>
+<p>LOESS es una técnica eficaz para suavizar datos y detectar tendencias locales sin imponer una estructura global rígida. Es especialmente útil para datos que no siguen una forma predefinida y permite capturar patrones locales mediante ajustes flexibles y ponderados.</p>
+<p>A continuación mostramos un ejemplo del método LOESS, así como el efecto del parámetro de suavizado. Para ello usaremos el conjunto de datos “economics” del paquete ggplot2, y suavizaremos la serie correspondiente al tiempo de desempleo (variable <em>uempmed</em>, que representa la mediana del número de días sin empleo). Observamos que la serie original (en negro) contiene numerosas irregularidades, que se suavizan al aplicar LOESS con parámetros de suavizado 10% (en azul), 30% (en verde) y 50% (en rojo). Indicar que si la serie original tiene por ejemplo 100 observaciones y se usa un suavizado del 50% (parámetro span=0.5), entonces para cada punto xi de la serie, la ventana de vecindad se construye con 25 datos a la izquierda de xi y otros 25 datos a la derecha de xi.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>datos <span class="ot">&lt;-</span> economics</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>datos<span class="sc">$</span>index <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(datos)</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>loess10 <span class="ot">&lt;-</span> <span class="fu">loess</span>(uempmed <span class="sc">~</span> index, <span class="at">data =</span> datos, <span class="at">span =</span> <span class="fl">0.10</span>)</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>loess30 <span class="ot">&lt;-</span> <span class="fu">loess</span>(uempmed <span class="sc">~</span> index, <span class="at">data =</span> datos, <span class="at">span =</span> <span class="fl">0.30</span>)</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>loess50 <span class="ot">&lt;-</span> <span class="fu">loess</span>(uempmed <span class="sc">~</span> index, <span class="at">data =</span> datos, <span class="at">span =</span> <span class="fl">0.50</span>)</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(datos<span class="sc">$</span>date, datos<span class="sc">$</span>uempmed, <span class="at">type =</span> <span class="st">"l"</span>,</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">"Suavizado LOESS"</span>,</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Fecha"</span>,</span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">"Duración mediana del desempleo (semanas)"</span>,</span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>     <span class="at">lwd =</span> <span class="dv">2</span>)</span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(datos<span class="sc">$</span>date, <span class="fu">predict</span>(loess10), <span class="at">col =</span> <span class="st">"blue"</span>,  <span class="at">lwd =</span> <span class="dv">2</span>)</span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(datos<span class="sc">$</span>date, <span class="fu">predict</span>(loess30), <span class="at">col =</span> <span class="st">"green"</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(datos<span class="sc">$</span>date, <span class="fu">predict</span>(loess50), <span class="at">col =</span> <span class="st">"red"</span>,   <span class="at">lwd =</span> <span class="dv">2</span>)</span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topleft"</span>,</span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>       <span class="at">legend =</span> <span class="fu">c</span>(<span class="st">"Serie original"</span>, <span class="st">"span = 0.10"</span>,</span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>                  <span class="st">"span = 0.30"</span>, <span class="st">"span = 0.50"</span>),</span>
-<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>       <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"black"</span>, <span class="st">"blue"</span>, <span class="st">"green"</span>, <span class="st">"red"</span>),</span>
-<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>       <span class="at">lty =</span> <span class="dv">1</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>datos <span class="ot">&lt;-</span> economics  </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>datos<span class="sc">$</span>index <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(datos) </span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>loess10 <span class="ot">&lt;-</span> <span class="fu">loess</span>(uempmed <span class="sc">~</span> index, <span class="at">data=</span>datos, <span class="at">span=</span><span class="fl">0.10</span>) </span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>loess30 <span class="ot">&lt;-</span> <span class="fu">loess</span>(uempmed <span class="sc">~</span> index, <span class="at">data=</span>datos, <span class="at">span=</span><span class="fl">0.30</span>) </span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>loess50 <span class="ot">&lt;-</span> <span class="fu">loess</span>(uempmed <span class="sc">~</span> index, <span class="at">data=</span>datos, <span class="at">span=</span><span class="fl">0.50</span>) </span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(datos<span class="sc">$</span>uempmed, <span class="at">x=</span>datos<span class="sc">$</span>date, <span class="at">type=</span><span class="st">"l"</span>, <span class="at">main=</span><span class="st">"Loess Smoothing"</span>,</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">"Date"</span>, <span class="at">ylab=</span><span class="st">"Unemployment (Median)"</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(<span class="fu">predict</span>(loess10), <span class="at">x=</span>datos<span class="sc">$</span>date, <span class="at">col=</span><span class="st">"blue"</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(<span class="fu">predict</span>(loess30), <span class="at">x=</span>datos<span class="sc">$</span>date, <span class="at">col=</span><span class="st">"green"</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(<span class="fu">predict</span>(loess50), <span class="at">x=</span>datos<span class="sc">$</span>date, <span class="at">col=</span><span class="st">"red"</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -830,23 +780,18 @@ x_t=T_tS_tE_t
 </div>
 </div>
 </div>
-<p>Se observa que con <code>span = 0.10</code> el ajuste sigue con mayor detalle las variaciones locales de la serie. Al aumentar el valor de <code>span</code>, la curva se hace progresivamente más suave.</p>
-<p>Puede utilizarse también <code>span = 1</code>. En ese caso intervienen todas las observaciones en cada ajuste local, aunque siguen recibiendo pesos diferentes dependiendo de su distancia al punto considerado. Por tanto, incluso en este caso LOESS no debe confundirse con el ajuste de un único polinomio global a toda la serie.</p>
-</section>
-<section id="idea-básica-de-la-descomposición-stl" class="level3" data-number="5.8.2">
-<h3 data-number="5.8.2" class="anchored" data-anchor-id="idea-básica-de-la-descomposición-stl"><span class="header-section-number">5.8.2</span> Idea básica de la descomposición STL</h3>
+<section id="idea-básica-de-la-descomposición-stl" class="level3" data-number="5.8.1">
+<h3 data-number="5.8.1" class="anchored" data-anchor-id="idea-básica-de-la-descomposición-stl"><span class="header-section-number">5.8.1</span> Idea básica de la descomposición STL</h3>
 <p>STL obtiene las componentes estacional y de tendencia mediante un proceso iterativo.</p>
-<p>Podemos describir cada iteración mediante las siguientes etapas.</p>
+<p>El proceso empieza obteniendo una primera estimación de la tendencia <span class="math inline">\(T_t\)</span> meadiante suavizado LOESS con una ventana grande, con el fin de captar las variaciones a largo plazo (eliminando así las fluctuaciones debidas a la componente estacional).</p>
+<p>Acontinuación se ejecutan varias iteraciones de las siguientes etapas:</p>
 <p><strong>1) Eliminar provisionalmente la tendencia</strong></p>
-<p>A partir de la estimación actual de la tendencia <span class="math inline">\(T_t\)</span>, se calcula</p>
-<p><span class="math display">\[
+<p>A partir de la estimación actual de la tendencia (T_t), se calcula <span class="math display">\[
 x_t-T_t.
-\]</span></p>
-<p>De este modo se obtiene una serie de la que se ha eliminado, aproximadamente, la tendencia.</p>
+\]</span> De este modo se obtiene una serie de la que se ha eliminado la tendencia.</p>
 <p><strong>2) Formar las subseries estacionales</strong></p>
 <p>Supongamos que la serie tiene periodo estacional <span class="math inline">\(L\)</span>. La serie sin tendencia se divide entonces en <span class="math inline">\(L\)</span> subseries.</p>
-<p>Por ejemplo, si tenemos datos mensuales, <span class="math inline">\(L=12\)</span>, y se forman doce subseries:</p>
-<p><span class="math display">\[
+<p>Por ejemplo, si tenemos datos mensuales, <span class="math inline">\(L=12\)</span>, y se forman doce subseries: <span class="math display">\[
 \begin{array}{c}
 \text{todos los eneros},\\
 \text{todos los febreros},\\
@@ -857,19 +802,19 @@ x_t-T_t.
 <p>La finalidad es estudiar cómo evoluciona a lo largo de los años el efecto correspondiente a cada mes.</p>
 <p><strong>3) Suavizar las subseries estacionales</strong></p>
 <p>Cada una de estas subseries se suaviza mediante LOESS. Así se obtiene una primera estimación del comportamiento estacional.</p>
-<p>En la función <code>stl()</code> de R, la flexibilidad de este suavizado se controla mediante el parámetro <code>s.window</code>.</p>
+<p>En la función de R, la flexibilidad de este suavizado se controla mediante el parámetro .</p>
 <p>Por ejemplo,</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>s.window <span class="ot">=</span> <span class="dv">7</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>significa que el suavizado estacional utiliza una ventana relativamente local de cada subserie estacional. En una serie mensual, cada subserie contiene una observación por año, por lo que el valor 7 corresponde aproximadamente a utilizar siete observaciones consecutivas de cada mes.</p>
-<p>Valores relativamente pequeños de <code>s.window</code> permiten que el patrón estacional cambie con mayor rapidez. Valores mayores producen una componente estacional más suave y estable.</p>
+<p>Valores relativamente pequeños de permiten que el patrón estacional cambie con mayor rapidez. Valores mayores producen una componente estacional más suave y estable.</p>
 <p>Si se utiliza</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>s.window <span class="ot">=</span> <span class="st">"periodic"</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>se fuerza a que el patrón estacional sea constante a lo largo del tiempo. En este caso, por ejemplo, el efecto de enero será el mismo todos los años.</p>
-<p>En <code>stl()</code>, cuando <code>s.window</code> es numérico debe ser impar y, de acuerdo con la implementación de R, al menos igual a 7.</p>
+<p>En , cuando es numérico debe ser impar y, de acuerdo con la implementación de R, al menos igual a 7.</p>
 <!-- Internamente, STL realiza además una corrección de baja frecuencia sobre la estimación estacional. Su finalidad es evitar que movimientos lentos que deberían pertenecer a la tendencia queden incorporados a la componente estacional. No necesitamos entrar aquí en los detalles técnicos de este paso. -->
 <p><strong>4) Desestacionalizar la serie</strong></p>
 <p>Una vez obtenida una nueva estimación de <span class="math inline">\(S_t\)</span>, se calcula la serie desestacionalizada:</p>
@@ -881,10 +826,10 @@ x_t-S_t.
 <p><span class="math display">\[
 T_t.
 \]</span></p>
-<p>La suavidad de esta componente se controla mediante el parámetro <code>t.window</code>. Un valor pequeño permite que la tendencia cambie más rápidamente, mientras que un valor grande produce una tendencia más suave.</p>
-<p>En la función <code>stl()</code> no es necesario especificar <code>t.window</code>: si se omite, R selecciona automáticamente un valor a partir del periodo de la serie y del valor de <code>s.window</code>.</p>
+<p>La suavidad de esta componente se controla mediante el parámetro . Un valor pequeño permite que la tendencia cambie más rápidamente, mientras que un valor grande produce una tendencia más suave.</p>
+<p>En la función no es necesario especificar : si se omite, R selecciona automáticamente un valor a partir del periodo de la serie y del valor de .</p>
 <p><strong>6) Repetir el procedimiento</strong></p>
-<p>Con la nueva estimación de <span class="math inline">\(T_t\)</span> se vuelve a calcular</p>
+<p>Con la nueva estimación de <span class="math display">\[T_t\]</span> se vuelve a calcular</p>
 <p><span class="math display">\[
 x_t-T_t
 \]</span></p>
@@ -899,21 +844,31 @@ I_t=x_t-T_t-S_t.
 <p><span class="math display">\[
 x_t=T_t+S_t+I_t.
 \]</span></p>
-<p><strong>Nota:</strong> STL dispone también de una versión robusta frente a observaciones atípicas. En R puede utilizarse mediante la opción</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>robust <span class="ot">=</span> <span class="cn">TRUE</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
 <p>que reduce la influencia de observaciones extremas en la estimación de las componentes.</p>
-</section>
-<section id="ejemplo-la-serie-airpassengers" class="level3" data-number="5.8.3">
-<h3 data-number="5.8.3" class="anchored" data-anchor-id="ejemplo-la-serie-airpassengers"><span class="header-section-number">5.8.3</span> Ejemplo: la serie <code>AirPassengers</code></h3>
-<p>Veamos como ejemplo la descomposición STL de la serie <code>AirPassengers</code> incluida en R.</p>
+<p><strong>Ejemplo: la serie :</strong></p>
+<p>Veamos como ejemplo la descomposición STL de la serie incluida en R.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>serie_pasajeros <span class="ot">&lt;-</span> AirPassengers</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>serie_pasajeros <span class="ot">&lt;-</span> AirPassengers</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ts.plot</span>(serie_pasajeros, <span class="at">lwd =</span> <span class="dv">2</span>,</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">ylab =</span> <span class="st">"Número de pasajeros"</span>,</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">main =</span> <span class="st">"AirPassengers"</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Tema4_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>En la serie original se observa que las oscilaciones estacionales tienden a aumentar a medida que aumenta el nivel de la serie. Esto sugiere que una descomposición aditiva sobre la escala original no es la opción más adecuada.</p>
+<p>Por ello aplicamos una transformación logarítmica:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>serie_aditiva <span class="ot">&lt;-</span> <span class="fu">log</span>(serie_pasajeros)</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ts.plot</span>(serie_pasajeros, <span class="at">lwd =</span> <span class="dv">2</span>,</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">ylab =</span> <span class="st">"Número de pasajeros"</span>,</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">main =</span> <span class="st">"AirPassengers"</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ts.plot</span>(serie_aditiva, <span class="at">lwd =</span> <span class="dv">2</span>,</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">ylab =</span> <span class="st">"log(Número de pasajeros)"</span>,</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">main =</span> <span class="st">"AirPassengers en escala logarítmica"</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -922,36 +877,20 @@ x_t=T_t+S_t+I_t.
 </div>
 </div>
 </div>
-<p>En la serie original se observa que las oscilaciones estacionales tienden a aumentar a medida que aumenta el nivel de la serie. Esto sugiere que una descomposición aditiva sobre la escala original no es la opción más adecuada.</p>
-<p>Por ello aplicamos una transformación logarítmica:</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>serie_aditiva <span class="ot">&lt;-</span> <span class="fu">log</span>(serie_pasajeros)</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ts.plot</span>(serie_aditiva, <span class="at">lwd =</span> <span class="dv">2</span>,</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">ylab =</span> <span class="st">"log(Número de pasajeros)"</span>,</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">main =</span> <span class="st">"AirPassengers en escala logarítmica"</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Tema4_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
 <p>En la escala logarítmica las oscilaciones presentan una amplitud más estable, por lo que resulta más razonable utilizar una descomposición aditiva.</p>
 <p>Realizamos ahora la descomposición STL. Fijamos</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>s.window <span class="ot">=</span> <span class="dv">7</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>s.window <span class="ot">=</span> <span class="dv">7</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>para permitir que el patrón estacional pueda cambiar gradualmente a lo largo del tiempo:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>modelo_STL <span class="ot">&lt;-</span> <span class="fu">stl</span>(serie_aditiva, <span class="at">s.window =</span> <span class="dv">7</span>)</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(modelo_STL)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>modelo_STL <span class="ot">&lt;-</span> <span class="fu">stl</span>(serie_aditiva, <span class="at">s.window =</span> <span class="dv">7</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(modelo_STL)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Tema4_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Tema4_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -963,14 +902,14 @@ x_t=T_t+S_t+I_t.
 <p>Obsérvese que la componente estacional puede variar a lo largo del tiempo. Esta es una diferencia importante respecto a la descomposición clásica, en la que se supone que el patrón estacional se repite exactamente de un periodo a otro.</p>
 <p>Si queremos imponer una estacionalidad completamente estable, podemos utilizar:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>modelo_STL_periodico <span class="ot">&lt;-</span> <span class="fu">stl</span>(serie_aditiva,</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>                            <span class="at">s.window =</span> <span class="st">"periodic"</span>)</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(modelo_STL_periodico)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>modelo_STL_periodico <span class="ot">&lt;-</span> <span class="fu">stl</span>(serie_aditiva,</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>                            <span class="at">s.window =</span> <span class="st">"periodic"</span>)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(modelo_STL_periodico)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Tema4_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Tema4_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
