@@ -390,7 +390,7 @@ x_t=T_t+I_t=\left( a_t+b_t\cdot t\right) +I_t &amp;  &amp; \text{modelo aditivo}
 x_t=T_t\times I_t=\left( a_t+b_t\cdot t\right) \times I_t &amp;  &amp; \text{modelo
 multiplicativo}
 \end{array}
-\right. \]</span><span class="math display">\[\left\{ \begin{array}{lll}x_t=T_t+I_t=\left( a_t+b_t\cdot t\right) +I_t &amp;  &amp; \text{modelo aditivo} \\ x_t=T_t\times I_t=\left( a_t+b_t\cdot t\right) \times I_t &amp;  &amp; \text{modelomultiplicativo}\end{array}\right. \]</span></p>
+\right. \]</span></p>
 <p>donde <span class="math inline">\(a_t\)</span> representa el <strong>nivel</strong> de la serie en cada instante <span class="math inline">\(t\)</span>, mientras que <span class="math inline">\(b_t\)</span> representa la <strong>pendiente</strong> de la tendencia lineal en dicho instante.</p>
 <p>La idea del método de Holt es similar al alisado exponencial doble: en cada instante <span class="math inline">\(t\)</span>, queremos estimar el nivel de la serie (<span class="math inline">\(a_t\)</span>) y la pendiente de la tendencia (<span class="math inline">\(b_t\)</span>). A diferencia del alisado exponencial doble, en el método de Holt se usan dos parámetros de alisado que denotaremos por <span class="math inline">\(\alpha \in \left[0,1\right]\)</span> y <span class="math inline">\(\beta \in \left[0,1\right]\)</span>.</p>
 <p><strong>En el método de Holt, la estimación del nivel en el instante</strong> <span class="math inline">\(t\)</span> <strong>viene dada por la siguiente serie alisada:</strong></p>
