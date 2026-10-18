@@ -1,0 +1,1271 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>6&nbsp; Tema 5. Métodos de Alisado Exponencial – Procesos estocásticos y series temporales</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./Tema4.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-9e3e5b9121e68b3f077afb32f2c64d95.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No se han encontrado resultados",
+    "search-matching-documents-text": "documentos encontrados",
+    "search-copy-link-title": "Copiar el enlace en la búsqueda",
+    "search-hide-matches-text": "Ocultar resultados adicionales",
+    "search-more-match-text": "resultado adicional en este documento",
+    "search-more-matches-text": "resultados adicionales en este documento",
+    "search-clear-button-title": "Borrar",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancelar",
+    "search-submit-button-title": "Enviar",
+    "search-label": "Buscar"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Tema5.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Tema 5. Métodos de Alisado Exponencial</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Buscar" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Procesos estocásticos y series temporales</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Buscar"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Presentación</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tema1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Tema 1. Introducción a los procesos estocásticos</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tema2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Tema 2. Cadenas de Markov</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tema3.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Tema 3. Procesos de Poisson</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tema4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Tema 4. Conceptos básicos en series temporales</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tema5.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Tema 5. Métodos de Alisado Exponencial</span></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Tabla de contenidos</h2>
+   
+  <ul>
+  <li><a href="#introducción" id="toc-introducción" class="nav-link active" data-scroll-target="#introducción"><span class="header-section-number">6.1</span> Introducción</a></li>
+  <li><a href="#alisado-exponencial-simple" id="toc-alisado-exponencial-simple" class="nav-link" data-scroll-target="#alisado-exponencial-simple"><span class="header-section-number">6.2</span> Alisado Exponencial Simple</a></li>
+  <li><a href="#método-de-holt" id="toc-método-de-holt" class="nav-link" data-scroll-target="#método-de-holt"><span class="header-section-number">6.3</span> Método de Holt</a></li>
+  <li><a href="#método-de-holt-winters-multiplicativo" id="toc-método-de-holt-winters-multiplicativo" class="nav-link" data-scroll-target="#método-de-holt-winters-multiplicativo"><span class="header-section-number">6.4</span> Método de Holt-Winters multiplicativo</a></li>
+  <li><a href="#método-de-holt-winters-aditivo" id="toc-método-de-holt-winters-aditivo" class="nav-link" data-scroll-target="#método-de-holt-winters-aditivo"><span class="header-section-number">6.5</span> Método de Holt-Winters aditivo</a></li>
+  <li><a href="#interpretación-de-los-parámetros-de-alisado" id="toc-interpretación-de-los-parámetros-de-alisado" class="nav-link" data-scroll-target="#interpretación-de-los-parámetros-de-alisado"><span class="header-section-number">6.6</span> Interpretación de los parámetros de alisado</a></li>
+  <li><a href="#taxonomía-de-los-métodos-de-alisado-exponencial" id="toc-taxonomía-de-los-métodos-de-alisado-exponencial" class="nav-link" data-scroll-target="#taxonomía-de-los-métodos-de-alisado-exponencial"><span class="header-section-number">6.7</span> Taxonomía de los métodos de alisado exponencial</a></li>
+  <li><a href="#los-modelos-ets" id="toc-los-modelos-ets" class="nav-link" data-scroll-target="#los-modelos-ets"><span class="header-section-number">6.8</span> Los modelos ETS</a>
+  <ul class="collapse">
+  <li><a href="#etsann-modelo-de-espacio-de-estados-del-alisado-exponencial-simple-con-errores-aditivos" id="toc-etsann-modelo-de-espacio-de-estados-del-alisado-exponencial-simple-con-errores-aditivos" class="nav-link" data-scroll-target="#etsann-modelo-de-espacio-de-estados-del-alisado-exponencial-simple-con-errores-aditivos"><span class="header-section-number">6.8.1</span> ETS(A,N,N): Modelo de espacio de estados del alisado exponencial simple con errores aditivos</a></li>
+  <li><a href="#etsmnn-modelo-de-espacio-de-estados-del-alisado-exponencial-simple-con-errores-multiplicativos" id="toc-etsmnn-modelo-de-espacio-de-estados-del-alisado-exponencial-simple-con-errores-multiplicativos" class="nav-link" data-scroll-target="#etsmnn-modelo-de-espacio-de-estados-del-alisado-exponencial-simple-con-errores-multiplicativos"><span class="header-section-number">6.8.2</span> ETS(M,N,N): Modelo de espacio de estados del alisado exponencial simple con errores multiplicativos</a></li>
+  <li><a href="#otros-modelos-ets" id="toc-otros-modelos-ets" class="nav-link" data-scroll-target="#otros-modelos-ets"><span class="header-section-number">6.8.3</span> Otros modelos ETS</a></li>
+  <li><a href="#estimación-selección-del-modelo-ets-y-predicciones" id="toc-estimación-selección-del-modelo-ets-y-predicciones" class="nav-link" data-scroll-target="#estimación-selección-del-modelo-ets-y-predicciones"><span class="header-section-number">6.8.4</span> Estimación, selección del modelo ETS y predicciones</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Tema 5. Métodos de Alisado Exponencial</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="introducción" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="introducción"><span class="header-section-number">6.1</span> Introducción</h2>
+<p>Una de las críticas que se les hace a estos métodos clásicos es que no se adaptan a lo largo del tiempo de forma natural: en los métodos clásicos, la tendencia y la estacionalidad se estiman una sola vez, usando todas las observaciones y todas con el mismo peso. Sin embargo, parece más lógico que las observaciones más recientes tengan un mayor peso en las predicciones futuras y que las estimaciones de la tendencia y estacionalidad se actualicen conforme se obtienen nuevas observaciones.</p>
+<p>Una familia de modelos que aparecen la década de los años 60, intenta solucionar este problema. Se les conoce como <strong>técnicas de alisado exponencial</strong>, y se trata de técnicas bastante sencillas. Por este motivo, y a pesar de los años transcurridos, siguen siendo utilizadas en ciertas actividades de pronóstico, principalmente para realizar <strong>predicciones a corto plazo</strong>. Aplicar técnicas más sofisticadas no siempre se justifica.</p>
+<p>El estudio de una serie temporal viene marcado por las diferentes metodologías empleadas en su tratamiento. La metodología que presentamos en este tema trata de explicar la trayectoria de una serie observada a través de la información contenida en los datos históricos, es decir, intenta capturar el comportamiento sistemático que muestra el pasado de la serie y en base a ello realizar predicciones respecto al futuro.</p>
+<p>Los métodos de alisado exponencial se clasifican dependiendo de si la serie en estudio presenta o no estacionalidad. En este tema veremos los siguientes:</p>
+<ol type="1">
+<li><p><strong>Si la serie no presenta estacionalidad:</strong></p>
+<ol type="1">
+<li><p>Método de alisado exponencial simple: se usa cuando la tendencia se considera constante (localmente).</p></li>
+<li><p>Método de alisado exponencial doble: se usa cuando la tendencia se considera lineal (localmente).</p></li>
+<li><p>Método de Holt: se usa cuando la tendencia se considera lineal (localmente).</p></li>
+</ol></li>
+<li><p><strong>Si la serie presenta estacionalidad:</strong></p>
+<ol type="1">
+<li><p>Método de Holt-Winters para modelos multiplicativos: se usa cuando la serie presenta estacionalidad, la tendencia se considera lineal localmente y ambas componentes se integran con esquema multiplicativo.</p></li>
+<li><p>Método de Holt-Winters para modelos aditivos: se usa cuando la serie presenta estacionalidad, la tendencia se considera lineal localmente y ambas componentes se integran con esquema aditivo.</p></li>
+</ol></li>
+</ol>
+</section>
+<section id="alisado-exponencial-simple" class="level2" data-number="6.2">
+<h2 data-number="6.2" class="anchored" data-anchor-id="alisado-exponencial-simple"><span class="header-section-number">6.2</span> Alisado Exponencial Simple</h2>
+<p>Es el método más sencillo de alisado exponencial. Se aplica cuando la serie en estudio no presenta estacionalidad y su nivel se considera aproximadamente constante, al menos localmente. Es decir, cuando no se advierte un patrón claro de tendencia ni de estacionalidad.</p>
+<p>Un ejemplo ilustrativo sería la serie representada en el siguiente gráfico:</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ts.plot</span>(LakeHuron, </span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>        <span class="at">gpars =</span> <span class="fu">list</span>(<span class="at">xlab =</span> <span class="st">"Year"</span>, </span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">ylab =</span> <span class="st">"Level LakeHuron in feet"</span>, </span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>                     <span class="at">lwd =</span> <span class="fl">1.5</span>))</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Tema5_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>En este contexto, suponemos que la serie en estudio puede expresarse, en cada instante, mediante alguno de los siguientes modelos:</p>
+<p><span class="math display">\[\left\{
+\begin{array}{lll}
+x_t=T_t+I_t=a_t + I_t &amp; &amp; \text{modelo aditivo},\\
+x_t=T_t\cdot I_t=a_t + I_t &amp; &amp; \text{modelo multiplicativo},
+\end{array}
+\right.\]</span></p>
+<p>donde <span class="math inline">\(T_t=a_t\)</span> representa el nivel de la serie en el instante <span class="math inline">\(t\)</span>, que se supone aproximadamente constante en intervalos de tiempo próximos, e <span class="math inline">\(I_t\)</span> representa la componente irregular. Obsérvese que <span class="math inline">\(a_t\)</span> representa la <em>altura</em> alrededor de la cual fluctúa la serie en cada instante <span class="math inline">\(t\)</span> cuando realizamos su representación gráfica. Por este motivo, se denomina <strong>nivel de la serie</strong>.</p>
+<p>Al no considerar componentes de tendencia ni estacionalidad, nuestro objetivo se reduce a estimar el nivel de la serie en cada instante y utilizar dicha estimación para realizar predicciones.</p>
+<p>Supongamos que la serie temporal en estudio viene dada por las observaciones</p>
+<p><span class="math display">\[x_1,x_2,\ldots,x_t.\]</span></p>
+<p>Nuestro objetivo es predecir el valor de la serie en el siguiente instante, <span class="math inline">\(t+1\)</span>, utilizando la información disponible hasta el instante <span class="math inline">\(t\)</span>. Denotamos dicha predicción por <span class="math inline">\(\hat{x}_{t+1|t}\)</span>.</p>
+<p>El método de alisado exponencial simple establece que esta predicción se obtiene mediante la expresión</p>
+<p><span id="eq-alisado"><span class="math display">\[\hat{x}_{t+1|t}=\alpha x_t+(1-\alpha)\hat{x}_{t|t-1},
+\qquad 0\leq\alpha\leq 1, \tag{6.1}\]</span></span></p>
+<p>donde <span class="math inline">\(\alpha\)</span> es el parámetro de alisado.</p>
+<p>Es decir, la predicción para el siguiente instante se obtiene como una media ponderada entre la última observación y la predicción que se había realizado para dicha observación utilizando la información disponible hasta el instante anterior.</p>
+<p>De esta manera, definimos la serie de valores alisados mediante</p>
+<p><span class="math display">\[a_t=\hat{x}_{t+1|t}.\]</span></p>
+<p>A partir de la fórmula (<a href="#eq-alisado" class="quarto-xref"><span>6.1</span></a>), obtenemos la relación de recurrencia</p>
+<p><span class="math display">\[\boxed{
+a_t=\alpha x_t+(1-\alpha)a_{t-1},
+\qquad 0\leq\alpha\leq 1.
+}\]</span></p>
+<p>Esta relación permite calcular cada valor alisado a partir de la última observación y del valor alisado anterior. De esta forma, <span class="math inline">\(a_t\)</span> puede interpretarse como una estimación del nivel de la serie en el instante <span class="math inline">\(t\)</span>.</p>
+<p>Para aplicar la fórmula recursiva anterior, necesitamos disponer, por una parte, del valor del parámetro de alisado <span class="math inline">\(\alpha\)</span> y, por otra, de un valor inicial para la serie alisada. Una elección habitual consiste en tomar el primer valor de la serie original, es decir, <span class="math inline">\(a_1=x_1\)</span>, y aplicar la relación de recurrencia para <span class="math inline">\(t\geq 2\)</span>. Otra posibilidad es utilizar la media de las primeras <span class="math inline">\(k\)</span> observaciones como valor inicial <span class="math inline">\(a_k\)</span>, es decir,</p>
+<p><span class="math display">\[a_k=\frac{x_1+x_2+\ldots+x_k}{k},\]</span></p>
+<p>comenzando la recurrencia en el instante <span class="math inline">\(k+1\)</span>.</p>
+<p>Sustituyendo recursivamente los valores alisados anteriores y tomando como condición inicial <span class="math inline">\(a_1=x_1\)</span>, obtenemos</p>
+<p><span class="math display">\[a_t=\alpha x_t+\alpha(1-\alpha)x_{t-1}
++\alpha(1-\alpha)^2x_{t-2}+\alpha(1-\alpha)^3x_{t-2}+\cdots\]</span></p>
+<p>Por tanto, cada valor alisado es una media ponderada de todas las observaciones anteriores, con pesos de la forma <span class="math inline">\(\alpha(1-\alpha)^j\)</span>, que decrecen geométricamente con la antigüedad de las observaciones. De esta manera, las fluctuaciones puntuales de la serie original quedan atenuadas, dando lugar a una serie más suave. De ahí el nombre de <strong>alisado exponencial</strong>.</p>
+<p>Con respecto al parámetro de alisado <span class="math inline">\(\alpha\)</span>, si se utiliza un valor próximo a uno (<span class="math inline">\(\alpha\simeq 1\)</span>), se da mucho peso a la última observación y poco peso a la información pasada. En consecuencia, la serie alisada sigue más de cerca las variaciones de la serie original. Por el contrario, si se utiliza un valor próximo a cero (<span class="math inline">\(\alpha\simeq 0\)</span>), los valores alisados dependen en mayor medida del nivel estimado anteriormente y reaccionan más lentamente a los cambios en las observaciones. En este caso, el efecto suavizador es mayor y la serie alisada presenta menos fluctuaciones que la original.</p>
+<p>Se ha comprobado empíricamente que un valor de <span class="math inline">\(\alpha =0.2\)</span> suele dar buenos resultados. Sin embargo, la mayoría del software permite seleccionar el valor de <span class="math inline">\(\alpha\)</span> que minimiza la suma de cuadrados de los errores de estimación. En R podremos seleccionar como parámetro de suavizado el valor de <span class="math inline">\(\alpha\)</span> óptimo según dicho criterio (minimiza la suma de cuadrados de los errores de predicción para el instante siguiente).</p>
+<p>Nuestro fin último es realizar predicciones de la serie para instantes futuros. Si disponemos de información de la serie hasta el instante <span class="math inline">\(T\)</span>, <span class="math inline">\(\{x_t\}_{t=1,2,...,T}\)</span>, las predicciones de la serie usando el método de alisado exponencial simple vienen dadas por:</p>
+<p><span class="math display">\[\boxed{
+\begin{array}{l}
+\widehat{x}_{T+1|T}=a_T\\
+\widehat{x}_{T+2|T}=a_T \\
+\vdots  \\
+\widehat{x}_{T+m|T}=a_T\qquad \forall m=1,2,3,...
+\end{array}
+}\]</span></p>
+<p>donde, recordemos, <span class="math inline">\(\widehat{x}_{T+m|T}\)</span> denota el valor de la predicción en el instante <span class="math inline">\(T+m\)</span> cuando disponemos de observaciones de la serie hasta el instante <span class="math inline">\(T\)</span>. Es decir, la predicción de la serie en el instante siguiente viene dada por la estimación del nivel en el último instante observado, o lo que es lo mismo, el valor de la serie alisada en el último instante observado. Y ésta también sería la predicción para instantes posteriores.</p>
+<p>Sin embargo, a medida que disponemos de información nueva (nuevas observaciones), se calculan los valores de la serie alisada para los nuevos instantes y por tanto se revisan las predicciones de manera automática.</p>
+<p>Podemos decir que el alisado exponencial simple estima en cada instante <span class="math inline">\(t\)</span> el <em>nivel de la serie</em> (altura de la serie), y al suponer tendencia constante las predicciones vienen dadas sólo por el último nivel estimado. En el siguiente gráfico se muestra la serie original (negro), la serie ajustada (azul) usando Alisado Exponencial Simple y las predicciones (rojo) para futuros instantes.</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>SES <span class="ot">&lt;-</span> <span class="fu">HoltWinters</span>(LakeHuron, <span class="at">beta =</span> <span class="cn">FALSE</span>, <span class="at">gamma =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ts.plot</span>(LakeHuron, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">1875</span>, <span class="dv">2000</span>), </span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">gpars =</span> <span class="fu">list</span>(<span class="at">xlab =</span> <span class="st">"Year"</span>, </span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>                   <span class="at">ylab =</span> <span class="st">"Level LakeHuron in feet"</span>, </span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>                   <span class="at">lwd =</span> <span class="fl">1.5</span>))</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(SES<span class="sc">$</span>fitted[ , <span class="dv">1</span>], <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">lwd =</span> <span class="fl">1.2</span>)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(<span class="fu">predict</span>(SES, <span class="at">n.ahead =</span> <span class="dv">20</span>), <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">lwd =</span> <span class="fl">1.2</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Tema5_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>En este caso, además vemos que el alisado se parece mucho a la serie original, lo que sugiere un valor <span class="math inline">\(\alpha\)</span> cercano a <span class="math inline">\(1\)</span>. Además, como no se proporcionó el valor de <span class="math inline">\(\alpha\)</span>, dicho valor es ajustado automáticamente.</p>
+<p>Si forzamos un valor de <span class="math inline">\(\alpha\)</span> más bajo, por ejemplo <span class="math inline">\(\alpha=0.2\)</span>, obtenemos una serie de alisado más suave.</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>SES <span class="ot">&lt;-</span> <span class="fu">HoltWinters</span>(LakeHuron, <span class="at">alpha=</span><span class="fl">0.2</span>, <span class="at">beta =</span> <span class="cn">FALSE</span>, <span class="at">gamma =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ts.plot</span>(LakeHuron, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">1875</span>, <span class="dv">2000</span>), </span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">gpars =</span> <span class="fu">list</span>(<span class="at">xlab =</span> <span class="st">"Year"</span>, </span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>                   <span class="at">ylab =</span> <span class="st">"Level LakeHuron in feet"</span>, </span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>                   <span class="at">lwd =</span> <span class="fl">1.5</span>))</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(SES<span class="sc">$</span>fitted[ , <span class="dv">1</span>], <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">lwd =</span> <span class="fl">1.2</span>)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(<span class="fu">predict</span>(SES, <span class="at">n.ahead =</span> <span class="dv">20</span>), <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">lwd =</span> <span class="fl">1.2</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Tema5_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="método-de-holt" class="level2" data-number="6.3">
+<h2 data-number="6.3" class="anchored" data-anchor-id="método-de-holt"><span class="header-section-number">6.3</span> Método de Holt</h2>
+<p>Este método de alisado se aplica en las mismas situaciones que el alisado exponencial doble, es decir, cuando la serie en estudio no presenta estacionalidad y la tendencia de la serie se considera lineal localmente.</p>
+<p>Nuevamente, la serie en estudio se expresa de la siguiente forma en cada instante:</p>
+<p><span class="math display">\[\left\{
+\begin{array}{lll}
+x_t=T_t+I_t=\left( a_t+b_t\cdot t\right) +I_t &amp;  &amp; \text{modelo aditivo} \\
+x_t=T_t\times I_t=\left( a_t+b_t\cdot t\right) \times I_t &amp;  &amp; \text{modelo
+multiplicativo}
+\end{array}
+\right. \]</span><span class="math display">\[\left\{ \begin{array}{lll}x_t=T_t+I_t=\left( a_t+b_t\cdot t\right) +I_t &amp;  &amp; \text{modelo aditivo} \\ x_t=T_t\times I_t=\left( a_t+b_t\cdot t\right) \times I_t &amp;  &amp; \text{modelomultiplicativo}\end{array}\right. \]</span></p>
+<p>donde <span class="math inline">\(a_t\)</span> representa el <strong>nivel</strong> de la serie en cada instante <span class="math inline">\(t\)</span>, mientras que <span class="math inline">\(b_t\)</span> representa la <strong>pendiente</strong> de la tendencia lineal en dicho instante.</p>
+<p>La idea del método de Holt es similar al alisado exponencial doble: en cada instante <span class="math inline">\(t\)</span>, queremos estimar el nivel de la serie (<span class="math inline">\(a_t\)</span>) y la pendiente de la tendencia (<span class="math inline">\(b_t\)</span>). A diferencia del alisado exponencial doble, en el método de Holt se usan dos parámetros de alisado que denotaremos por <span class="math inline">\(\alpha \in \left[0,1\right]\)</span> y <span class="math inline">\(\beta \in \left[0,1\right]\)</span>.</p>
+<p><strong>En el método de Holt, la estimación del nivel en el instante</strong> <span class="math inline">\(t\)</span> <strong>viene dada por la siguiente serie alisada:</strong></p>
+<p><span class="math display">\[\boxed{a_t=\alpha x_t+(1-\alpha )\left( a_{t-1}+b_{t-1}\right) }\]</span></p>
+<p>es decir, se obtiene como media ponderada de la última observación y (nivel+pendiente) en el instante anterior.</p>
+<p>Por otra parte, <strong>la estimación de la pendiente en el instante</strong> <span class="math inline">\(t\)</span> <strong>viene dada por la siguiente serie alisada:</strong></p>
+<p><span class="math display">\[\boxed{b_t=\beta \left( a_t-a_{t-1}\right) +(1-\beta )b_{t-1}}\]</span></p>
+<p>es decir, se obtiene como media ponderada del último incremento de nivel y la pendiente en el instante anterior.</p>
+<p>Para aplicar la fórmula recursiva anterior necesitamos disponer de los parámetros de alisado <span class="math inline">\(\alpha \in \left[0,1\right]\)</span> y <span class="math inline">\(\beta \in \left[0,1\right]\)</span>, y de los valores inciales de nivel (<span class="math inline">\(a_0\)</span>) y pendiente (<span class="math inline">\(b_0)\)</span>. Como valores iniciales se suelen tomar la ordenada en el origen (<span class="math inline">\(a_0=cte\)</span>) y la pendiente (<span class="math inline">\(b_0=pendiente\)</span>) de la recta que ajusta a la serie por mínimos cuadrados usando todos los datos.</p>
+<p>Con respecto a los parámetros de alisado, podemos seleccionar aquellos que minimicen la suma de cuadrados de los errores de estimación.</p>
+<p>Las predicciones con el método de Holt se obtienen de forma análoga al alisado doble: si disponemos de información de la serie hasta el instante <span class="math inline">\(T\)</span>, <span class="math inline">\(\{x_t\}_{t=1,2,...,T}\)</span>, las predicciones vienen dadas por</p>
+<p><span class="math display">\[\boxed{
+\begin{array}{l}
+\widehat{x}_{T+1|T}=a_T+b_T\cdot 1 \\
+\widehat{x}_{T+2|T}=a_T+b_T\cdot 2 \\
+\vdots \\
+\widehat{x}_{T+m|T}=a_T+b_T\cdot m\qquad \forall m=1,2,3,...
+\end{array}
+} \]</span></p>
+<p>Como siempre, a medida que disponemos de nuevas observaciones, se calculan los valores de las series alisadas para los nuevos instantes y por tanto se revisan las predicciones de manera automática.</p>
+<p>En el siguiente gráfico se muestra la serie original (negro), la serie ajustada (azul) usando el método de Holt y las predicciones (rojo) para futuros instantes.</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span> (astsa)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>Holt <span class="ot">&lt;-</span> <span class="fu">HoltWinters</span> (sales, <span class="at">gamma =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ts.plot</span>(sales , <span class="at">lwd =</span> <span class="fl">1.5</span>, <span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">170</span>), <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">200</span>, <span class="dv">270</span>))</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span> (Holt<span class="sc">$</span>fitted [ , <span class="dv">1</span>], <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">lwd =</span> <span class="fl">1.2</span>)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span> (<span class="fu">predict</span> (Holt, <span class="at">n.ahead =</span> <span class="dv">20</span>) , <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">lwd =</span> <span class="fl">1.2</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Tema5_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="método-de-holt-winters-multiplicativo" class="level2" data-number="6.4">
+<h2 data-number="6.4" class="anchored" data-anchor-id="método-de-holt-winters-multiplicativo"><span class="header-section-number">6.4</span> Método de Holt-Winters multiplicativo</h2>
+<p>Este método de alisado es una variación del método de Holt que sirve para realizar predicciones en series que presentan estacionalidad. Además de la estacionalidad, se supone tendencia lineal (localmente) y que ambas componentes (tendencia y estacionalidad) se integran en la serie de forma multiplicativa.</p>
+<p>Por tanto, la serie en estudio se expresa de la siguiente forma en cada instante:</p>
+<p><span class="math display">\[\begin{array}{lll}
+x_t=T_t\times S_t \times I_t=\left( a_t+b_t\cdot t\right) \times S_t \times I_t &amp;  &amp; \text{
+modelo multiplicativo}
+\end{array}\]</span></p>
+<p><span class="math display">\[\begin{array}{lll}
+x_t=T_t\times S_t+I_t=\left( a_t+b_t\cdot t\right) \times S_t+I_t &amp;  &amp; \text{
+modelo multiplicativo (mixto)}
+\end{array}\]</span></p>
+<p>donde <span class="math inline">\(a_t\)</span> representa el <strong>nivel</strong> de la serie en cada instante <span class="math inline">\(t\)</span>, <span class="math inline">\(b_t\)</span> representa la <strong>pendiente</strong> de la tendencia lineal en dicho instante y <span class="math inline">\(S_t\)</span> la componente <strong>estacional</strong> de la serie que supondremos de período <span class="math inline">\(L\)</span>.</p>
+<p>Siguiendo la idea del método de Holt, en cada instante <span class="math inline">\(t\,\)</span>necesitamos estimar el nivel de la serie (<span class="math inline">\(a_t\)</span>), la pendiente de la tendencia (<span class="math inline">\(b_t\)</span>) y el factor estacional (<span class="math inline">\(S_t\)</span>). En este caso se usarán tres series alisadas y tres parámetros de alisado que denotaremos por <span class="math inline">\(\alpha \in \left[0,1\right]\)</span>, <span class="math inline">\(\beta \in \left[0,1\right]\)</span> y <span class="math inline">\(\gamma \in \left[0,1\right]\)</span>.</p>
+<p><strong>En el método de Holt-Winters multiplicativo, la estimación del nivel en el instante</strong> <span class="math inline">\(t\)</span> <strong>viene dada por la siguiente serie alisada:</strong></p>
+<p><span class="math display">\[\boxed{a_t=\alpha \frac{x_t}{S_{t-L}}+(1-\alpha )\left( a_{t-1}+b_{t-1}\right) }\]</span></p>
+<p>es decir, se obtiene como media ponderada de la última observación “desestacionalizada” y (nivel+pendiente) en el instante anterior.</p>
+<p>Por otra parte, <strong>la estimación de la pendiente en el instante</strong> <span class="math inline">\(t\)</span> <strong>viene dada por la siguiente serie alisada:</strong></p>
+<p><span class="math display">\[\boxed{b_t=\beta \left( a_t-a_{t-1}\right) +(1-\beta )b_{t-1}}\]</span></p>
+<p>es decir, se obtiene como media ponderada del último incremento de nivel y la pendiente en el instante anterior.</p>
+<p>Finalmente, <strong>la estimación del factor estacional en el instante</strong> <span class="math inline">\(t\)</span> <strong>viene dada por la siguiente serie alisada:</strong></p>
+<p><span class="math display">\[\boxed{S_t=\gamma \cdot \frac{x_t}{a_t}+\left( 1-\gamma \right) S_{t-L}}\]</span></p>
+<p>Para aplicar la fórmula recursiva anterior necesitamos disponer de los parámetros de alisado <span class="math inline">\(\alpha \in \left[ 0,1\right]\)</span>, <span class="math inline">\(\beta \in \left[ 0,1\right]\)</span> y <span class="math inline">\(\gamma \in \left[ 0,1\right]\)</span>, y de los valores inciales de nivel (<span class="math inline">\(a_0)\)</span>, pendiente (<span class="math inline">\(b_0)\)</span>, y factores estacionales (<span class="math inline">\(S_0\)</span>, <span class="math inline">\(S_{-1}\)</span>, …, <span class="math inline">\(S_{-L+1}\)</span>). Como valores iniciales para el nivel y la pendiente (<span class="math inline">\(a_0\)</span> y <span class="math inline">\(b_0\)</span>) se suelen tomar la ordenada en el origen (<span class="math inline">\(a_0=cte\)</span>) y la pendiente (<span class="math inline">\(b_0=pendiente\)</span>) de la recta que ajusta a la serie desestacionalizada por mínimos cuadrados usando todos los datos, y como valores iniciales de los factores estacionales se suelen tomar los índices de variación estacional (IVE) obtenidos al desestacionalizar la serie (visto en análisis clásico).</p>
+<p>Con respecto a los parámetros de alisado, podemos seleccionar aquellos que minimicen la suma de cuadrados de los errores de estimación.</p>
+<p>Las predicciones con el método de Holt-Winters multiplicativo se obtienen de la siguiente forma: si disponemos de información de la serie hasta el instante <span class="math inline">\(T\)</span>, <span class="math inline">\(\{x_t\}_{t=1,2,...,T}\)</span>, las predicciones vienen dadas por</p>
+<p><span class="math display">\[\boxed{
+\begin{array}{l}
+\widehat{x}_{T+1|T}=\left( a_T+b_T\cdot 1\right) \times S_{T+1-L} \\
+\widehat{x}_{T+21T}=\left( a_T+b_T\cdot 2\right) \times S_{T+2-L} \\
+\vdots \\
+\widehat{x}_{T+m|T}=\left( a_T+b_T\cdot m\right) \times S_{T+m-L}\qquad
+\forall m=1,2,...,L
+\end{array}
+} \]</span></p>
+<p>Como siempre, a medida que disponemos de nuevas observaciones, se calculan los valores de las series alisadas para los nuevos instantes y por tanto se revisan las predicciones de manera automática.</p>
+<p>En el siguiente gráfico se muestra la serie original (negro), la serie ajustada (azul) usando Holt-Winters multiplicativo y las predicciones (rojo) para futuros instantes.</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>Holt_Winter_multip <span class="ot">&lt;-</span> <span class="fu">HoltWinters</span>(AirPassengers, <span class="at">seasonal =</span> <span class="st">"multiplicative"</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>forecasted_values1 <span class="ot">&lt;-</span> <span class="fu">predict</span>(Holt_Winter_multip, <span class="at">n.ahead =</span> <span class="dv">24</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>extended_data1 <span class="ot">&lt;-</span> <span class="fu">ts</span>(<span class="fu">c</span>(AirPassengers, forecasted_values1), </span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>                     <span class="at">start =</span> <span class="fu">start</span>(AirPassengers), </span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>                     <span class="at">frequency =</span> <span class="fu">frequency</span>(AirPassengers))</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ts.plot</span>(extended_data1, <span class="at">col =</span> <span class="st">"red"</span>)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(AirPassengers, <span class="at">lwd =</span> <span class="fl">1.5</span>)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(Holt_Winter_multip<span class="sc">$</span>fitted[ , <span class="dv">1</span>], <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">lwd =</span> <span class="fl">1.2</span>)</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(<span class="fu">predict</span>(Holt_Winter_multip, <span class="at">n.ahead =</span> <span class="dv">24</span>), <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">lwd =</span> <span class="fl">1.2</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Tema5_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="método-de-holt-winters-aditivo" class="level2" data-number="6.5">
+<h2 data-number="6.5" class="anchored" data-anchor-id="método-de-holt-winters-aditivo"><span class="header-section-number">6.5</span> Método de Holt-Winters aditivo</h2>
+<p>Este método de alisado se aplica en los mismos casos que el método anterior, salvo que los componentes de estacionalidad y tendencia se integran de forma aditiva. Por tanto, la serie en estudio se expresa de la siguiente forma en cada instante:</p>
+<p><span class="math display">\[x_t=T_t+S_t+I_t=\left( a_t+b_t\cdot t\right) +S_t+I_t \quad \text{modelo aditivo}\]</span></p>
+<p>donde <span class="math inline">\(a_t\)</span> representa el <strong>nivel</strong> de la serie en cada instante <span class="math inline">\(t\)</span>, <span class="math inline">\(b_t\)</span> representa la <strong>pendiente</strong> de la tendencia lineal en dicho instante y <span class="math inline">\(S_t\)</span> la componente <strong>estacional</strong> de la serie que supondremos de período <span class="math inline">\(L.\)</span></p>
+<p>Siguiendo la idea del método anterior, en cada instante <span class="math inline">\(t\,\)</span>necesitamos estimar el nivel de la serie (<span class="math inline">\(a_t\)</span>), la pendiente de la tendencia (<span class="math inline">\(b_t\)</span>) y el factor estacional (<span class="math inline">\(S_t\)</span>). En este caso se usarán tres series alisadas y tres parámetros de alisado que denotaremos por <span class="math inline">\(\alpha \in \left[ 0,1\right]\)</span>, <span class="math inline">\(\beta \in \left[ 0,1\right]\)</span> y <span class="math inline">\(\gamma \in \left[0,1\right]\)</span>.</p>
+<p><strong>En el método de Holt-Winters aditivo, la estimación del nivel en el instante</strong> <span class="math inline">\(t\)</span> <strong>viene dada por la siguiente serie alisada:</strong></p>
+<p><span class="math display">\[\boxed{a_t=\alpha \left( x_t-S_{t-L}\right) +(1-\alpha )\left(
+a_{t-1}+b_{t-1}\right) }\]</span></p>
+<p>es decir, se obtiene como media ponderada de la última observación “desestacionalizada” y (nivel+pendiente) en el instante anterior.</p>
+<p>Por otra parte, <strong>la estimación de la pendiente en el instante</strong> <span class="math inline">\(t\)</span> <strong>viene dada por la siguiente serie alisada:</strong></p>
+<p><span class="math display">\[\boxed{b_t=\beta \left( a_t-a_{t-1}\right) +(1-\beta )b_{t-1}}\]</span></p>
+<p>es decir, se obtiene como media ponderada del último incremento de nivel y la pendiente en el instante anterior.</p>
+<p>Finalmente, <strong>la estimación del factor estacional en el instante</strong> <span class="math inline">\(t\)</span> <strong>viene dada por la siguiente serie alisada:</strong></p>
+<p><span class="math display">\[\boxed{S_t=\gamma \cdot \left( x_t-a_t\right) +\left( 1-\gamma \right) S_{t-L}}\]</span></p>
+<p>Para aplicar la fórmula recursiva anterior necesitamos disponer de los parámetros de alisado <span class="math inline">\(\alpha \in \left[ 0,1\right]\)</span>, <span class="math inline">\(\beta \in \left[ 0,1\right]\)</span> y <span class="math inline">\(\gamma \in \left[ 0,1\right]\)</span>, y de los valores inciales de nivel (<span class="math inline">\(a_0)\)</span>, pendiente (<span class="math inline">\(b_0)\)</span>, y factores estacionales (<span class="math inline">\(S_0\)</span>, <span class="math inline">\(S_{-1}\)</span>, …, <span class="math inline">\(S_{-L+1}\)</span>). Como valores iniciales para el nivel y la pendiente (<span class="math inline">\(a_0\)</span> y <span class="math inline">\(b_0\)</span>) se suelen tomar la ordenada en el origen (<span class="math inline">\(a_0=cte\)</span>) y la pendiente (<span class="math inline">\(b_0=pendiente\)</span>) de la recta que ajusta a la serie desestacionalizada por mínimos cuadrados usando todos los datos, y como valores iniciales de los factores estacionales se suelen tomar los índices de variación estacional (IVE) obtenidos al desestacionalizar la serie (visto en análisis clásico).</p>
+<p>Con respecto a los parámetros de alisado, podemos seleccionar aquellos que minimicen la suma de cuadrados de los errores de estimación.</p>
+<p>Las predicciones con el método de Holt-Winters aditivo se obtienen de la siguiente forma: si disponemos de información de la serie hasta el instante <span class="math inline">\(T\)</span>, <span class="math inline">\(\{x_t\}_{t=1,2,...,T}\)</span>, las predicciones vienen dadas por</p>
+<p><span class="math display">\[\boxed{
+\begin{array}{l}
+\widehat{x}_{T+1|T}=\left( a_T+b_T\cdot 1\right) +S_{T+1-L} \\
+\widehat{x}_{T+2|T}=\left( a_T+b_T\cdot 2\right) +S_{T+2-L} \\
+\vdots \\
+\widehat{x}_{T+m|T}=\left( a_T+b_T\cdot m\right) +S_{T+m-L}\qquad \forall
+m=1,2,...,L
+\end{array}
+} \]</span></p>
+<p>Como siempre, a medida que disponemos de nuevas observaciones, se calculan los valores de las series alisadas para los nuevos instantes y por tanto se revisan las predicciones de manera automática.</p>
+<p>En el siguiente gráfico se muestra la serie original (negro), la serie ajustada (azul) usando Holt-Winters aditivo y las predicciones (rojo) para futuros instantes.</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">log</span>(AirPassengers)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>Holt_Winter_aditivo <span class="ot">&lt;-</span> <span class="fu">HoltWinters</span>(data, <span class="at">seasonal =</span> <span class="st">"additive"</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>forecasted_values <span class="ot">&lt;-</span> <span class="fu">predict</span>(Holt_Winter_aditivo, <span class="at">n.ahead =</span> <span class="dv">24</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>extended_data <span class="ot">&lt;-</span> <span class="fu">ts</span>(<span class="fu">c</span>(data, forecasted_values), <span class="at">start =</span> <span class="fu">start</span>(data), <span class="at">frequency =</span> <span class="fu">frequency</span>(data))</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ts.plot</span>(extended_data, <span class="at">col =</span> <span class="st">"red"</span>)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(<span class="fu">log</span>(AirPassengers), <span class="at">lwd =</span> <span class="fl">1.5</span>)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(Holt_Winter_aditivo<span class="sc">$</span>fitted[ , <span class="dv">1</span>], <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">lwd =</span> <span class="fl">1.2</span>)</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(<span class="fu">predict</span>(Holt_Winter_aditivo, <span class="at">n.ahead =</span> <span class="dv">24</span>), <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">lwd =</span> <span class="fl">1.2</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Tema5_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="interpretación-de-los-parámetros-de-alisado" class="level2" data-number="6.6">
+<h2 data-number="6.6" class="anchored" data-anchor-id="interpretación-de-los-parámetros-de-alisado"><span class="header-section-number">6.6</span> Interpretación de los parámetros de alisado</h2>
+<p>Para clarificar un poco el papel que tiene cada uno de los parámetros de alisado en los métodos vistos, podemos proporcinar la siguiente interpretación aproximada de los parámetros de alisado <span class="math inline">\(\alpha\)</span>, <span class="math inline">\(\beta\)</span> y <span class="math inline">\(\gamma\)</span>:</p>
+<ul>
+<li><p>Alfa (<span class="math inline">\(\alpha\)</span>). Parámetro de suavizado exponencial que controla el peso relativo dado a las observaciones más recientes a la hora de estimar el nivel de la serie, en contraposición a la media global de la serie. Cuando alfa toma el valor 1, se utiliza exclusivamente la única observación más reciente; cuando alfa toma el valor 0, las observaciones antiguas cuentan con tanto peso como las recientes. Alfa se utiliza en todos los métodos de alisado.</p></li>
+<li><p>Beta (<span class="math inline">\(\beta\)</span>). Parámetro de suavizado exponencial que controla el peso relativo dado a las observaciones recientes a la hora de estimar la tendencia de la serie en el presente. Toma valores de 0 a 1. Los valores próximos a 1 indican un mayor peso para los valores recientes. Beta se utiliza sólo en los métodos de suavizado exponencial con una tendencia lineal localmente. No se utiliza en el alisado exponencial simple ni doble.</p></li>
+<li><p>Gamma (<span class="math inline">\(\gamma\)</span>). Parámetro de suavizado exponencial que controla el peso relativo dado a las observaciones recientes al estimar la estacionalidad del presente. Toma valores de 0 a 1. Los valores próximos a 1 corresponden a un mayor peso para las observaciones recientes. La gamma se utiliza en todos los métodos de suavizado exponencial con componente estacional. No se utiliza en los método de alisado simple, doble y de Holt.</p></li>
+</ul>
+</section>
+<section id="taxonomía-de-los-métodos-de-alisado-exponencial" class="level2" data-number="6.7">
+<h2 data-number="6.7" class="anchored" data-anchor-id="taxonomía-de-los-métodos-de-alisado-exponencial"><span class="header-section-number">6.7</span> Taxonomía de los métodos de alisado exponencial</h2>
+<p>Los métodos de alisado desarrollados en las secciones anteriores suponen una parte del total de métodos disponibles con ese mismo enfoque.</p>
+<p>Las formas más usuales de variar y combinar las componentes de tendencia y estacionalidad se muestran en la siguiente tabla, dando lugar a un total de 9 métodos de alisado exponencial (fuente: Hyndman, R.J. and Athanasopoulos, G., 2021):</p>
+<!-- ![Tabla 8.5 extraída de Hyndman and Athanasopoulos (2021)](tabla_8_5a.jpg) -->
+<table class="caption-top table">
+<caption>Clasificación de los métodos de alisado exponencial.</caption>
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Estacionalidad</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>N (Ninguna)</td>
+<td>(N,N)</td>
+</tr>
+<tr class="even">
+<td>A (Aditiva)</td>
+<td>(A,N)</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(A_d\)</span> (Amortiguada)</td>
+<td>(<span class="math inline">\(A_d\)</span>,N)</td>
+</tr>
+</tbody>
+</table>
+<p>La mayoría de dichos métodos son los desarrollados anteriormente en este tema, incluyendo como novedad los casos de tendencia amortiguada (con parámetro de alisado adicional denotado por <span class="math inline">\(\phi\)</span>), en los que la pendiente de la tendencia se ve amortiguada conforme aumenta el horizonte de predicción (<span class="math inline">\(h\)</span>):</p>
+<!-- ![Tabla extraída de Hyndman and Athanasopoulos (2021)](tabla_8_5b.jpg) -->
+<table class="caption-top table">
+<caption>Principales métodos de alisado exponencial.</caption>
+<thead>
+<tr class="header">
+<th><strong>Notación</strong></th>
+<th><strong>Método</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>(N,N)</td>
+<td>Alisado exponencial simple</td>
+</tr>
+<tr class="even">
+<td>(A,N)</td>
+<td>Método lineal de Holt</td>
+</tr>
+<tr class="odd">
+<td>(<span class="math inline">\(A_d\)</span>,N)</td>
+<td>Método de tendencia amortiguada</td>
+</tr>
+<tr class="even">
+<td>(A,A)</td>
+<td>Holt-Winters aditivo</td>
+</tr>
+<tr class="odd">
+<td>(A,M)</td>
+<td>Holt-Winters multiplicativo</td>
+</tr>
+<tr class="even">
+<td>(<span class="math inline">\(A_d\)</span>,M)</td>
+<td>Holt-Winters con tendencia amortiguada</td>
+</tr>
+</tbody>
+</table>
+<p>La siguiente tabla muestra las fórmulas recurrentes para aplicar cada uno de los nueve métodos de alisado mencionados arriba, así como la expresión para obtener las <strong>predicciones puntuales</strong> con horizonte <span class="math inline">\(h\)</span> (fuente: Hyndman, R.J. and Athanasopoulos, G., 2021). Indicar que la notación empleada para dicha tabla difiere de la usada en nuestro caso.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="tabla_8_6.png" class="img-fluid figure-img"></p>
+<figcaption>Tabla 8.6 extraída de Hyndman and Athanasopoulos (2021)</figcaption>
+</figure>
+</div>
+<p>Cabe destacar, a modo resumen, que los métodos de alisado exponencial permiten obtener <strong>predicciones puntuales</strong> de la serie para instantes futuros. Aunque no se establece ninguna regla para el horizonte de predicción permitido, estos métodos tienen sentido para <strong>predicciones a corto plazo</strong>, siendo recomendable actualizar las fórmulas recurrentes conforme se dispone de nuevas observaciones de la serie.</p>
+<p>En la próxima sección se introducen los modelos ETS, que suponen una extensión de los métodos de alisado exponencial.</p>
+</section>
+<section id="los-modelos-ets" class="level2" data-number="6.8">
+<h2 data-number="6.8" class="anchored" data-anchor-id="los-modelos-ets"><span class="header-section-number">6.8</span> Los modelos ETS</h2>
+<p>Los modelos ETS, cuyas siglas se corresponden con (Error, Trend, Seasonal), representan los modelos estadísticos que subyacen bajo los métodos de alisado exponencial, dando lugar a las mismas estimaciones puntuales y permitiendo la obtención de intervalos de predicción.</p>
+<p>Cada modelo ETS consiste en una ecuación que describe al proceso estocástico generador de la serie observada y, por otro lado, una o varias ecuaciones que describen cómo varían con el tiempo los <em>estados</em> (nivel, pendiente de la tendencia y estacionalidad). Por eso estos modelos se conocen como <strong>modelos de espacio de estados</strong> (state space models).</p>
+<p>Por facilitar la distinción, hablaremos de <em>métodos</em> de alisado exponencial y <em>modelos</em> de espacio de estados. Para cada método de alisado existen dos modelos: uno con errores aditivos y otro con errores multiplicativos. Ambos proporcionan las mismas predicciones puntuales pero diferentes intervalos de predicción.</p>
+<div class="callout callout-style-simple callout-none no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">None</span>Notación:
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Usaremos la nomenclatura <strong>ETS(Error, Trend, Seasonal)</strong>, donde:</p>
+<ul>
+<li><span class="math inline">\(Error= \left\{A,M\right\}\)</span> según sean errores aditivos (A) o multiplicativos (M).</li>
+<li><span class="math inline">\(Trend=\left\{N,A,A_d\right\}\)</span> según sea tendencia (lineal localmente) aditiva (A), amortiguada (<span class="math inline">\(A_d\)</span>), o bien no haya tendencia (N).</li>
+<li><span class="math inline">\(Seasonal=\left\{N,A,M\right\}\)</span> según sea esquema aditivo (A) o multiplicativo (M) para combinar la estacionalidad con la tendencia, o bien no se contemple componente estacional (N).</li>
+</ul>
+</div>
+</div>
+<p>Por ejemplo, ETS(A,N,N) representaría el modelo de espacio de estados del alisado exponencial simple con errores aditivos.</p>
+<p>Veremos a continuación alguno de estos modelos en detalle.</p>
+<section id="etsann-modelo-de-espacio-de-estados-del-alisado-exponencial-simple-con-errores-aditivos" class="level3" data-number="6.8.1">
+<h3 data-number="6.8.1" class="anchored" data-anchor-id="etsann-modelo-de-espacio-de-estados-del-alisado-exponencial-simple-con-errores-aditivos"><span class="header-section-number">6.8.1</span> ETS(A,N,N): Modelo de espacio de estados del alisado exponencial simple con errores aditivos</h3>
+<p>Recordemos las ecuaciones del método de alisado exponencial simple:</p>
+<p><span class="math display">\[a_t=\alpha x_t+(1-\alpha)a_{t-1}
+\qquad (\text{ecuación de alisado})\]</span></p>
+<p><span class="math display">\[\widehat{x}_{t+1|t}=a_t
+\qquad (\text{ecuación de predicción})\]</span></p>
+<p>Obsérvese que la ecuación de alisado también puede reescribirse como sigue:</p>
+<p><span class="math display">\[\begin{aligned}
+a_t
+&amp;=\alpha x_t+(1-\alpha)a_{t-1}\\
+&amp;=a_{t-1}+\alpha(x_t-a_{t-1})\\
+&amp;=a_{t-1}+\alpha(x_t-\widehat{x}_{t|t-1})\\
+&amp;=a_{t-1}+\alpha e_t,
+\end{aligned}\]</span></p>
+<p>donde <span class="math inline">\(e_t=x_t-\widehat{x}_{t|t-1}=x_t-a_{t-1}\)</span> es el residuo o error de predicción en el instante <span class="math inline">\(t\)</span>.</p>
+<p>Por tanto, obtenemos las dos ecuaciones siguientes:</p>
+<p><span class="math display">\[x_t=a_{t-1}+e_t\]</span></p>
+<p><span class="math display">\[a_t=a_{t-1}+\alpha e_t.\]</span></p>
+<p>La primera expresa cada observación como la suma del nivel estimado en el instante anterior y el error de predicción, mientras que la segunda describe cómo se actualiza dicho nivel a partir del error cometido.</p>
+<p>A partir de estas ecuaciones, podemos construir un modelo estadístico de espacio de estados introduciendo una estructura probabilística para los errores. En concreto, consideramos que los errores vienen dados por un ruido blanco gaussiano <span class="math inline">\((\varepsilon_t)\)</span></p>
+<p>Además, suponemos que cada error <span class="math inline">\(\varepsilon_t\)</span> es independiente de las observaciones disponibles hasta el instante <span class="math inline">\(t-1\)</span>.</p>
+<p>De este modo, el modelo ETS(A,N,N) viene dado por los procesos estocásticos <span class="math inline">\((X_t)\)</span> y <span class="math inline">\((A_t)\)</span>, que verifican las siguientes ecuaciones:</p>
+<p><span class="math display">\[\boxed{
+\left\{
+\begin{aligned}
+X_t&amp;=A_{t-1}+\varepsilon_t,\\
+A_t&amp;=A_{t-1}+\alpha\varepsilon_t.
+\end{aligned}
+\right.
+}\]</span></p>
+<p>La primera se denomina <strong>ecuación de observación</strong>, mientras que la segunda es la <strong>ecuación de estado</strong> o de evolución del nivel.</p>
+<p>De esta manera, interpretamos las series observadas <span class="math inline">\((x_t)\)</span> y alisadas <span class="math inline">\((a_t)\)</span> como realizaciones de los procesos estocásticos <span class="math inline">\((X_t)\)</span> y <span class="math inline">\((A_t)\)</span>, respectivamente, para una inicialización y un valor del parámetro <span class="math inline">\(\alpha\)</span> dados.</p>
+<p>En particular, si utilizamos la condición inicial <span class="math inline">\(a_1=x_1\)</span>, podemos tomar <span class="math inline">\(A_1=x_1\)</span> una vez observada la primera observación y aplicar las ecuaciones del modelo para <span class="math inline">\(t\geq 2\)</span>.</p>
+<p>La interpretación del parámetro de alisado <span class="math inline">\(\alpha\)</span> es el mismo que vimos. Es decir, si <span class="math inline">\(\alpha=0\)</span>, el nivel de la serie no cambia con el tiempo, y el modelo se reduce a:</p>
+<p><span class="math display">\[X_t=a_{0}+\varepsilon_t\]</span></p>
+<p>Y si <span class="math inline">\(\alpha=1\)</span>, para cada instante <span class="math inline">\(t\)</span> se tiene que <span class="math inline">\(X_t=a_t\)</span>, y el modelo se reduce a un paseo aleatorio:</p>
+<p><span class="math display">\[X_t=a_t=a_{t-1} + \varepsilon_t=X_{t-1}+\varepsilon_t\]</span></p>
+<p>Podemos simular varias trayectorias de este proceso en <em>R</em> mediante:</p>
+<div class="cell" data-layout-align="center" data-cap.fig="alpha=0.2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># parámetros</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>a0 <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>alpha <span class="ot">&lt;-</span> <span class="fl">0.2</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>x0 <span class="ot">&lt;-</span> a0</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>nsim <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">1000</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Proceso</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>e <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n)</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> a0 <span class="sc">+</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">cumsum</span>(alpha<span class="sc">*</span>e))</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(x0, a[<span class="dv">1</span><span class="sc">:</span>n]<span class="sc">+</span>e)</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>dt <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">/</span>n</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>tiempos <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from=</span><span class="dv">0</span>, <span class="at">to=</span><span class="dv">1</span>, <span class="at">by=</span>dt)</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>colores <span class="ot">&lt;-</span> <span class="fu">rainbow</span>(nsim)</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(tiempos, x, <span class="at">ylim=</span><span class="fu">c</span>(<span class="sc">-</span><span class="dv">10</span>,<span class="dv">10</span>), <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">lty =</span> <span class="dv">1</span>, <span class="at">col=</span>colores[<span class="dv">1</span>])</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>nsim){</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>  e <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n)</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>  a <span class="ot">&lt;-</span> <span class="fu">c</span>(a0, <span class="fu">cumsum</span>(alpha<span class="sc">*</span>e))</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">c</span>(a0, a[<span class="dv">1</span><span class="sc">:</span>n]<span class="sc">+</span>e)</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lines</span>(tiempos, x, <span class="at">col=</span>colores[i])</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Tema5_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Para <span class="math inline">\(\alpha=0\)</span>, obtenemos un ruido blanco gaussiano:</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Tema5_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="etsmnn-modelo-de-espacio-de-estados-del-alisado-exponencial-simple-con-errores-multiplicativos" class="level3" data-number="6.8.2">
+<h3 data-number="6.8.2" class="anchored" data-anchor-id="etsmnn-modelo-de-espacio-de-estados-del-alisado-exponencial-simple-con-errores-multiplicativos"><span class="header-section-number">6.8.2</span> ETS(M,N,N): Modelo de espacio de estados del alisado exponencial simple con errores multiplicativos</h3>
+<p>De forma análoga a lo visto anteriormente, podemos considerar el modelo con errores multiplicativos, definiendo los errores en términos relativos:</p>
+<p><span class="math display">\[e^{*}_t= \frac{x_t-\widehat{x}_{t/t-1}} {\widehat{x}_{t/t-1}}\]</span></p>
+<p>Y sustituyendo <span class="math inline">\(\widehat{x}_{t/t-1}=a_{t-1}\)</span> en la expresión anterior, tenemos:</p>
+<p><span class="math display">\[x_t= a_{t-1}+a_{t-1}e^{*}_t=a_{t-1}(1+e^{*}_t)\]</span></p>
+<p>Obsérvese que los residuos usuales (<span class="math inline">\(e_t = x_t-\widehat{x}_{t/t-1}\)</span>) y los relativos (<span class="math inline">\(e^{*}_t\)</span>), se relacionan mediante:</p>
+<p><span class="math display">\[e_t = \widehat{x}_{t|t-1}e^{*}_t=a_{t-1}e^{*}_t\]</span></p>
+<p>Por tanto, la ecuación de suavizado se reescribe:</p>
+<p><span class="math display">\[a_t=a_{t-1} + \alpha e_t \\
+=a_{t-1} + \alpha a_{t-1}e^{*}_t \\
+=a_{t-1}(1+\alpha e^{*}_t)\]</span></p>
+<p>A partir de las ecuaciones anteriores, el modelo estadístico ETS(M,N,N) se construye considerando una distribución probabilística para los errores relativos. En este caso, supondremos que provienen de un ruido blanco gaussiano <span class="math inline">\((\varepsilon_t)\)</span>.</p>
+<p>Por tanto, el modelo ETS(M,N,N) viene dado por dos prosos estocásticos <span class="math inline">\((X_t)\)</span> y <span class="math inline">\((A_t)\)</span> verificando las ecuaciones:</p>
+<p><span class="math display">\[\boxed{
+\left\{
+\begin{aligned}
+X_t&amp;=A_{t-1}(1+\varepsilon_t),\\
+A_t&amp;=A_{t-1}(1+\alpha\varepsilon_t).
+\end{aligned}
+\right.
+}\]</span></p>
+<p>De esta manera interpretamos las series temporales <span class="math inline">\((x_t)\)</span> y <span class="math inline">\((a_t)\)</span> como trayectorias o relalizaciones particulares de los procesos estocásticos anteriores.</p>
+<p>Podemos simular varias trayectorias de este proceso en <em>R</em> mediante:</p>
+<div class="cell" data-layout-align="center" data-cap.fig="alpha=0.2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># parámetros</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>a0 <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>alpha <span class="ot">&lt;-</span> <span class="fl">0.2</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>x0 <span class="ot">&lt;-</span> a0</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>nsim <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">1000</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Proceso</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>e <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n, <span class="at">mean=</span><span class="dv">0</span>, <span class="at">sd=</span><span class="fl">0.1</span>)</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> a0<span class="sc">*</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="fu">cumprod</span>(<span class="dv">1</span> <span class="sc">+</span> alpha<span class="sc">*</span>e))</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(x0, a[<span class="dv">1</span><span class="sc">:</span>n]<span class="sc">*</span>(<span class="dv">1</span><span class="sc">+</span>e))</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>dt <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">/</span>n</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>tiempos <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from=</span><span class="dv">0</span>, <span class="at">to=</span><span class="dv">1</span>, <span class="at">by=</span>dt)</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>colores <span class="ot">&lt;-</span> <span class="fu">rainbow</span>(nsim)</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(tiempos, x, <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">2</span>), <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">lty =</span> <span class="dv">1</span>, <span class="at">col=</span>colores[<span class="dv">1</span>])</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>nsim){</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>  e <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n, <span class="at">mean=</span><span class="dv">0</span>, <span class="at">sd=</span><span class="fl">0.1</span>)</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>  a <span class="ot">&lt;-</span> <span class="fu">c</span>(a0, a0<span class="sc">*</span><span class="fu">cumprod</span>(<span class="dv">1</span> <span class="sc">+</span> alpha<span class="sc">*</span>e))</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">c</span>(x0, a[<span class="dv">1</span><span class="sc">:</span>n]<span class="sc">*</span>(<span class="dv">1</span><span class="sc">+</span>e))</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lines</span>(tiempos, x, <span class="at">col=</span>colores[i])</span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Tema5_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Se observa que las trayectorias con valores más altos presentan también oscilaciones más amplias, lo cual es característico de los esquemas multiplicativos.</p>
+</section>
+<section id="otros-modelos-ets" class="level3" data-number="6.8.3">
+<h3 data-number="6.8.3" class="anchored" data-anchor-id="otros-modelos-ets"><span class="header-section-number">6.8.3</span> Otros modelos ETS</h3>
+<p>De forma análoga, se pueden desarrollar las ecuaciones que definen los diferentes modelos ETS según variemos el tipo de error, la tendencia y estacionalidad. Los resultados aparecen recogidos en las siguientes tablas (fuente: Hyndman, R.J. and Athanasopoulos, G., 2021):</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="ETS_errores_aditivos.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="ETS_errores_multiplicativos.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<!-- ![Tabla 8.7 extraída de Hyndman and Athanasopoulos (2021)](tabla_8_7a.jpg) -->
+<!-- ![Tabla 8.7 extraída de Hyndman and Athanasopoulos (2021)](tabla_8_7b.jpg) -->
+</section>
+<section id="estimación-selección-del-modelo-ets-y-predicciones" class="level3" data-number="6.8.4">
+<h3 data-number="6.8.4" class="anchored" data-anchor-id="estimación-selección-del-modelo-ets-y-predicciones"><span class="header-section-number">6.8.4</span> Estimación, selección del modelo ETS y predicciones</h3>
+<p>Para la <strong>estimación de los parámetros</strong> (parámetros de suavizado y estados iniciales) en los modelos ETS, se utiliza el método de máxima verosimilitud en lugar de minimizar la suma de los errores al cuadrado. Recordemos que la verosimilitud representa la probabilidad de que los datos se generen a partir del modelo especificado, y una verosimilitud alta indica un buen ajuste del modelo.</p>
+<p>Destacar que, en el caso de modelos con errores aditivos y asumiendo distribución Normal para los errores, el método de máxima verosimilitud proporciona los mismos resultados que minimizar la suma de cuadrados de los errores. Sin embargo, para modelos con errores multiplicativos no es cierto.</p>
+<p>El empleo de la estimación máximo-verosímil en los modelos ETS, permite el uso de criterios de información para la <strong>selección del modelo</strong>, como el AIC (Criterio de Información de Akaike) y el BIC (Criterio de Información Bayesiano). Estos criterios ayudan a determinar qué modelo ETS es el más apropiado para una serie temporal dada. Recordemos las definiciones del AIC y BIC:</p>
+<p><span class="math display">\[AIC = 2 \cdot k-2\cdot \log(L) \quad \quad BIC = k \cdot \log(n)-2 \cdot \log(L)\]</span></p>
+<p>donde <span class="math inline">\(L\)</span> es la verosimilitud del modelo, <span class="math inline">\(k\)</span> es el número de parámetros estimados y <span class="math inline">\(n\)</span> el número de datos. El modelo con el menor valor de AIC o BIC se considera el mejor ajuste.</p>
+<p>Si disponemos de una serie <span class="math inline">\(\left\{x_t \right\}_{t=1,2,...,T}\)</span>, las <strong>predicciones</strong> con modelos ETS se obtienen iterando las ecuaciones del modelo para los instantes <span class="math inline">\(t=T+1,…,T+h\)</span>, siendo <span class="math inline">\(h\)</span> el horizonte de predicción deseado, y asumiendo que <span class="math inline">\(\epsilon_t=0\)</span> para <span class="math inline">\(t&gt;T\)</span>.</p>
+<div class="callout callout-style-simple callout-none no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">None</span>Nota:
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Las predicciones puntuales obtenidas con los métodos de alisado exponencial coinciden con las obtenidas mediante el correspondiente modelo ETS (tanto en el caso de modelo con errores aditivos como multiplicativos), siempre que se usen los mismos parámetros de alisado. Además, la predicción puntual coincide con la media de la distribución para las predicciones, excepto en el caso de modelos con estacionalidad multiplicativa.</p>
+</div>
+</div>
+<p>La ventaja principal de los modelos ETS frente a los métodos de alisado exponencial es que permiten la obtención de intervalos de predicción, puesto que se dispone de una expresión para las variables del proceso estocástico, <span class="math inline">\(\left\{X_t \right\}_{t=1,2,...,T}\)</span>, y se asume distribución Normal para los errores.</p>
+<p>De forma resumida, para la mayoría de los modelos ETS, un intervalo de predicción tendrá la siguiente forma:</p>
+<p><span class="math display">\[(\text{Estimación puntual} \pm \text{Error de predicción}) = (\widehat{x}_{T+h/T} \pm c \cdot \sigma_h)\]</span></p>
+<p>donde <span class="math inline">\(c\)</span> es el cuantil de la distribución <span class="math inline">\(N(0,1)\)</span> necesario según el nivel de confianza prefijado y <span class="math inline">\(\sigma_h^2\)</span> es la varianza de la predicción con horizonte <span class="math inline">\(h\)</span>. Indicar que la expresión analítica de <span class="math inline">\(\sigma_h^2\)</span> es complicada de obtener para algunos modelos ETS.</p>
+<p>Veamos un ejemplo de aplicación de los modelos ETS para la serie “AirPassengers”. En el siguiente gráfico se muestra la serie original (negro), la serie ajustada (azul oscuro) usando el modelo ETS(M,A,M) y las predicciones (azul claro) para los dos años siguientes con los intervalos de prediccón (sobras grises).</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(forecast)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>ETS_model <span class="ot">&lt;-</span> <span class="fu">ets</span>(AirPassengers, <span class="at">model =</span> <span class="st">"MAM"</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">forecast</span>(ETS_model, <span class="at">h =</span> <span class="dv">24</span>), <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(ETS_model<span class="sc">$</span>fitted, <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">lwd =</span> <span class="fl">1.5</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Tema5_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copiado");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copiado");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./Tema4.html" class="pagination-link" aria-label="Tema 4. Conceptos básicos en series temporales">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Tema 4. Conceptos básicos en series temporales</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
