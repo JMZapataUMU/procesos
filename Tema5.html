@@ -299,7 +299,7 @@ window.Quarto = {
 <p><span class="math display">\[\left\{
 \begin{array}{lll}
 x_t=T_t+I_t=a_t + I_t &amp; &amp; \text{modelo aditivo},\\
-x_t=T_t\cdot I_t=a_t + I_t &amp; &amp; \text{modelo multiplicativo},
+x_t=T_t\times I_t=a_t \times I_t &amp; &amp; \text{modelo multiplicativo},
 \end{array}
 \right.\]</span></p>
 <p>donde <span class="math inline">\(T_t=a_t\)</span> representa el nivel de la serie en el instante <span class="math inline">\(t\)</span>, que se supone aproximadamente constante en intervalos de tiempo próximos, e <span class="math inline">\(I_t\)</span> representa la componente irregular. Obsérvese que <span class="math inline">\(a_t\)</span> representa la <em>altura</em> alrededor de la cual fluctúa la serie en cada instante <span class="math inline">\(t\)</span> cuando realizamos su representación gráfica. Por este motivo, se denomina <strong>nivel de la serie</strong>.</p>
@@ -315,18 +315,18 @@ x_t=T_t\cdot I_t=a_t + I_t &amp; &amp; \text{modelo multiplicativo},
 <p>De esta manera, definimos la serie de valores alisados mediante</p>
 <p><span class="math display">\[a_t=\hat{x}_{t+1|t}.\]</span></p>
 <p>A partir de la fórmula (<a href="#eq-alisado" class="quarto-xref"><span>6.1</span></a>), obtenemos la relación de recurrencia</p>
-<p><span class="math display">\[\boxed{
+<p><span id="eq-recursiva"><span class="math display">\[\boxed{
 a_t=\alpha x_t+(1-\alpha)a_{t-1},
 \qquad 0\leq\alpha\leq 1.
-}\]</span></p>
+} \tag{6.2}\]</span></span></p>
 <p>Esta relación permite calcular cada valor alisado a partir de la última observación y del valor alisado anterior. De esta forma, <span class="math inline">\(a_t\)</span> puede interpretarse como una estimación del nivel de la serie en el instante <span class="math inline">\(t\)</span>.</p>
-<p>Para aplicar la fórmula recursiva anterior, necesitamos disponer, por una parte, del valor del parámetro de alisado <span class="math inline">\(\alpha\)</span> y, por otra, de un valor inicial para la serie alisada. Una elección habitual consiste en tomar el primer valor de la serie original, es decir, <span class="math inline">\(a_1=x_1\)</span>, y aplicar la relación de recurrencia para <span class="math inline">\(t\geq 2\)</span>. Otra posibilidad es utilizar la media de las primeras <span class="math inline">\(k\)</span> observaciones como valor inicial <span class="math inline">\(a_k\)</span>, es decir,</p>
-<p><span class="math display">\[a_k=\frac{x_1+x_2+\ldots+x_k}{k},\]</span></p>
-<p>comenzando la recurrencia en el instante <span class="math inline">\(k+1\)</span>.</p>
-<p>Sustituyendo recursivamente los valores alisados anteriores y tomando como condición inicial <span class="math inline">\(a_1=x_1\)</span>, obtenemos</p>
+<p>Sustituyendo recursivamente los valores alisados anteriores obtenemos</p>
 <p><span class="math display">\[a_t=\alpha x_t+\alpha(1-\alpha)x_{t-1}
 +\alpha(1-\alpha)^2x_{t-2}+\alpha(1-\alpha)^3x_{t-2}+\cdots\]</span></p>
 <p>Por tanto, cada valor alisado es una media ponderada de todas las observaciones anteriores, con pesos de la forma <span class="math inline">\(\alpha(1-\alpha)^j\)</span>, que decrecen geométricamente con la antigüedad de las observaciones. De esta manera, las fluctuaciones puntuales de la serie original quedan atenuadas, dando lugar a una serie más suave. De ahí el nombre de <strong>alisado exponencial</strong>.</p>
+<p>Para aplicar la fórmula recursiva (<a href="#eq-recursiva" class="quarto-xref"><span>6.2</span></a>), necesitamos disponer, por una parte, del valor del parámetro de alisado <span class="math inline">\(\alpha\)</span> y, por otra, de un valor inicial para la serie alisada. Una elección habitual consiste en tomar el primer valor de la serie original, es decir, <span class="math inline">\(a_1=x_1\)</span>, y aplicar la relación de recurrencia para <span class="math inline">\(t\geq 2\)</span>. Otra posibilidad es utilizar la media de las primeras <span class="math inline">\(k\)</span> observaciones como valor inicial <span class="math inline">\(a_k\)</span>, es decir,</p>
+<p><span class="math display">\[a_k=\frac{x_1+x_2+\ldots+x_k}{k},\]</span></p>
+<p>comenzando la recurrencia en el instante <span class="math inline">\(k+1\)</span>.</p>
 <p>Con respecto al parámetro de alisado <span class="math inline">\(\alpha\)</span>, si se utiliza un valor próximo a uno (<span class="math inline">\(\alpha\simeq 1\)</span>), se da mucho peso a la última observación y poco peso a la información pasada. En consecuencia, la serie alisada sigue más de cerca las variaciones de la serie original. Por el contrario, si se utiliza un valor próximo a cero (<span class="math inline">\(\alpha\simeq 0\)</span>), los valores alisados dependen en mayor medida del nivel estimado anteriormente y reaccionan más lentamente a los cambios en las observaciones. En este caso, el efecto suavizador es mayor y la serie alisada presenta menos fluctuaciones que la original.</p>
 <p>Se ha comprobado empíricamente que un valor de <span class="math inline">\(\alpha =0.2\)</span> suele dar buenos resultados. Sin embargo, la mayoría del software permite seleccionar el valor de <span class="math inline">\(\alpha\)</span> que minimiza la suma de cuadrados de los errores de estimación. En R podremos seleccionar como parámetro de suavizado el valor de <span class="math inline">\(\alpha\)</span> óptimo según dicho criterio (minimiza la suma de cuadrados de los errores de predicción para el instante siguiente).</p>
 <p>Nuestro fin último es realizar predicciones de la serie para instantes futuros. Si disponemos de información de la serie hasta el instante <span class="math inline">\(T\)</span>, <span class="math inline">\(\{x_t\}_{t=1,2,...,T}\)</span>, las predicciones de la serie usando el método de alisado exponencial simple vienen dadas por:</p>
